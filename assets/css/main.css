@@ -1,0 +1,110 @@
+/* assets/css/main.css */
+body {
+  font-family: 'Kanit', sans-serif;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s;
+}
+
+.navbar-brand img {
+  transition: transform 0.3s;
+}
+
+.navbar-brand img:hover {
+  transform: scale(1.1);
+}
+
+.nav-link {
+  color: #fff !important;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #ff4d4d !important;
+}
+
+.alert {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: #222 !important;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 160px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.4em;
+}
+
+.loading-overlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px);
+}
+
+[data-start] {
+  color: #ff4d4d;
+  font-weight: 600;
+}
+
+footer {
+  background: #111;
+  padding: 20px 0;
+}
+
+footer a {
+  color: #aaa !important;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: #ff4d4d !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    width: 100% !important;
+  }
+  .livecards {
+    justify-content: center;
+  }
+  .display-4 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Hero section */
+.btn-danger {
+  transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #e63939;
+}
