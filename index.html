@@ -16,7 +16,8 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=22">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=23">
     <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
   </head>
   <body>
@@ -28,10 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://ppv.zone/">Mirror list</a></li>
             <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
-            <li class="nav-item"><a class="nav-link" href="/ft">Fishtank</a></li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>
               <ul class="dropdown-menu">
@@ -42,12 +40,17 @@
             </li>
             <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
             <li class="nav-item"><a class="nav-link" href="/auth/register">Register</a></li>
+            <li class="nav-item">
+              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+              </button>
+            </li>
           </ul>
           <a class="navbar-brand ms-auto" href="https://ppv.wtf/"><img src="/assets/img/ppvwtf.png" height="30" alt="PPV.WTF Logo" /></a>
         </div>
       </div>
     </nav>
-    <div class="container-fluid text-center py-5 bg-dark" style="background: linear-gradient(135deg, #ff4d4d, #1a1a1a);">
+    <div class="container-fluid text-center py-5 bg-dark">
       <h1 class="display-4 fw-bold" data-aos="fade-up">Welcome to PPV.WTF</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200">Watch Now</a>
@@ -62,19 +65,6 @@
       <div class="custom-loader" id="loaderSpinner"></div>
     </div>
     <div class="container container-fluid pt-2 text-white">
-      <div class="alert alert-warning alert-dismissible mt-4" role="alert">
-        <h4 class="alert-heading"><strong>PPV.LAND is now PPV.WTF.</strong></h4>
-        Please bookmark our alternative mirrors at <a href="https://ppv.zone" target="_blank">ppv.zone</a> in case of down time. This change is permanent.
-        <h3 class="alert-heading mt-4">All cricket streams are suspended.</h3>
-        <p>Please do not request any cricket games.</p>
-        <hr>
-        <strong>- Your PPV.WTF team</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <div class="alert alert-danger alert-dismissible mt-2" role="alert">
-        We now have a Discord server. Enjoy! <a href="https://discord.gg/5AMPdpckjH" class="alert-link">DISCORD</a>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
       <div id="live" class="mt-4">
         <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
           <h2 class="m-0 justify-content-start w-100 align-content-center">
@@ -210,6 +200,30 @@
         setInterval(() => loadContent(api), 60000);
         countdown();
         AOS.init();
+
+        // Close navbar on outside click
+        document.addEventListener('click', function(event) {
+          const navbarCollapse = document.getElementById('navbarSupportedContent');
+          const navbarToggler = document.querySelector('.navbar-toggler');
+          const isNavbarOpen = navbarCollapse.classList.contains('show');
+          const clickedInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+          if (isNavbarOpen && !clickedInsideNavbar) {
+            bootstrap.Collapse.getInstance(navbarCollapse).hide();
+          }
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-bs-theme', currentTheme);
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        themeToggle.addEventListener('click', () => {
+          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-bs-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
       }
     </script>
     <script async src="/assets/js/api.js"></script>
