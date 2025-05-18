@@ -57,10 +57,20 @@ body {
   font-weight: 500;
 }
 
-.spinner-border {
-  width: 3rem;
-  height: 3rem;
-  border-width: 0.4em;
+.custom-loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ff4d4d;
+  border-bottom-color: #ffd700;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .loading-overlay {
@@ -84,7 +94,48 @@ footer a {
 }
 
 footer a:hover {
-  color: #ff4d4d !important;
+  color: #ffd700 !important;
+}
+
+/* Navbar collapse animation */
+.navbar-collapse {
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: #1a1a1a;
+    transform: translateX(-100%);
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  .navbar-collapse.show {
+    transform: translateX(0);
+  }
+  .navbar-nav {
+    flex-direction: column;
+  }
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
+  .dropdown-menu {
+    background: #222;
+    border: none;
+    margin-left: 10px;
+  }
+  .dropdown-item {
+    color: #fff !important;
+  }
+  .dropdown-item:hover {
+    color: #ff4d4d !important;
+    background: #333;
+  }
 }
 
 /* Responsive adjustments */
@@ -107,4 +158,9 @@ footer a:hover {
 
 .btn-danger:hover {
   background-color: #e63939;
+}
+
+/* AOS animation overrides */
+[data-aos] {
+  transition-duration: 0.8s;
 }
