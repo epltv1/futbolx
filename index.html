@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=24">
+    <link rel="stylesheet" href="/assets/css/main.css?v=25">
     <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
   </head>
   <body>
@@ -73,7 +73,7 @@
           </h2>
           <ul id="categorybuttons" class="nav justify-content-end"></ul>
         </div>
-        <div id="livecards" class="mx-4 d-flex py-3 flex-wrap"></div>
+        <div id="livecards" class="event-grid py-3"></div>
       </div>
       <div id="categories" class="mt-5"></div>
       <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
@@ -147,32 +147,35 @@
                 let categoryHtml = `
                   <div id="${categoryId}-container" class="mt-5">
                     <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
-                    <div id="${categoryId}" class="mx-4 d-flex py-3 flex-wrap"></div>
+                    <div id="${categoryId}" class="event-grid py-3"></div>
                   </div>`;
                 document.getElementById("categories").innerHTML += categoryHtml;
-                streams.forEach(stream => {
-                  let livecounter = stream.starts_at <= Math.floor(Date.now() / 1000)
-                    ? `<span class="float-end"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>`
-                    : `<span class="float-end" data-start="${stream.starts_at}"></span>`;
+                streams.forEach((stream, index) => {
+                  let isLive = stream.starts_at <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
+                  let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+                  let livecounter = isLive
+                    ? `<span class="float-end viewer-count"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>`
+                    : `<span class="float-end countdown" data-start="${stream.starts_at}"></span>`;
                   let streamHtml = `
-                    <div class="px-2 py-2">
-                      <a href="/live/${stream.uri_name}" class="item-card">
-                        <div class="card bg-black text-white" style="width: 18rem;">
+                    <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                      <a href="/live/${stream.uri_name}" class="card-link">
+                        <div class="card bg-black text-white">
+                          ${liveBadge}
                           <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
                           <div class="card-body">
-                            <h5 class="card-title" style="min-height:48px;">${stream.name}</h5>
+                            <h5 class="card-title">${stream.name}</h5>
                             <p class="card-text">
-                              <span style="text-align:left;" class="text-muted">${stream.tag}</span>
+                              <span class="event-tag text-muted">${stream.tag}</span>
                               ${livecounter}
                             </p>
                           </div>
                         </div>
                       </a>
                     </div>`;
-                  if (stream.starts_at >= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1) {
-                    document.getElementById(categoryId).innerHTML += streamHtml;
-                  } else {
+                  if (isLive) {
                     document.getElementById("livecards").innerHTML += streamHtml;
+                  } else {
+                    document.getElementById(categoryId).innerHTML += streamHtml;
                   }
                 });
                 if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
