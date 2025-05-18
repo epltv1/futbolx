@@ -213,4 +213,66 @@ footer a {
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
   }
   .navbar-collapse.show {
-    transform: translateX(0
+    transform: translateX(0);
+  }
+  .navbar-nav {
+    flex-direction: column;
+  }
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
+  .dropdown-menu {
+    border: none;
+    margin-left: 10px;
+  }
+  [data-bs-theme="dark"] .dropdown-menu {
+    background: #222;
+  }
+  [data-bs-theme="light"] .dropdown-menu {
+    background: #f5f5f5;
+  }
+  .dropdown-item {
+    transition: color 0.3s, background 0.3s;
+  }
+  [data-bs-theme="dark"] .dropdown-item {
+    color: #fff !important;
+  }
+  [data-bs-theme="dark"] .dropdown-item:hover {
+    color: #ff4d4d !important;
+    background: #333;
+  }
+  [data-bs-theme="light"] .dropdown-item {
+    color: #333 !important;
+  }
+  [data-bs-theme="light"] .dropdown-item:hover {
+    color: #e63939 !important;
+    background: #e5e5e5;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    width: 100% !important;
+  }
+  .livecards {
+    justify-content: center;
+  }
+  .display-4 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Hero section button */
+.btn-danger {
+  transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #e63939;
+}
+
+/* AOS animation overrides */
+[data-aos] {
+  transition-duration: 0.8s;
+}
