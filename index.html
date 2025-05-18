@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ppv.wtf - ppv.land | Free PPV and More</title>
-    <meta name="description" content="ppv land is now ppv.wtf - Free PPV boxing, UFC, Basketball, Football, Darts and other content available live and on-demand. ppv land.">
-    <meta name="keywords" content="ppv.wtf, ppv, free ppv, ppv land, ppvland, ppv land down, ppv wtf, ppv land alternatives, pvp land, pvpland, basketball, nba, soccer, football, dazn, misfits, ufc, stream, online, free">
-    <meta property="og:title" content="ppv.land - free ppv and more" />
-    <meta property="og:url" content="https://ppv.wtf" />
+    <title>Futbolx - Free PPV and More</title>
+    <meta name="description" content="Futbolx - Free PPV boxing, UFC, Basketball, Football, Darts and other content available live and on-demand.">
+    <meta name="keywords" content="futbolx, ppv, free ppv, ppv land, ppvland, ppv land down, ppv wtf, ppv land alternatives, pvp land, pvpland, basketball, nba, soccer, football, dazn, misfits, ufc, stream, online, free">
+    <meta property="og:title" content="Futbolx - free ppv and more" />
+    <meta property="og:url" content="https://futbolx.com" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="ppv.land - free ppv and more">
+    <meta name="twitter:title" content="Futbolx - free ppv and more">
     <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=23">
+    <link rel="stylesheet" href="/assets/css/main.css?v=24">
     <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
   </head>
   <body>
@@ -28,32 +28,33 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
+            <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('en');" data-lang="lang-english">English</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('de');" data-lang="lang-german">Deutsch</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('es');" data-lang="lang-spanish">Español</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('fr');" data-lang="lang-french">Français</a></li>
               </ul>
             </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="/auth/register">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/login" data-lang="nav-login">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/register" data-lang="nav-register">Register</a></li>
             <li class="nav-item">
               <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
                 <i class="fas fa-moon"></i>
               </button>
             </li>
           </ul>
-          <a class="navbar-brand ms-auto" href="https://ppv.wtf/"><img src="/assets/img/ppvwtf.png" height="30" alt="PPV.WTF Logo" /></a>
+          <a class="navbar-brand ms-auto" href="https://futbolx.com"><img src="/assets/img/ppvwtf.png" height="30" alt="Futbolx Logo" /></a>
         </div>
       </div>
     </nav>
     <div class="container-fluid text-center py-5 bg-dark">
-      <h1 class="display-4 fw-bold" data-aos="fade-up">Welcome to PPV.WTF</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
-      <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200">Watch Now</a>
+      <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="hero-title">Welcome to Futbolx</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="hero-subtitle">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+      <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200" data-lang="hero-button">Watch Now</a>
     </div>
     <div id="loadingOverlay" class="loading-overlay">
       <noscript>
@@ -67,7 +68,7 @@
     <div class="container container-fluid pt-2 text-white">
       <div id="live" class="mt-4">
         <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
-          <h2 class="m-0 justify-content-start w-100 align-content-center">
+          <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
             <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
           </h2>
           <ul id="categorybuttons" class="nav justify-content-end"></ul>
@@ -76,13 +77,13 @@
       </div>
       <div id="categories" class="mt-5"></div>
       <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">PPV.WTF 2025</p>
+        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
         <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
+          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
+          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
+          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
+          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
         </ul>
       </footer>
     </div>
@@ -110,7 +111,7 @@
             if (dd === 0) clock = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
             element.innerHTML = clock;
           } else {
-            element.innerHTML = '<strong>Live soon</strong>';
+            element.innerHTML = '<strong data-lang="live-soon">Live soon</strong>';
             element.style.color = '#ff8280';
           }
         });
@@ -145,7 +146,7 @@
                 ulElement.appendChild(liElement);
                 let categoryHtml = `
                   <div id="${categoryId}-container" class="mt-5">
-                    <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success">24/7</span>' : ''}</h2>
+                    <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
                     <div id="${categoryId}" class="mx-4 d-flex py-3 flex-wrap"></div>
                   </div>`;
                 document.getElementById("categories").innerHTML += categoryHtml;
@@ -177,12 +178,13 @@
                 if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
               });
             } else {
-              document.getElementById("livecards").innerHTML += '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
+              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
             $("#loadingOverlay").hide();
             if ($(`#livecards`).is(':empty')) {
-              document.getElementById("livecards").innerHTML += '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
+              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
+            updateLanguage(); // Apply translations after content loads
           }).catch(error => {
             $("#loaderError").removeClass('d-none');
             $("#loaderSpinner").addClass('d-none');
@@ -224,13 +226,17 @@
           localStorage.setItem('theme', newTheme);
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
+
+        // Initialize language
+        updateLanguage();
       }
     </script>
     <script async src="/assets/js/api.js"></script>
+    <script async src="/assets/js/lang.js"></script>
     <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script defer data-domain="ppv.wtf" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+    <script defer data-domain="futbolx.com" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
