@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "streams": [
+    {
+      "id": "sports",
+      "category": "Sports",
+      "always_live": 0,
+      "streams": [
+        {
+          "uri_name": "boxing-match",
+          "name": "Boxing: Championship Fight",
+          "poster": "https://via.placeholder.com/285x160?text=Boxing",
+          "tag": "Boxing",
+          "viewers": 1200,
+          "starts_at": 1745100000
+        },
+        {
+          "uri_name": "ufc-fight",
+          "name": "UFC 305: Main Event",
+          "poster": "https://via.placeholder.com/285x160?text=UFC",
+          "tag": "UFC",
+          "viewers": 800,
+          "starts_at": 1745186400
+        }
+      ]
+    },
+    {
+      "id": "basketball",
+      "category": "Basketball",
+      "always_live": 1,
+      "streams": [
+        {
+          "uri_name": "nba-game",
+          "name": "NBA: Lakers vs Warriors",
+          "poster": "https://via.placeholder.com/285x160?text=NBA",
+          "tag": "NBA",
+          "viewers": 1500,
+          "starts_at": 1745272800
+        }
+      ]
+    }
+  ]
+}
