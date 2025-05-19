@@ -15,8 +15,14 @@
           "starts_at": "2025-05-19T19:00:00Z",
           "end_time": "2025-05-19T21:00:00Z",
           "links": [
-            { "title": "Live 1", "url": "https://example.com/hls/brighton-liverpool-1.m3u8" },
-            { "title": "Live 2", "url": "https://example.com/hls/brighton-liverpool-2.m3u8" }
+            {
+              "title": "Live 1",
+              "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+            },
+            {
+              "title": "Live 2",
+              "url": "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8"
+            }
           ]
         },
         {
@@ -28,8 +34,14 @@
           "starts_at": "2025-05-20T19:00:00Z",
           "end_time": "2025-05-20T21:00:00Z",
           "links": [
-            { "title": "Live 1", "url": "https://example.com/hls/crystal-wolves-1.m3u8" },
-            { "title": "Live 2", "url": "https://example.com/hls/crystal-wolves-2.m3u8" }
+            {
+              "title": "Live 1",
+              "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
+            },
+            {
+              "title": "Live 2",
+              "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+            }
           ]
         }
       ]
@@ -47,7 +59,12 @@
           "viewers": 1200,
           "starts_at": "2025-05-21T15:00:00Z",
           "end_time": "2025-05-21T18:00:00Z",
-          "links": [{ "title": "Live 1", "url": "https://example.com/hls/boxing-1.m3u8" }]
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+            }
+          ]
         },
         {
           "uri_name": "ufc-fight",
@@ -57,7 +74,12 @@
           "viewers": 800,
           "starts_at": "2025-05-22T14:00:00Z",
           "end_time": "2025-05-22T17:00:00Z",
-          "links": [{ "title": "Live 1", "url": "https://example.com/hls/ufc-1.m3u8" }]
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8"
+            }
+          ]
         }
       ]
     },
@@ -74,7 +96,12 @@
           "viewers": 1500,
           "starts_at": "2025-05-19T14:00:00Z",
           "end_time": "2025-05-19T17:00:00Z",
-          "links": [{ "title": "Live 1", "url": "https://example.com/hls/nba-1.m3u8" }]
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+            }
+          ]
         }
       ]
     }
