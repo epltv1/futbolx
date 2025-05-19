@@ -1,0 +1,6 @@
+{
+  "routes": [
+    { "src": "/auth/login", "dest": "/auth/login.html" },
+    { "src": "/vip", "dest": "/vip.html" }
+  ]
+}
