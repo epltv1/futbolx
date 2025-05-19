@@ -25,7 +25,7 @@
         {
           "uri_name": "boxing-match",
           "name": "Boxing: Championship Fight",
-          "poster": "https://via.placeholder.com/285x160?text=Boxing",
+          "poster": "https://plive.live/uploads/682a05913eb5e.png",
           "tag": "Boxing",
           "viewers": 1200,
           "starts_at": "2025-05-20T15:00:00Z",
@@ -34,7 +34,7 @@
         {
           "uri_name": "ufc-fight",
           "name": "UFC 305: Main Event",
-          "poster": "https://via.placeholder.com/285x160?text=UFC",
+          "poster": "https://plive.live/uploads/682a05913eb5e.png",
           "tag": "UFC",
           "viewers": 800,
           "starts_at": "2025-05-21T14:00:00Z",
@@ -50,7 +50,7 @@
         {
           "uri_name": "nba-game",
           "name": "NBA: Lakers vs Warriors",
-          "poster": "https://via.placeholder.com/285x160?text=NBA",
+          "poster": "https://plive.live/uploads/682a05913eb5e.png",
           "tag": "NBA",
           "viewers": 1500,
           "starts_at": "2025-05-19T14:00:00Z",
