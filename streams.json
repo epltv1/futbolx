@@ -12,7 +12,7 @@
           "poster": "https://plive.live/uploads/682a05913eb5e.png",
           "tag": "Boxing",
           "viewers": 1200,
-          "starts_at": "2025-05-20T15:00:00Z", // Set start date and time here in YYYY-MM-DDTHH:MM:SSZ format (UTC). Example: "2025-05-20T15:00:00Z" for May 20, 2025, 15:00 UTC (19:00 EAT)
+          "starts_at": "2025-05-19T18:00:00Z", // Set start date and time here in YYYY-MM-DDTHH:MM:SSZ format (UTC). Example: "2025-05-20T15:00:00Z" for May 20, 2025, 15:00 UTC (19:00 EAT)
           "end_time": "2025-05-20T18:00:00Z" // Set end date and time here in YYYY-MM-DDTHH:MM:SSZ format (UTC). Example: "2025-05-20T18:00:00Z" for May 20, 2025, 18:00 UTC (22:00 EAT)
         },
         {
