@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=31">
+    <link rel="stylesheet" href="/assets/css/main.css?v=32">
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-black">
@@ -76,14 +76,12 @@
     <script async src="/assets/js/lang.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script defer>
-      // Initialize PlayerJS
       let player = new Playerjs({
         id: "player",
         file: "",
         autoplay: true
       });
 
-      // Check if M3U8 link is live (returns true if accessible)
       async function isLinkLive(url) {
         try {
           const response = await fetch(url, { method: 'HEAD', mode: 'cors' });
@@ -94,8 +92,8 @@
         }
       }
 
-      // Load stream data and initialize player
       async function loadStream() {
+        console.log('Loading stream for player page');
         const errorContainer = document.getElementById("errorContainer");
         errorContainer.className = "d-none error-alert";
         const uriName = window.location.pathname.split("/").pop();
@@ -103,6 +101,7 @@
 
         try {
           const data = await api.get("/streams");
+          console.log('Player API response:', data);
           if (!data || !data.success || !Array.isArray(data.streams)) {
             throw new Error("Invalid API response");
           }
@@ -113,37 +112,45 @@
             if (found) stream = found;
           });
 
-          if (!stream || !stream.links || !Array.isArray(stream.links) || stream.links.length === 0) {
-            throw new Error("Stream or links not found");
+          if (!stream) {
+            throw new Error(`Stream not found for uri_name: ${uriName}`);
           }
 
-          // Set title and tag
-          document.getElementById("playerTitle").textContent = stream.name;
-          document.getElementById("playerTag").textContent = stream.tag;
+          document.getElementById("playerTitle").textContent = stream.name || 'Unknown Event';
+          document.getElementById("playerTag").textContent = stream.tag || '';
 
-          // Find first live link or default to first link
-          let defaultLink = stream.links[0].url;
-          for (const link of stream.links) {
-            if (await isLinkLive(link.url)) {
+          const links = Array.isArray(stream.links) && stream.links.length > 0 ? stream.links : [{ title: "Default", url: "" }];
+          let defaultLink = links[0].url;
+          for (const link of links) {
+            if (link.url && await isLinkLive(link.url)) {
               defaultLink = link.url;
               break;
             }
           }
 
-          // Initialize player with default link
-          player.api("file", defaultLink);
+          if (defaultLink) {
+            console.log('Playing link:', defaultLink);
+            player.api("file", defaultLink);
+          } else {
+            console.warn('No valid links available');
+            errorContainer.className = "alert alert-warning error-alert";
+            errorContainer.textContent = "No playable stream available.";
+          }
 
-          // Create stream-switching buttons
           const streamButtons = document.getElementById("streamButtons");
           streamButtons.innerHTML = "";
-          stream.links.forEach(link => {
+          links.forEach(link => {
             const button = document.createElement("button");
             button.className = `btn btn-sm ${link.url === defaultLink ? "btn-danger" : "btn-secondary"} stream-btn`;
-            button.textContent = link.title;
+            button.textContent = link.title || 'Unnamed';
+            button.disabled = !link.url;
             button.onclick = () => {
-              player.api("file", link.url);
-              streamButtons.querySelectorAll(".stream-btn").forEach(btn => btn.className = "btn btn-sm btn-secondary stream-btn");
-              button.className = "btn btn-sm btn-danger stream-btn";
+              if (link.url) {
+                console.log('Switching to link:', link.url);
+                player.api("file", link.url);
+                streamButtons.querySelectorAll(".stream-btn").forEach(btn => btn.className = "btn btn-sm btn-secondary stream-btn");
+                button.className = "btn btn-sm btn-danger stream-btn";
+              }
             };
             streamButtons.appendChild(button);
           });
@@ -156,10 +163,10 @@
       }
 
       window.onload = function() {
+        console.log('Player window loaded');
         loadStream();
         AOS.init();
 
-        // Navbar close on outside click
         document.addEventListener('click', function(event) {
           const navbarCollapse = document.getElementById('navbarSupportedContent');
           const navbarToggler = document.querySelector('.navbar-toggler');
@@ -170,7 +177,6 @@
           }
         });
 
-        // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -183,7 +189,6 @@
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
-        // Initialize language and auth
         updateLanguage();
         checkAuthStatus();
       };
