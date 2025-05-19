@@ -17,11 +17,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=42">
+    <link rel="stylesheet" href="/assets/css/main.css?v=44">
     <style>
       .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
       .loading-overlay.hidden { display: none; }
       .error-alert { max-width: 500px; margin: 20px auto; }
+      #playerSection { display: none; }
+      #playerSection.active { display: block; }
+      #playerContainer { width: 100%; max-width: 1280px; margin: 0 auto; }
+      #player { width: 100%; height: 720px; }
     </style>
   </head>
   <body>
@@ -70,15 +74,28 @@
     </div>
     <div class="container container-fluid pt-2 text-white">
       <div id="errorContainer" class="d-none error-alert"></div>
-      <div id="live" class="mt-4">
-        <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
-          <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
-            <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
-          </h2>
+      <!-- Player Section -->
+      <div id="playerSection" class="mt-4">
+        <button id="backToStreams" class="btn btn-secondary mb-3" data-lang="back-to-streams">Back to Streams</button>
+        <h2 id="playerTitle" class="mb-3"></h2>
+        <div id="playerContainer">
+          <div id="player"></div>
         </div>
-        <div id="livecards" class="event-grid py-3"></div>
+        <div id="streamLinks" class="mt-3"></div>
+        <div id="playerError" class="alert alert-danger d-none mt-3"></div>
       </div>
-      <div id="categories" class="mt-5"></div>
+      <!-- Streams Section -->
+      <div id="streamsSection" class="mt-4">
+        <div id="live" class="mt-4">
+          <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
+            <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
+              <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
+            </h2>
+          </div>
+          <div id="livecards" class="event-grid py-3"></div>
+        </div>
+        <div id="categories" class="mt-5"></div>
+      </div>
       <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
         <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
         <ul class="nav justify-content-center justify-content-lg-end mb-0">
@@ -90,6 +107,7 @@
         </ul>
       </footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/playerjs@0.1.0/dist/player.min.js"></script>
     <script defer>
       function zeropad(num) {
         return num > 9 ? num : '0' + num;
@@ -122,7 +140,7 @@
             }
             element.innerHTML = displayText;
           } else {
-            element.innerHTML = `<a href="${playerUrl}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>`;
+            element.innerHTML = `<button class="btn btn-danger btn-sm watch-button" data-player-url="${playerUrl}" data-lang="watch-now">Watch</button>`;
             element.style.color = '#ff8280';
           }
         });
@@ -160,6 +178,48 @@
           $("#loaderSpinner").addClass('d-none');
           $("#loadingOverlay").hide();
         }
+      }
+
+      function loadPlayer(uriName, streamData) {
+        console.log(`Loading player for uri_name: ${uriName}`);
+        const playerSection = document.getElementById('playerSection');
+        const streamsSection = document.getElementById('streamsSection');
+        const playerTitle = document.getElementById('playerTitle');
+        const playerError = document.getElementById('playerError');
+        const streamLinks = document.getElementById('streamLinks');
+        playerError.className = 'alert alert-danger d-none mt-3';
+
+        if (!streamData) {
+          console.error(`Stream not found for uri_name: ${uriName}`);
+          playerError.className = 'alert alert-danger mt-3';
+          playerError.innerHTML = 'Stream not found.';
+          return;
+        }
+
+        console.log(`Stream found: ${streamData.name}, Links: ${streamData.links.length}`);
+        playerTitle.innerHTML = streamData.name;
+        streamLinks.innerHTML = streamData.links.map((link, index) => `
+          <button class="btn btn-${index === 0 ? 'primary' : 'secondary'} mx-1 stream-link" data-url="${link.url}">${link.title}</button>
+        `).join('');
+
+        const player = new playerjs.Player('player');
+        player.on('ready', () => {
+          player.setVolume(100);
+          player.play();
+        });
+        player.src(streamData.links[0].url);
+
+        playerSection.className = 'mt-4 active';
+        streamsSection.style.display = 'none';
+
+        document.querySelectorAll('.stream-link').forEach(button => {
+          button.addEventListener('click', () => {
+            document.querySelectorAll('.stream-link').forEach(btn => btn.classList.remove('btn-primary'));
+            button.classList.add('btn-primary');
+            player.src(button.getAttribute('data-url'));
+            player.play();
+          });
+        });
       }
 
       function renderStreams(data) {
@@ -203,7 +263,7 @@
                 : 'https://i.postimg.cc/Gh7S3Q5B/IMG-20241221-022220-640.jpg';
               let streamHtml = `
                 <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                  <a href="${stream.player_url}" class="card-link" data-player-url="${stream.player_url}">
+                  <div class="card-link" data-player-url="${stream.player_url}" data-uri-name="${stream.uri_name}">
                     <div class="card bg-black text-white">
                       ${liveBadge}
                       <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
@@ -212,14 +272,14 @@
                         <p class="card-text">
                           <span class="event-tag text-muted">${stream.tag}</span>
                           <span class="float-end">${isLive 
-                            ? `<a href="${stream.player_url}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now" data-player-url="${stream.player_url}">Watch</a>` 
+                            ? `<button class="btn btn-danger btn-sm watch-button" data-player-url="${stream.player_url}" data-uri-name="${stream.uri_name}" data-lang="watch-now">Watch</button>` 
                             : `<span class="countdown" data-start="${startTime}" data-player-url="${stream.player_url}"></span>`}</span>
                         </p>
                       </div>
                     </div>
-                  </a>
+                  </div>
                 </div>`;
-              console.log(`Generated card for ${stream.name}: <a href="${stream.player_url}" class="card-link" data-player-url="${stream.player_url}">`);
+              console.log(`Generated card for ${stream.name}: <div class="card-link" data-player-url="${stream.player_url}" data-uri-name="${stream.uri_name}">`);
               if (isLive) {
                 document.getElementById("livecards").innerHTML += streamHtml;
               } else {
@@ -235,9 +295,17 @@
           document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
         }
         updateLanguage();
-        document.querySelectorAll('.card-link, .watch-button').forEach(link => {
-          link.addEventListener('click', (e) => {
-            console.log(`Clicked link: ${e.target.href}, Player URL: ${e.target.getAttribute('data-player-url')}`);
+        document.querySelectorAll('.card-link, .watch-button').forEach(element => {
+          element.addEventListener('click', (e) => {
+            const uriName = e.currentTarget.getAttribute('data-uri-name');
+            const playerUrl = e.currentTarget.getAttribute('data-player-url');
+            console.log(`Clicked stream: ${uriName}, Player URL: ${playerUrl}`);
+            let streamData = null;
+            data.streams.forEach(category => {
+              const found = category.streams.find(stream => stream.uri_name === uriName);
+              if (found) streamData = found;
+            });
+            loadPlayer(uriName, streamData);
           });
         });
       }
@@ -248,6 +316,13 @@
         setInterval(() => loadContent(api), 60000);
         countdown();
         AOS.init();
+
+        document.getElementById('backToStreams').addEventListener('click', () => {
+          document.getElementById('playerSection').className = 'mt-4';
+          document.getElementById('streamsSection').style.display = 'block';
+          const player = new playerjs.Player('player');
+          player.src('');
+        });
 
         document.addEventListener('click', function(event) {
           const navbarCollapse = document.getElementById('navbarSupportedContent');
@@ -261,9 +336,7 @@
 
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
-        const currentTheme = localStorage.getItem('theme') ||
-
- 'dark';
+        const currentTheme = localStorage.getItem('theme') || 'dark';
         htmlElement.setAttribute('data-bs-theme', currentTheme);
         themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         themeToggle.addEventListener('click', () => {
