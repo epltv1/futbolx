@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Futbolx - Stream Player</title>
+    <meta name="description" content="Futbolx - Stream live PPV boxing, UFC, Basketball, Football, and more.">
+    <meta property="og:title" content="Futbolx - Stream Player" />
+    <meta property="og:url" content="https://futbolx.com/player" />
+    <meta property="og:image" content="/assets/img/og-image.jpg">
+    <meta name="twitter:title" content="Futbolx - Stream Player">
+    <meta name="twitter:description" content="Stream live PPV events and more.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=31">
+    <style>
+      .player-container { max-width: 960px; margin: 2rem auto; }
+      .player-title { font-size: 1.8rem; margin-bottom: 0.5rem; }
+      .player-tag { font-size: 1rem; color: #6c757d; }
+      .stream-buttons { margin-top: 1rem; }
+      .stream-btn { margin-right: 0.5rem; margin-bottom: 0.5rem; }
+      .error-alert { max-width: 500px; margin: 20px auto; }
+      #player { width: 100%; height: 540px; }
+      @media (max-width: 768px) {
+        #player { height: 360px; }
+      }
+      @media (max-width: 576px) {
+        #player { height: 240px; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-black">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('en');" data-lang="lang-english">English</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('de');" data-lang="lang-german">Deutsch</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('es');" data-lang="lang-spanish">Español</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setLanguage('fr');" data-lang="lang-french">Français</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-lang="nav-login">Login</a></li>
+            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-lang="nav-logout">Logout</button></li>
+            <li class="nav-item">
+              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+              </button>
+            </li>
+          </ul>
+          <a class="navbar-brand ms-auto" href="https://futbolx.com"><img src="/assets/img/ppvwtf.png" height="30" alt="Futbolx Logo" /></a>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid text-white">
+      <div id="errorContainer" class="d-none error-alert"></div>
+      <div class="player-container">
+        <h1 class="player-title" id="playerTitle">Loading...</h1>
+        <p class="player-tag" id="playerTag"></p>
+        <div id="player"></div>
+        <div class="stream-buttons" id="streamButtons"></div>
+      </div>
+      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
+        <ul class="nav justify-content-center justify-content-lg-end mb-0">
+          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
+          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
+          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
+          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
+          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
+        </ul>
+      </footer>
+    </div>
+    <script src="https://playerjs.com/player.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script async src="/assets/js/api.js"></script>
+    <script async src="/assets/js/lang.js"></script>
+    <script async src="/assets/js/auth.js"></script>
+    <script defer>
+      // Initialize PlayerJS
+      let player = new Playerjs({
+        id: "player",
+        file: "",
+        autoplay: true
+      });
+
+      // Check if M3U8 link is live (returns true if accessible)
+      async function isLinkLive(url) {
+        try {
+          const response = await fetch(url, { method: 'HEAD', mode: 'cors' });
+          return response.ok && response.status === 200;
+        } catch (error) {
+          console.warn(`Link check failed for ${url}:`, error.message);
+          return false;
+        }
+      }
+
+      // Load stream data and initialize player
+      async function loadStream() {
+        const errorContainer = document.getElementById("errorContainer");
+        errorContainer.className = "d-none error-alert";
+        const uriName = window.location.pathname.split("/").pop();
+        const api = new Api(`${window.location.origin}`);
+
+        try {
+          const data = await api.get("/streams");
+          if (!data || !data.success || !Array.isArray(data.streams)) {
+            throw new Error("Invalid API response");
+          }
+
+          let stream = null;
+          data.streams.forEach(category => {
+            const found = category.streams.find(s => s.uri_name === uriName);
+            if (found) stream = found;
+          });
+
+          if (!stream || !stream.links || !Array.isArray(stream.links) || stream.links.length === 0) {
+            throw new Error("Stream or links not found");
+          }
+
+          // Set title and tag
+          document.getElementById("playerTitle").textContent = stream.name;
+          document.getElementById("playerTag").textContent = stream.tag;
+
+          // Find first live link or default to first link
+          let defaultLink = stream.links[0].url;
+          for (const link of stream.links) {
+            if (await isLinkLive(link.url)) {
+              defaultLink = link.url;
+              break;
+            }
+          }
+
+          // Initialize player with default link
+          player.api("file", defaultLink);
+
+          // Create stream-switching buttons
+          const streamButtons = document.getElementById("streamButtons");
+          streamButtons.innerHTML = "";
+          stream.links.forEach(link => {
+            const button = document.createElement("button");
+            button.className = `btn btn-sm ${link.url === defaultLink ? "btn-danger" : "btn-secondary"} stream-btn`;
+            button.textContent = link.title;
+            button.onclick = () => {
+              player.api("file", link.url);
+              streamButtons.querySelectorAll(".stream-btn").forEach(btn => btn.className = "btn btn-sm btn-secondary stream-btn");
+              button.className = "btn btn-sm btn-danger stream-btn";
+            };
+            streamButtons.appendChild(button);
+          });
+
+        } catch (error) {
+          console.error("Error loading stream:", error.message);
+          errorContainer.className = "alert alert-danger error-alert";
+          errorContainer.textContent = "Failed to load stream. Please try again later.";
+        }
+      }
+
+      window.onload = function() {
+        loadStream();
+        AOS.init();
+
+        // Navbar close on outside click
+        document.addEventListener('click', function(event) {
+          const navbarCollapse = document.getElementById('navbarSupportedContent');
+          const navbarToggler = document.querySelector('.navbar-toggler');
+          const isNavbarOpen = navbarCollapse.classList.contains('show');
+          const clickedInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+          if (isNavbarOpen && !clickedInsideNavbar) {
+            bootstrap.Collapse.getInstance(navbarCollapse).hide();
+          }
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-bs-theme', currentTheme);
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        themeToggle.addEventListener('click', () => {
+          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-bs-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // Initialize language and auth
+        updateLanguage();
+        checkAuthStatus();
+      };
+    </script>
+  </body>
+</html>
