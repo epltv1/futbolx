@@ -13,17 +13,7 @@
           "tag": "EPL",
           "viewers": 2000,
           "starts_at": "2025-05-19T19:00:00Z",
-          "end_time": "2025-05-19T21:00:00Z",
-          "links": [
-            {
-              "title": "Live 1",
-              "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-            },
-            {
-              "title": "Live 2",
-              "url": "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8"
-            }
-          ]
+          "end_time": "2025-05-19T21:00:00Z"
         },
         {
           "uri_name": "crystal-palace-vs-wolves",
@@ -32,17 +22,7 @@
           "tag": "EPL",
           "viewers": 1800,
           "starts_at": "2025-05-20T19:00:00Z",
-          "end_time": "2025-05-20T21:00:00Z",
-          "links": [
-            {
-              "title": "Live 1",
-              "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
-            },
-            {
-              "title": "Live 2",
-              "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
-            }
-          ]
+          "end_time": "2025-05-20T21:00:00Z"
         }
       ]
     },
@@ -58,13 +38,7 @@
           "tag": "Boxing",
           "viewers": 1200,
           "starts_at": "2025-05-21T15:00:00Z",
-          "end_time": "2025-05-21T18:00:00Z",
-          "links": [
-            {
-              "title": "Live 1",
-              "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-            }
-          ]
+          "end_time": "2025-05-21T18:00:00Z"
         },
         {
           "uri_name": "ufc-fight",
@@ -73,13 +47,7 @@
           "tag": "UFC",
           "viewers": 800,
           "starts_at": "2025-05-22T14:00:00Z",
-          "end_time": "2025-05-22T17:00:00Z",
-          "links": [
-            {
-              "title": "Live 1",
-              "url": "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8"
-            }
-          ]
+          "end_time": "2025-05-22T17:00:00Z"
         }
       ]
     },
@@ -95,13 +63,7 @@
           "tag": "NBA",
           "viewers": 1500,
           "starts_at": "2025-05-19T14:00:00Z",
-          "end_time": "2025-05-19T17:00:00Z",
-          "links": [
-            {
-              "title": "Live 1",
-              "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
-            }
-          ]
+          "end_time": "2025-05-19T17:00:00Z"
         }
       ]
     }
