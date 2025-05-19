@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=27">
+    <link rel="stylesheet" href="/assets/css/main.css?v=28">
     <style>
       .loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}
       .loading-overlay.hidden {display: none;}
@@ -91,6 +91,54 @@
       </footer>
     </div>
     <script defer>
+      // Mock data fallback if API fails
+      const mockStreams = {
+        success: true,
+        streams: [
+          {
+            id: "sports",
+            category: "Sports",
+            always_live: 0,
+            streams: [
+              {
+                uri_name: "boxing-match",
+                name: "Boxing: Championship Fight",
+                poster: "https://plive.live/uploads/682a05913eb5e.png",
+                tag: "Boxing",
+                viewers: 1200,
+                starts_at: "2025-05-20T15:00:00Z",
+                end_time: "2025-05-20T18:00:00Z"
+              },
+              {
+                uri_name: "ufc-fight",
+                name: "UFC 305: Main Event",
+                poster: "https://via.placeholder.com/285x160?text=UFC",
+                tag: "UFC",
+                viewers: 800,
+                starts_at: "2025-05-21T14:00:00Z",
+                end_time: "2025-05-21T17:00:00Z"
+              }
+            ]
+          },
+          {
+            id: "basketball",
+            category: "Basketball",
+            always_live: 1,
+            streams: [
+              {
+                uri_name: "nba-game",
+                name: "NBA: Lakers vs Warriors",
+                poster: "https://via.placeholder.com/285x160?text=NBA",
+                tag: "NBA",
+                viewers: 1500,
+                starts_at: "2025-05-22T13:00:00Z",
+                end_time: "2025-05-22T16:00:00Z"
+              }
+            ]
+          }
+        ]
+      };
+
       function zeropad(num) {
         return num > 9 ? num : '0'+num;
       }
@@ -131,79 +179,91 @@
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
             document.getElementById("errorContainer").className = 'd-none error-alert';
+            
+            // Validate API response
             if (!data || !data.success || !Array.isArray(data.streams)) {
-              document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
-              document.getElementById("errorContainer").innerHTML = 'Error: Invalid streams data. Please try again later.';
-              $("#loaderSpinner").addClass('d-none');
-              $("#loadingOverlay").hide();
+              console.warn('Invalid API response, using mock data:', data);
+              renderStreams(mockStreams);
+              document.getElementById("errorContainer").className = 'alert alert-warning error-alert';
+              document.getElementById("errorContainer").innerHTML = 'Using fallback data due to API issue. Some streams may be outdated.';
               return;
             }
-            if (data.streams.length >= 1) {
-              data.streams.forEach(categoryData => {
-                let categoryName = categoryData.category;
-                let alwaysLive = categoryData.always_live;
-                let streams = categoryData.streams;
-                let categoryId = categoryData.id;
-                let categoryHtml = `
-                  <div id="${categoryId}-container" class="mt-5">
-                    <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
-                    <div id="${categoryId}" class="event-grid py-3"></div>
-                  </div>`;
-                document.getElementById("categories").innerHTML += categoryHtml;
-                streams.forEach((stream, index) => {
-                  let startTime = new Date(stream.starts_at).getTime() / 1000;
-                  let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
-                  let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                  let timerDisplay = isLive
-                    ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>`
-                    : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`;
-                  let streamHtml = `
-                    <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                      <a href="/live/${stream.uri_name}" class="card-link">
-                        <div class="card bg-black text-white">
-                          ${liveBadge}
-                          <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
-                          <div class="card-body">
-                            <h5 class="card-title">${stream.name}</h5>
-                            <p class="card-text">
-                              <span class="event-tag text-muted">${stream.tag}</span>
-                              <span class="float-end">${timerDisplay}</span>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </div>`;
-                  if (isLive) {
-                    document.getElementById("livecards").innerHTML += streamHtml;
-                  } else {
-                    document.getElementById(categoryId).innerHTML += streamHtml;
-                  }
-                });
-                if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
-              });
-            } else {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            $("#loaderSpinner").addClass('d-none');
-            $("#loadingOverlay").hide();
-            if ($(`#livecards`).is(':empty')) {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            updateLanguage();
+
+            renderStreams(data);
           }).catch(error => {
-            console.error('API Error:', error);
-            document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
-            document.getElementById("errorContainer").innerHTML = 'Failed to load streams. Please try again later.';
-            $("#loaderSpinner").addClass('d-none');
-            $("#loadingOverlay").hide();
+            console.error('API Error:', error.message, error.stack);
+            renderStreams(mockStreams);
+            document.getElementById("errorContainer").className = 'alert alert-warning error-alert';
+            document.getElementById("errorContainer").innerHTML = 'Failed to load streams. Showing fallback data. Please try again later.';
           });
         } catch (err) {
-          console.error('Script Error:', err);
-          document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
-          document.getElementById("errorContainer").innerHTML = 'API communication failed. Please try again later.';
+          console.error('Script Error:', err.message, err.stack);
+          renderStreams(mockStreams);
+          document.getElementById("errorContainer").className = 'alert alert-warning error-alert';
+          document.getElementById("errorContainer").innerHTML = 'Error loading streams. Showing fallback data. Please try again later.';
+        } finally {
           $("#loaderSpinner").addClass('d-none');
           $("#loadingOverlay").hide();
         }
+      }
+      function renderStreams(data) {
+        if (data.streams.length >= 1) {
+          data.streams.forEach(categoryData => {
+            let categoryName = categoryData.category;
+            let alwaysLive = categoryData.always_live;
+            let streams = categoryData.streams;
+            let categoryId = categoryData.id;
+            let categoryHtml = `
+              <div id="${categoryId}-container" class="mt-5">
+                <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
+                <div id="${categoryId}" class="event-grid py-3"></div>
+              </div>`;
+            document.getElementById("categories").innerHTML += categoryHtml;
+            streams.forEach((stream, index) => {
+              let startTime;
+              try {
+                startTime = new Date(stream.starts_at).getTime() / 1000;
+                if (isNaN(startTime)) throw new Error('Invalid start time');
+              } catch (e) {
+                console.warn(`Invalid starts_at for stream ${stream.name}: ${stream.starts_at}`);
+                startTime = Math.floor(Date.now() / 1000); // Fallback to now
+              }
+              let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
+              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+              let timerDisplay = isLive
+                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>`
+                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`;
+              let streamHtml = `
+                <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                  <a href="/live/${stream.uri_name}" class="card-link">
+                    <div class="card bg-black text-white">
+                      ${liveBadge}
+                      <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
+                      <div class="card-body">
+                        <h5 class="card-title">${stream.name}</h5>
+                        <p class="card-text">
+                          <span class="event-tag text-muted">${stream.tag}</span>
+                          <span class="float-end">${timerDisplay}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>`;
+              if (isLive) {
+                document.getElementById("livecards").innerHTML += streamHtml;
+              } else {
+                document.getElementById(categoryId).innerHTML += streamHtml;
+              }
+            });
+            if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
+          });
+        } else {
+          document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
+        }
+        if ($(`#livecards`).is(':empty')) {
+          document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
+        }
+        updateLanguage();
       }
       window.onload = function() {
         var api = new Api(`${window.location.origin}`);
