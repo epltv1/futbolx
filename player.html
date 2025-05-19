@@ -1,22 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Futbolx - Stream Player</title>
-    <meta name="description" content="Futbolx - Stream live PPV boxing, UFC, Basketball, Football, and more.">
-    <meta property="og:title" content="Futbolx - Stream Player" />
-    <meta property="og:url" content="https://futbolx.com/player" />
+    <title>Futbolx - Stream Live</title>
+    <meta name="description" content="Futbolx - Free PPV boxing, UFC, Basketball, Football, Darts and other content available live and on-demand.">
+    <meta name="keywords" content="futbolx, ppv, free ppv, ppv land, ppvland, ppv land down, ppv wtf, ppv land alternatives, pvp land, pvpland, basketball, nba, soccer, football, dazn, misfits, ufc, stream, online, free">
+    <meta property="og:title" content="Futbolx - Free PPV and More" />
+    <meta property="og:url" content="https://futbolx.com" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="Futbolx - Stream Player">
-    <meta name="twitter:description" content="Stream live PPV events and more.">
+    <meta name="twitter:title" content="Futbolx - Free PPV and More">
+    <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=32">
+    <link rel="stylesheet" href="/assets/css/main.css?v=31">
+    <style>
+      .player-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+      .player-title { text-align: center; margin-bottom: 20px; }
+      .stream-buttons { text-align: center; margin-top: 10px; }
+      .stream-buttons .btn { margin: 5px; }
+      .error-alert { max-width: 500px; margin: 20px auto; }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-black">
@@ -49,124 +57,185 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid text-white">
-      <div id="errorContainer" class="d-none error-alert"></div>
-      <div class="player-container">
-        <h1 class="player-title" id="playerTitle">Loading...</h1>
-        <p class="player-tag" id="playerTag"></p>
-        <div id="player"></div>
-        <div class="stream-buttons" id="streamButtons"></div>
-      </div>
-      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
-        <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
-        </ul>
-      </footer>
+    <div class="container-fluid text-center py-5 bg-dark hero-background">
+      <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="hero-title">Watch Live on Futbolx</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="hero-subtitle">Stream Free PPV Boxing, UFC, Basketball, and More!</p>
     </div>
-    <script src="https://playerjs.com/player.js"></script>
-    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script async src="/assets/js/api.js"></script>
-    <script async src="/assets/js/lang.js"></script>
-    <script async src="/assets/js/auth.js"></script>
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="custom-loader" id="loaderSpinner"></div>
+    </div>
+    <div class="container player-container text-white">
+      <div id="errorContainer" class="d-none error-alert"></div>
+      <h2 id="playerTitle" class="player-title"></h2>
+      <div id="player"></div>
+      <div id="streamButtons" class="stream-buttons"></div>
+    </div>
+    <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+      <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
+      <ul class="nav justify-content-center justify-content-lg-end mb-0">
+        <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
+        <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
+        <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
+        <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
+        <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
+      </ul>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/playerjs/0.1.0/player.min.js"></script>
     <script defer>
-      let player = new Playerjs({
-        id: "player",
-        file: "",
-        autoplay: true
-      });
+      // Mock data fallback
+      const mockStreams = {
+        success: true,
+        streams: [
+          {
+            id: "football",
+            category: "Football",
+            always_live: 0,
+            streams: [
+              {
+                uri_name: "brighton-vs-liverpool",
+                name: "Brighton vs Liverpool",
+                poster: "https://plive.live/uploads/682a05913eb5e.png",
+                tag: "EPL",
+                viewers: 2000,
+                starts_at: "2025-05-19T19:00:00Z",
+                end_time: "2025-05-19T21:00:00Z",
+                links: [
+                  { title: "Live 1", url: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" },
+                  { title: "Live 2", url: "https://moctobpltc-i.akamaihd.net/hls/live/571329/eight/playlist.m3u8" }
+                ]
+              },
+              {
+                uri_name: "crystal-palace-vs-wolves",
+                name: "Crystal Palace vs Wolves",
+                poster: "https://plive.live/uploads/682a0600bd8f9.png",
+                tag: "EPL",
+                viewers: 1800,
+                starts_at: "2025-05-20T19:00:00Z",
+                end_time: "2025-05-20T21:00:00Z",
+                links: [
+                  { title: "Live 1", url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" },
+                  { title: "Live 2", url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8" }
+                ]
+              }
+            ]
+          },
+          {
+            id: "sports",
+            category: "Sports",
+            always_live: 0,
+            streams: [
+              {
+                uri_name: "boxing-match",
+                name: "Boxing: Championship Fight",
+                poster: "https://via.placeholder.com/285x160?text=Boxing",
+                tag: "Boxing",
+                viewers: 1200,
+                starts_at: "2025-05-21T15:00:00Z",
+                end_time: "2025-05-21T18:00:00Z",
+                links: [{ title: "Live 1", url: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" }]
+              },
+              {
+                uri_name: "ufc-fight",
+                name: "UFC 305: Main Event",
+                poster: "https://via.placeholder.com/285x160?text=UFC",
+                tag: "UFC",
+                viewers: 800,
+                starts_at: "2025-05-22T14:00:00Z",
+                end_time: "2025-05-22T17:00:00Z",
+                links: [{ title: "Live 1", url: "https://moctobpltc-i.akamaized.net/hls/live/571329/eight/playlist.m3u8" }]
+              }
+            ]
+          },
+          {
+            id: "basketball",
+            category: "Basketball",
+            always_live: 1,
+            streams: [
+              {
+                uri_name: "nba-game",
+                name: "NBA: Lakers vs Warriors",
+                poster: "https://via.placeholder.com/285x160?text=NBA",
+                tag: "NBA",
+                viewers: 1500,
+                starts_at: "2025-05-19T14:00:00Z",
+                end_time: "2025-05-19T17:00:00Z",
+                links: [{ title: "Live 1", url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8" }]
+              }
+            ]
+          }
+        ]
+      };
 
-      async function isLinkLive(url) {
+      function loadPlayer(api) {
+        document.getElementById("errorContainer").className = 'd-none error-alert';
+        const uriName = window.location.pathname.split('/').pop();
         try {
-          const response = await fetch(url, { method: 'HEAD', mode: 'cors' });
-          return response.ok && response.status === 200;
-        } catch (error) {
-          console.warn(`Link check failed for ${url}:`, error.message);
-          return false;
+          api.get("/streams").then(data => {
+            if (!data || !data.success || !Array.isArray(data.streams)) {
+              console.warn('Invalid API response:', data);
+              renderPlayer(mockStreams, uriName);
+              return;
+            }
+            renderPlayer(data, uriName);
+          }).catch(error => {
+            console.error('API Error:', error.message);
+            document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+            document.getElementById("errorContainer").innerHTML = 'Failed to load stream. Please try again later.';
+            renderPlayer(mockStreams, uriName);
+          });
+        } catch (err) {
+          console.error('Script Error:', err.message);
+          document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+          document.getElementById("errorContainer").innerHTML = 'Error loading player. Please try again.';
+          renderPlayer(mockStreams, uriName);
+        } finally {
+          $("#loaderSpinner").addClass('d-none');
+          $("#loadingOverlay").hide();
         }
       }
 
-      async function loadStream() {
-        console.log('Loading stream for player page');
-        const errorContainer = document.getElementById("errorContainer");
-        errorContainer.className = "d-none error-alert";
-        const uriName = window.location.pathname.split("/").pop();
-        const api = new Api(`${window.location.origin}`);
+      function renderPlayer(data, uriName) {
+        document.getElementById("errorContainer").className = 'd-none error-alert';
+        let stream = null;
+        data.streams.forEach(category => {
+          const found = category.streams.find(s => s.uri_name === uriName);
+          if (found) stream = found;
+        });
 
-        try {
-          const data = await api.get("/streams");
-          console.log('Player API response:', data);
-          if (!data || !data.success || !Array.isArray(data.streams)) {
-            throw new Error("Invalid API response");
-          }
-
-          let stream = null;
-          data.streams.forEach(category => {
-            const found = category.streams.find(s => s.uri_name === uriName);
-            if (found) stream = found;
-          });
-
-          if (!stream) {
-            throw new Error(`Stream not found for uri_name: ${uriName}`);
-          }
-
-          document.getElementById("playerTitle").textContent = stream.name || 'Unknown Event';
-          document.getElementById("playerTag").textContent = stream.tag || '';
-
-          const links = Array.isArray(stream.links) && stream.links.length > 0 ? stream.links : [{ title: "Default", url: "" }];
-          let defaultLink = links[0].url;
-          for (const link of links) {
-            if (link.url && await isLinkLive(link.url)) {
-              defaultLink = link.url;
-              break;
-            }
-          }
-
-          if (defaultLink) {
-            console.log('Playing link:', defaultLink);
-            player.api("file", defaultLink);
-          } else {
-            console.warn('No valid links available');
-            errorContainer.className = "alert alert-warning error-alert";
-            errorContainer.textContent = "No playable stream available.";
-          }
-
-          const streamButtons = document.getElementById("streamButtons");
-          streamButtons.innerHTML = "";
-          links.forEach(link => {
-            const button = document.createElement("button");
-            button.className = `btn btn-sm ${link.url === defaultLink ? "btn-danger" : "btn-secondary"} stream-btn`;
-            button.textContent = link.title || 'Unnamed';
-            button.disabled = !link.url;
-            button.onclick = () => {
-              if (link.url) {
-                console.log('Switching to link:', link.url);
-                player.api("file", link.url);
-                streamButtons.querySelectorAll(".stream-btn").forEach(btn => btn.className = "btn btn-sm btn-secondary stream-btn");
-                button.className = "btn btn-sm btn-danger stream-btn";
-              }
-            };
-            streamButtons.appendChild(button);
-          });
-
-        } catch (error) {
-          console.error("Error loading stream:", error.message);
-          errorContainer.className = "alert alert-danger error-alert";
-          errorContainer.textContent = "Failed to load stream. Please try again later.";
+        if (!stream || !stream.links || stream.links.length === 0) {
+          document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+          document.getElementById("errorContainer").innerHTML = 'No stream found for this event.';
+          return;
         }
+
+        // Set title
+        document.getElementById("playerTitle").innerText = stream.name;
+
+        // Initialize PlayerJS
+        const playerDiv = document.getElementById("player");
+        playerDiv.innerHTML = `<iframe id="playerFrame" src="https://playerjs.com/player.html?file=${encodeURIComponent(stream.links[0].url)}" width="100%" height="450" frameborder="0" allowfullscreen></iframe>`;
+
+        // Create stream buttons
+        const buttonsDiv = document.getElementById("streamButtons");
+        stream.links.forEach((link, index) => {
+          const button = document.createElement("button");
+          button.className = `btn btn-sm ${index === 0 ? 'btn-danger' : 'btn-secondary'}`;
+          button.innerText = link.title;
+          button.onclick = () => {
+            document.getElementById("playerFrame").src = `https://playerjs.com/player.html?file=${encodeURIComponent(link.url)}`;
+            buttonsDiv.querySelectorAll(".btn").forEach(btn => btn.className = "btn btn-sm btn-secondary");
+            button.className = "btn btn-sm btn-danger";
+          };
+          buttonsDiv.appendChild(button);
+        });
       }
 
       window.onload = function() {
-        console.log('Player window loaded');
-        loadStream();
+        var api = new Api(`${window.location.origin}`);
+        loadPlayer(api);
         AOS.init();
 
+        // Navbar close on outside click
         document.addEventListener('click', function(event) {
           const navbarCollapse = document.getElementById('navbarSupportedContent');
           const navbarToggler = document.querySelector('.navbar-toggler');
@@ -177,6 +246,7 @@
           }
         });
 
+        // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -189,9 +259,18 @@
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
+        // Initialize language and auth
         updateLanguage();
         checkAuthStatus();
       };
     </script>
+    <script async src="/assets/js/api.js"></script>
+    <script async src="/assets/js/lang.js"></script>
+    <script async src="/assets/js/auth.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer data-domain="futbolx.com" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
