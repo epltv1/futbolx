@@ -13,7 +13,17 @@
           "tag": "EPL",
           "viewers": 2000,
           "starts_at": "2025-05-19T19:00:00Z",
-          "end_time": "2025-05-19T21:00:00Z"
+          "end_time": "2025-05-19T21:00:00Z",
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://example.com/hls/brighton-liverpool-1.m3u8"
+            },
+            {
+              "title": "Live 2",
+              "url": "https://example.com/hls/brighton-liverpool-2.m3u8"
+            }
+          ]
         },
         {
           "uri_name": "crystal-palace-vs-wolves",
@@ -22,7 +32,17 @@
           "tag": "EPL",
           "viewers": 1800,
           "starts_at": "2025-05-20T19:00:00Z",
-          "end_time": "2025-05-20T21:00:00Z"
+          "end_time": "2025-05-20T21:00:00Z",
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://example.com/hls/crystal-wolves-1.m3u8"
+            },
+            {
+              "title": "Live 2",
+              "url": "https://example.com/hls/crystal-wolves-2.m3u8"
+            }
+          ]
         }
       ]
     },
@@ -38,7 +58,13 @@
           "tag": "Boxing",
           "viewers": 1200,
           "starts_at": "2025-05-21T15:00:00Z",
-          "end_time": "2025-05-21T18:00:00Z"
+          "end_time": "2025-05-21T18:00:00Z",
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://example.com/hls/boxing-1.m3u8"
+            }
+          ]
         },
         {
           "uri_name": "ufc-fight",
@@ -47,7 +73,13 @@
           "tag": "UFC",
           "viewers": 800,
           "starts_at": "2025-05-22T14:00:00Z",
-          "end_time": "2025-05-22T17:00:00Z"
+          "end_time": "2025-05-22T17:00:00Z",
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://example.com/hls/ufc-1.m3u8"
+            }
+          ]
         }
       ]
     },
@@ -59,11 +91,17 @@
         {
           "uri_name": "nba-game",
           "name": "NBA: Lakers vs Warriors",
-          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfDZyW-ny0DnQ7AXG_BwjAE_RosUDBMG9-yZbp7gvBGgXlT41zBJkyA3Q&s=10",
+          "poster": "https://via.placeholder.com/285x160?text=NBA",
           "tag": "NBA",
           "viewers": 1500,
           "starts_at": "2025-05-19T14:00:00Z",
-          "end_time": "2025-05-19T17:00:00Z"
+          "end_time": "2025-05-19T17:00:00Z",
+          "links": [
+            {
+              "title": "Live 1",
+              "url": "https://example.com/hls/nba-1.m3u8"
+            }
+          ]
         }
       ]
     }
