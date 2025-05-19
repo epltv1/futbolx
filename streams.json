@@ -12,8 +12,8 @@
           "poster": "https://plive.live/uploads/682a05913eb5e.png",
           "tag": "Boxing",
           "viewers": 1200,
-          "starts_at": 1745100000, // Set start time here (Unix timestamp). Example: For 2025-05-20 15:00:00 UTC, use 1745154000 (convert your date at https://www.unixtimestamp.com/)
-          "end_time": 1745110800 // Set end time here (Unix timestamp). Example: For 2025-05-20 18:00:00 UTC, use 1745164800
+          "starts_at": "2025-05-20T15:00:00Z", // Set start date and time here in YYYY-MM-DDTHH:MM:SSZ format (UTC). Example: "2025-05-20T15:00:00Z" for May 20, 2025, 15:00 UTC (19:00 EAT)
+          "end_time": "2025-05-20T18:00:00Z" // Set end date and time here in YYYY-MM-DDTHH:MM:SSZ format (UTC). Example: "2025-05-20T18:00:00Z" for May 20, 2025, 18:00 UTC (22:00 EAT)
         },
         {
           "uri_name": "ufc-fight",
@@ -21,8 +21,8 @@
           "poster": "https://via.placeholder.com/285x160?text=UFC",
           "tag": "UFC",
           "viewers": 800,
-          "starts_at": 1745186400, // Set start time here (Unix timestamp). Example: For 2025-05-21 14:00:00 UTC, use 1745236800
-          "end_time": 1745197200 // Set end time here (Unix timestamp). Example: For 2025-05-21 17:00:00 UTC, use 1745247600
+          "starts_at": "2025-05-21T14:00:00Z", // Set start date and time here. Example: "2025-05-21T14:00:00Z" for May 21, 2025, 14:00 UTC (17:00 EAT)
+          "end_time": "2025-05-21T17:00:00Z" // Set end date and time here. Example: "2025-05-21T17:00:00Z" for May 21, 2025, 17:00 UTC (20:00 EAT)
         }
       ]
     },
@@ -37,8 +37,8 @@
           "poster": "https://via.placeholder.com/285x160?text=NBA",
           "tag": "NBA",
           "viewers": 1500,
-          "starts_at": 1745272800, // Set start time here (Unix timestamp). Example: For 2025-05-22 13:00:00 UTC, use 1745317200
-          "end_time": 1745283600 // Set end time here (Unix timestamp). Example: For 2025-05-22 16:00:00 UTC, use 1745328000
+          "starts_at": "2025-05-22T13:00:00Z", // Set start date and time here. Example: "2025-05-22T13:00:00Z" for May 22, 2025, 13:00 UTC (16:00 EAT)
+          "end_time": "2025-05-22T16:00:00Z" // Set end date and time here. Example: "2025-05-22T16:00:00Z" for May 22, 2025, 16:00 UTC (19:00 EAT)
         }
       ]
     }
