@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=30">
+    <link rel="stylesheet" href="/assets/css/main.css?v=33">
     <style>
-      .loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}
-      .loading-overlay.hidden {display: none;}
-      .error-alert {max-width: 500px; margin: 20px auto;}
+      .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
+      .loading-overlay.hidden { display: none; }
+      .error-alert { max-width: 500px; margin: 20px auto; }
     </style>
   </head>
   <body>
@@ -91,73 +91,10 @@
       </footer>
     </div>
     <script defer>
-      // Mock data fallback if API fails
-      const mockStreams = {
-        success: true,
-        streams: [
-          {
-            id: "football",
-            category: "Football",
-            always_live: 0,
-            streams: [
-              {
-                uri_name: "brighton-vs-liverpool",
-                name: "Brighton vs Liverpool",
-                poster: "https://plive.live/uploads/682a05913eb5e.png",
-                tag: "EPL",
-                viewers: 2000,
-                starts_at: "2025-05-19T20:00:00Z",
-                end_time: "2025-05-19T22:00:00Z"
-              }
-            ]
-          },
-          {
-            id: "sports",
-            category: "Sports",
-            always_live: 0,
-            streams: [
-              {
-                uri_name: "boxing-match",
-                name: "Boxing: Championship Fight",
-                poster: "https://via.placeholder.com/285x160?text=Boxing",
-                tag: "Boxing",
-                viewers: 1200,
-                starts_at: "2025-05-20T15:00:00Z",
-                end_time: "2025-05-20T18:00:00Z"
-              },
-              {
-                uri_name: "ufc-fight",
-                name: "UFC 305: Main Event",
-                poster: "https://via.placeholder.com/285x160?text=UFC",
-                tag: "UFC",
-                viewers: 800,
-                starts_at: "2025-05-21T14:00:00Z",
-                end_time: "2025-05-21T17:00:00Z"
-              }
-            ]
-          },
-          {
-            id: "basketball",
-            category: "Basketball",
-            always_live: 1,
-            streams: [
-              {
-                uri_name: "nba-game",
-                name: "NBA: Lakers vs Warriors",
-                poster: "https://via.placeholder.com/285x160?text=NBA",
-                tag: "NBA",
-                viewers: 1500,
-                starts_at: "2025-05-19T14:00:00Z",
-                end_time: "2025-05-19T17:00:00Z"
-              }
-            ]
-          }
-        ]
-      };
-
       function zeropad(num) {
-        return num > 9 ? num : '0'+num;
+        return num > 9 ? num : '0' + num;
       }
+
       function countdown() {
         const now = Math.floor(Date.now() / 1000);
         const countdownElements = document.querySelectorAll('[data-start]');
@@ -189,39 +126,49 @@
         });
         setTimeout(countdown, 1000);
       }
+
       function loadContent(api) {
-        document.getElementById("errorContainer").className = 'd-none error-alert';
+        // Reset error container
+        const errorContainer = document.getElementById("errorContainer");
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+
         try {
           api.get("/streams").then(data => {
+            // Clear previous content
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
 
             // Validate API response
             if (!data || !data.success || !Array.isArray(data.streams)) {
-              console.warn('Invalid API response:', data);
-              renderStreams(mockStreams);
+              console.error('Invalid API response:', data);
+              errorContainer.className = 'alert alert-danger error-alert';
+              errorContainer.innerHTML = 'Failed to load streams. Invalid data received.';
               return;
             }
 
             renderStreams(data);
           }).catch(error => {
             console.error('API Error:', error.message, error.stack);
-            document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
-            document.getElementById("errorContainer").innerHTML = 'Failed to load streams due to a network issue. Please check your internet and try again.';
-            renderStreams(mockStreams);
+            errorContainer.className = 'alert alert-danger error-alert';
+            errorContainer.innerHTML = 'Failed to load streams due to a network issue. Please check your internet and try again.';
           });
         } catch (err) {
           console.error('Script Error:', err.message, err.stack);
-          document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
-          document.getElementById("errorContainer").innerHTML = 'Error loading streams. Please try again later.';
-          renderStreams(mockStreams);
+          errorContainer.className = 'alert alert-danger error-alert';
+          errorContainer.innerHTML = 'Error loading streams. Please try again later.';
         } finally {
           $("#loaderSpinner").addClass('d-none');
           $("#loadingOverlay").hide();
         }
       }
+
       function renderStreams(data) {
-        document.getElementById("errorContainer").className = 'd-none error-alert';
+        // Ensure error container is hidden
+        const errorContainer = document.getElementById("errorContainer");
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+
         if (data.streams.length >= 1) {
           data.streams.forEach(categoryData => {
             let categoryName = categoryData.category;
@@ -245,7 +192,6 @@
               }
               let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-              // Fallback poster if invalid or missing
               let poster = stream.poster && stream.poster !== '' 
                 ? stream.poster 
                 : 'https://via.placeholder.com/285x160?text=No+Image';
@@ -283,6 +229,7 @@
         }
         updateLanguage();
       }
+
       window.onload = function() {
         var api = new Api(`${window.location.origin}`);
         loadContent(api);
@@ -314,12 +261,10 @@
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
-        // Initialize language
+        // Initialize language and auth
         updateLanguage();
-
-        // Initialize auth
         checkAuthStatus();
-      }
+      };
     </script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/lang.js"></script>
