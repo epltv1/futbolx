@@ -17,8 +17,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=26">
-    <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
+    <link rel="stylesheet" href="/assets/css/main.css?v=27">
+    <style>
+      .loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}
+      .loading-overlay.hidden {display: none;}
+      .error-alert {max-width: 500px; margin: 20px auto;}
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-black">
@@ -65,6 +69,7 @@
       <div class="custom-loader" id="loaderSpinner"></div>
     </div>
     <div class="container container-fluid pt-2 text-white">
+      <div id="errorContainer" class="d-none error-alert"></div>
       <div id="live" class="mt-4">
         <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
           <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
@@ -125,10 +130,12 @@
           api.get("/streams").then(data => {
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
-            if (!data.success && data.error) {
-              $("#loaderError").removeClass('d-none');
+            document.getElementById("errorContainer").className = 'd-none error-alert';
+            if (!data || !data.success || !Array.isArray(data.streams)) {
+              document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+              document.getElementById("errorContainer").innerHTML = 'Error: Invalid streams data. Please try again later.';
               $("#loaderSpinner").addClass('d-none');
-              $("#loaderError").text(data.error);
+              $("#loadingOverlay").hide();
               return;
             }
             if (data.streams.length >= 1) {
@@ -144,11 +151,12 @@
                   </div>`;
                 document.getElementById("categories").innerHTML += categoryHtml;
                 streams.forEach((stream, index) => {
-                  let isLive = stream.starts_at <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
+                  let startTime = new Date(stream.starts_at).getTime() / 1000;
+                  let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
                   let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
                   let timerDisplay = isLive
                     ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>`
-                    : `<span class="countdown" data-start="${stream.starts_at}" data-uri="/live/${stream.uri_name}"></span>`;
+                    : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`;
                   let streamHtml = `
                     <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
                       <a href="/live/${stream.uri_name}" class="card-link">
@@ -176,20 +184,25 @@
             } else {
               document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
+            $("#loaderSpinner").addClass('d-none');
             $("#loadingOverlay").hide();
             if ($(`#livecards`).is(':empty')) {
               document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
             updateLanguage();
           }).catch(error => {
-            $("#loaderError").removeClass('d-none');
+            console.error('API Error:', error);
+            document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+            document.getElementById("errorContainer").innerHTML = 'Failed to load streams. Please try again later.';
             $("#loaderSpinner").addClass('d-none');
-            $("#loaderError").text("Failed to load streams");
+            $("#loadingOverlay").hide();
           });
         } catch (err) {
-          $("#loaderError").removeClass('d-none');
+          console.error('Script Error:', err);
+          document.getElementById("errorContainer").className = 'alert alert-danger error-alert';
+          document.getElementById("errorContainer").innerHTML = 'API communication failed. Please try again later.';
           $("#loaderSpinner").addClass('d-none');
-          $("#loaderError").text("API communication fail");
+          $("#loadingOverlay").hide();
         }
       }
       window.onload = function() {
