@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://your-username:your-password@cluster0.mongodb.net/futbolx?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://futbolx_admin:Collinsouma1.@futbolx.xufmcmb.mongodb.net/?retryWrites=true&w=majority&appName=Futbolx', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
