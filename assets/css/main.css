@@ -101,8 +101,12 @@ body {
   pointer-events: none;
 }
 
-.event-tag, .viewer-count, .countdown {
+.event-tag, .countdown {
   pointer-events: none;
+}
+
+.watch-button {
+  pointer-events: auto;
 }
 
 .custom-loader {
@@ -212,7 +216,7 @@ footer a {
 
 .card-link {
   text-decoration: none;
-  color: inherit;
+  color |inherit;
   display: block;
 }
 
@@ -393,4 +397,16 @@ footer a {
 .hero-background > * {
   position: relative;
   z-index: 1; /* Ensure text stays above the image */
+}
+
+/* Watch button styling */
+.watch-button {
+  font-size: 0.9rem;
+  padding: 4px 12px;
+}
+[data-bs-theme="light"] .watch-button {
+  background-color: #e63939;
+}
+[data-bs-theme="light"] .watch-button:hover {
+  background-color: #cc3333;
 }
