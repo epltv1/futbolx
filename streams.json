@@ -8,7 +8,7 @@
       "streams": [
         {
           "uri_name": "brighton-vs-liverpool",
-          "player_url": "/player/brighton-vs-liverpool",
+          "player_url": "/live/brighton-vs-liverpool",
           "name": "Brighton vs Liverpool",
           "poster": "https://plive.live/brighton-liverpool.jpg",
           "tag": "Premier League",
@@ -22,7 +22,7 @@
         },
         {
           "uri_name": "crystal-palace-vs-wolves",
-          "player_url": "/player/crystal-palace-vs-wolves",
+          "player_url": "/live/crystal-palace-vs-wolves",
           "name": "Crystal Palace vs Wolves",
           "poster": "https://plive.live/crystal-wolves.jpg",
           "tag": "Premier League",
@@ -42,7 +42,7 @@
       "streams": [
         {
           "uri_name": "nba-game",
-          "player_url": "/player/nba-game",
+          "player_url": "/live/nba-game",
           "name": "NBA: Lakers vs Warriors",
           "poster": "",
           "tag": "NBA",
@@ -62,7 +62,7 @@
       "streams": [
         {
           "uri_name": "boxing-match",
-          "player_url": "/player/boxing-match",
+          "player_url": "/live/boxing-match",
           "name": "Boxing: Championship Fight",
           "poster": "",
           "tag": "Boxing",
@@ -75,7 +75,7 @@
         },
         {
           "uri_name": "ufc-fight",
-          "player_url": "/player/ufc-fight",
+          "player_url": "/live/ufc-fight",
           "name": "UFC Fight",
           "poster": "",
           "tag": "UFC",
@@ -95,7 +95,7 @@
       "streams": [
         {
           "uri_name": "tennis-match",
-          "player_url": "/player/tennis-match",
+          "player_url": "/live/tennis-match",
           "name": "Tennis Match",
           "poster": "",
           "tag": "Tennis",
