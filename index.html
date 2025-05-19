@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/eSjNKtNbxw" data-lang="nav-discord">Discord</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
               <ul class="dropdown-menu">
@@ -96,20 +96,25 @@
           const startTime = parseInt(element.getAttribute('data-start'), 10);
           let timer = startTime - now;
           if (timer > 0) {
-            let days = Math.floor(timer / 86400),
-                hours = Math.floor(timer / 3600),
-                mins = Math.floor(timer / 60),
-                secs = Math.floor(timer);
-            let dd = days,
-                hh = hours - days * 24,
-                mm = mins - hours * 60,
-                ss = secs - mins * 60;
-            let clock = `${dd} days, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 1) clock = `${dd} day, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 0) clock = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            element.innerHTML = clock;
+            let days = Math.floor(timer / 86400);
+            let weeks = Math.floor(days / 7);
+            let hours = Math.floor(timer / 3600);
+            let mins = Math.floor(timer / 60);
+            let secs = Math.floor(timer);
+            let displayText = '';
+            if (days >= 7) {
+              displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
+            } else if (days >= 1) {
+              displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
+            } else {
+              let hh = hours - days * 24;
+              let mm = mins - hours * 60;
+              let ss = secs - mins * 60;
+              displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
+            }
+            element.innerHTML = displayText;
           } else {
-            element.innerHTML = '<strong data-lang="live-soon">Live soon</strong>';
+            element.innerHTML = '<a href="' + element.getAttribute('data-uri') + '" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>';
             element.style.color = '#ff8280';
           }
         });
@@ -141,9 +146,9 @@
                 streams.forEach((stream, index) => {
                   let isLive = stream.starts_at <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
                   let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                  let livecounter = isLive
-                    ? `<span class="float-end viewer-count"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>`
-                    : `<span class="float-end countdown" data-start="${stream.starts_at}"></span>`;
+                  let timerDisplay = isLive
+                    ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>`
+                    : `<span class="countdown" data-start="${stream.starts_at}" data-uri="/live/${stream.uri_name}"></span>`;
                   let streamHtml = `
                     <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
                       <a href="/live/${stream.uri_name}" class="card-link">
@@ -154,7 +159,7 @@
                             <h5 class="card-title">${stream.name}</h5>
                             <p class="card-text">
                               <span class="event-tag text-muted">${stream.tag}</span>
-                              ${livecounter}
+                              <span class="float-end">${timerDisplay}</span>
                             </p>
                           </div>
                         </div>
