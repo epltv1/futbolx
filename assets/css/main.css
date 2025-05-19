@@ -216,7 +216,7 @@ footer a {
 
 .card-link {
   text-decoration: none;
-  color |inherit;
+  color: inherit;
   display: block;
 }
 
@@ -409,4 +409,11 @@ footer a {
 }
 [data-bs-theme="light"] .watch-button:hover {
   background-color: #cc3333;
+}
+
+/* Error alert */
+.error-alert {
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
 }
