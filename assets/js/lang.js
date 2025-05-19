@@ -1,147 +1,132 @@
 // assets/js/lang.js
 const translations = {
   en: {
-    'nav-request': 'Request',
-    'nav-discord': 'Discord',
-    'nav-language': 'English',
-    'lang-english': 'English',
-    'lang-german': 'German',
-    'lang-spanish': 'Spanish',
-    'lang-french': 'French',
+    // Navbar
+    'nav-vip': 'VIP',
     'nav-login': 'Login',
-    'nav-logout': 'Logout',
-    'hero-title': 'Welcome to Futbolx',
-    'hero-subtitle': 'Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!',
-    'hero-button': 'Watch Now',
-    'live-title': 'Live now',
-    'live-soon': 'Live soon',
-    'no-streams': 'No streams are live right now. Scroll down to see what\'s on later.',
-    'category-247': '24/7',
-    'footer-text': 'Futbolx 2025',
-    'footer-api': 'API',
-    'footer-discord': 'Discord',
-    'footer-changelog': 'Changelog',
-    'footer-donate': 'Donate / VIP Access',
-    'footer-contact': 'Contact us',
-    'login-title': 'Login',
-    'login-username': 'Username',
-    'login-password': 'Password',
-    'login-button': 'Login',
-    'vip-title': 'VIP Exclusive Streams',
-    'vip-subtitle': 'Enjoy premium content available only to VIP members!'
-  },
-  de: {
-    'nav-request': 'Anfrage',
-    'nav-discord': 'Discord',
-    'nav-language': 'Deutsch',
-    'lang-english': 'Englisch',
-    'lang-german': 'Deutsch',
-    'lang-spanish': 'Spanisch',
-    'lang-french': 'Französisch',
-    'nav-login': 'Anmelden',
-    'nav-logout': 'Abmelden',
-    'hero-title': 'Willkommen bei Futbolx',
-    'hero-subtitle': 'Streamen Sie kostenlose PPV-Boxen, UFC, Basketball und mehr – live und auf Abruf!',
-    'hero-button': 'Jetzt ansehen',
-    'live-title': 'Jetzt live',
-    'live-soon': 'Bald live',
-    'no-streams': 'Derzeit sind keine Streams live. Scrollen Sie nach unten, um zu sehen, was später kommt.',
-    'category-247': '24/7',
-    'footer-text': 'Futbolx 2025',
-    'footer-api': 'API',
-    'footer-discord': 'Discord',
-    'footer-changelog': 'Änderungsprotokoll',
-    'footer-donate': 'Spenden / VIP-Zugang',
-    'footer-contact': 'Kontaktieren Sie uns',
-    'login-title': 'Anmelden',
-    'login-username': 'Benutzername',
-    'login-password': 'Passwort',
-    'login-button': 'Anmelden',
-    'vip-title': 'VIP-Exklusive Streams',
-    'vip-subtitle': 'Genießen Sie Premium-Inhalte, die nur VIP-Mitgliedern zur Verfügung stehen!'
+    // Existing UI
+    'all-events': 'All Events',
+    // New UI (Dropdown, Soon, Messages)
+    'select-category': 'Select Category',
+    'category-sports': 'Sports',
+    'category-football': 'Football',
+    'category-basketball': 'Basketball',
+    'category-fights': 'Fights',
+    'category-motorsports': 'Motorsports',
+    'category-nba': 'NBA',
+    'category-mlb': 'MLB',
+    'category-nhl': 'NHL',
+    'category-nfl': 'NFL',
+    'category-others': 'Others',
+    'back-home': 'Back to Homepage',
+    'live-now': 'Live Now',
+    'soon': 'Soon',
+    'no-live-games': 'No live games at the moment',
+    'no-soon-events': 'No events starting soon',
+    'no-events': 'No events in this category'
   },
   es: {
-    'nav-request': 'Solicitar',
-    'nav-discord': 'Discord',
-    'nav-language': 'Español',
-    'lang-english': 'Inglés',
-    'lang-german': 'Alemán',
-    'lang-spanish': 'Español',
-    'lang-french': 'Francés',
-    'nav-login': 'Iniciar sesión',
-    'nav-logout': 'Cerrar sesión',
-    'hero-title': 'Bienvenido a Futbolx',
-    'hero-subtitle': '¡Transmite boxeo PPV, UFC, baloncesto y más gratis, en vivo y bajo demanda!',
-    'hero-button': 'Ver ahora',
-    'live-title': 'Ahora en vivo',
-    'live-soon': 'Pronto en vivo',
-    'no-streams': 'No hay transmisiones en vivo ahora. Desplázate hacia abajo para ver qué viene después.',
-    'category-247': '24/7',
-    'footer-text': 'Futbolx 2025',
-    'footer-api': 'API',
-    'footer-discord': 'Discord',
-    'footer-changelog': 'Registro de cambios',
-    'footer-donate': 'Donar / Acceso VIP',
-    'footer-contact': 'Contáctanos',
-    'login-title': 'Iniciar sesión',
-    'login-username': 'Nombre de usuario',
-    'login-password': 'Contraseña',
-    'login-button': 'Iniciar sesión',
-    'vip-title': 'Streams Exclusivos VIP',
-    'vip-subtitle': '¡Disfruta de contenido premium solo para miembros VIP!'
+    // Navbar
+    'nav-vip': 'VIP',
+    'nav-login': 'Iniciar Sesión',
+    // Existing UI
+    'all-events': 'Todos los Eventos',
+    // New UI
+    'select-category': 'Seleccionar Categoría',
+    'category-sports': 'Deportes',
+    'category-football': 'Fútbol',
+    'category-basketball': 'Baloncesto',
+    'category-fights': 'Peleas',
+    'category-motorsports': 'Deportes de Motor',
+    'category-nba': 'NBA',
+    'category-mlb': 'MLB',
+    'category-nhl': 'NHL',
+    'category-nfl': 'NFL',
+    'category-others': 'Otros',
+    'back-home': 'Volver a la Página Principal',
+    'live-now': 'Ahora en Vivo',
+    'soon': 'Próximamente',
+    'no-live-games': 'No hay partidos en vivo en este momento',
+    'no-soon-events': 'No hay eventos próximos',
+    'no-events': 'No hay eventos en esta categoría'
   },
   fr: {
-    'nav-request': 'Demander',
-    'nav-discord': 'Discord',
-    'nav-language': 'Français',
-    'lang-english': 'Anglais',
-    'lang-german': 'Allemand',
-    'lang-spanish': 'Espagnol',
-    'lang-french': 'Français',
+    // Navbar
+    'nav-vip': 'VIP',
     'nav-login': 'Connexion',
-    'nav-logout': 'Déconnexion',
-    'hero-title': 'Bienvenue sur Futbolx',
-    'hero-subtitle': 'Diffusez gratuitement des combats de boxe PPV, UFC, basketball et plus encore – en direct et à la demande !',
-    'hero-button': 'Regarder maintenant',
-    'live-title': 'En direct maintenant',
-    'live-soon': 'Bientôt en direct',
-    'no-streams': 'Aucun flux n’est en direct pour le moment. Faites défiler vers le bas pour voir ce qui arrive plus tard.',
-    'category-247': '24/7',
-    'footer-text': 'Futbolx 2025',
-    'footer-api': 'API',
-    'footer-discord': 'Discord',
-    'footer-changelog': 'Journal des changements',
-    'footer-donate': 'Faire un don / Accès VIP',
-    'footer-contact': 'Contactez-nous',
-    'login-title': 'Connexion',
-    'login-username': 'Nom d’utilisateur',
-    'login-password': 'Mot de passe',
-    'login-button': 'Connexion',
-    'vip-title': 'Streams Exclusifs VIP',
-    'vip-subtitle': 'Profitez de contenus premium réservés aux membres VIP !'
+    // Existing UI
+    'all-events': 'Tous les Événements',
+    // New UI
+    'select-category': 'Sélectionner une Catégorie',
+    'category-sports': 'Sports',
+    'category-football': 'Football',
+    'category-basketball': 'Basket-ball',
+    'category-fights': 'Combats',
+    'category-motorsports': 'Sports Automobiles',
+    'category-nba': 'NBA',
+    'category-mlb': 'MLB',
+    'category-nhl': 'NHL',
+    'category-nfl': 'NFL',
+    'category-others': 'Autres',
+    'back-home': 'Retour à la Page d’Accueil',
+    'live-now': 'En Direct Maintenant',
+    'soon': 'Bientôt',
+    'no-live-games': 'Aucun match en direct pour le moment',
+    'no-soon-events': 'Aucun événement à venir',
+    'no-events': 'Aucun événement dans cette catégorie'
+  },
+  de: {
+    // Navbar
+    'nav-vip': 'VIP',
+    'nav-login': 'Anmelden',
+    // Existing UI
+    'all-events': 'Alle Veranstaltungen',
+    // New UI
+    'select-category': 'Kategorie Auswählen',
+    'category-sports': 'Sport',
+    'category-football': 'Fußball',
+    'category-basketball': 'Basketball',
+    'category-fights': 'Kämpfe',
+    'category-motorsports': 'Motorsport',
+    'category-nba': 'NBA',
+    'category-mlb': 'MLB',
+    'category-nhl': 'NHL',
+    'category-nfl': 'NFL',
+    'category-others': 'Andere',
+    'back-home': 'Zurück zur Startseite',
+    'live-now': 'Jetzt Live',
+    'soon': 'Bald',
+    'no-live-games': 'Momentan keine Live-Spiele',
+    'no-soon-events': 'Keine bevorstehenden Veranstaltungen',
+    'no-events': 'Keine Veranstaltungen in dieser Kategorie'
   }
 };
 
+// Language switching logic
 function setLanguage(lang) {
-  document.cookie = `fs_locale=${lang}; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/`;
-  updateLanguage();
+  document.querySelectorAll('[data-lang]').forEach(elem => {
+    const key = elem.getAttribute('data-lang');
+    elem.textContent = translations[lang][key] || elem.textContent;
+  });
+  // Update dropdown options
+  const categorySelect = document.getElementById('categorySelect');
+  if (categorySelect) {
+    Array.from(categorySelect.options).forEach(option => {
+      const key = option.getAttribute('data-lang');
+      // Preserve event counts if already set
+      const match = option.textContent.match(/\((\d+)\)$/);
+      const count = match ? ` (${match[1]})` : '';
+      option.textContent = (translations[lang][key] || option.textContent) + count;
+    });
+  }
 }
 
-function updateLanguage() {
-  const cookies = document.cookie.split(';');
-  let lang = 'en'; // Default to English
-  for (let cookie of cookies) {
-    const [name, value] = cookie.trim().split('=');
-    if (name === 'fs_locale') {
-      lang = value;
-      break;
-    }
-  }
-  const elements = document.querySelectorAll('[data-lang]');
-  elements.forEach(element => {
-    const key = element.getAttribute('data-lang');
-    if (translations[lang] && translations[lang][key]) {
-      element.textContent = translations[lang][key];
-    }
+// Initialize with default language (English)
+setLanguage('en');
+
+// Optional: Add event listener for language selector (modify based on your navbar)
+document.querySelectorAll('.lang-selector').forEach(selector => {
+  selector.addEventListener('click', () => {
+    setLanguage(selector.dataset.lang);
   });
-}
+});
