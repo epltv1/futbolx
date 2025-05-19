@@ -9,7 +9,7 @@ const translations = {
     'lang-spanish': 'Spanish',
     'lang-french': 'French',
     'nav-login': 'Login',
-    'nav-register': 'Register',
+    'nav-logout': 'Logout',
     'hero-title': 'Welcome to Futbolx',
     'hero-subtitle': 'Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!',
     'hero-button': 'Watch Now',
@@ -22,7 +22,13 @@ const translations = {
     'footer-discord': 'Discord',
     'footer-changelog': 'Changelog',
     'footer-donate': 'Donate / VIP Access',
-    'footer-contact': 'Contact us'
+    'footer-contact': 'Contact us',
+    'login-title': 'Login',
+    'login-username': 'Username',
+    'login-password': 'Password',
+    'login-button': 'Login',
+    'vip-title': 'VIP Exclusive Streams',
+    'vip-subtitle': 'Enjoy premium content available only to VIP members!'
   },
   de: {
     'nav-request': 'Anfrage',
@@ -33,7 +39,7 @@ const translations = {
     'lang-spanish': 'Spanisch',
     'lang-french': 'Französisch',
     'nav-login': 'Anmelden',
-    'nav-register': 'Registrieren',
+    'nav-logout': 'Abmelden',
     'hero-title': 'Willkommen bei Futbolx',
     'hero-subtitle': 'Streamen Sie kostenlose PPV-Boxen, UFC, Basketball und mehr – live und auf Abruf!',
     'hero-button': 'Jetzt ansehen',
@@ -46,7 +52,13 @@ const translations = {
     'footer-discord': 'Discord',
     'footer-changelog': 'Änderungsprotokoll',
     'footer-donate': 'Spenden / VIP-Zugang',
-    'footer-contact': 'Kontaktieren Sie uns'
+    'footer-contact': 'Kontaktieren Sie uns',
+    'login-title': 'Anmelden',
+    'login-username': 'Benutzername',
+    'login-password': 'Passwort',
+    'login-button': 'Anmelden',
+    'vip-title': 'VIP-Exklusive Streams',
+    'vip-subtitle': 'Genießen Sie Premium-Inhalte, die nur VIP-Mitgliedern zur Verfügung stehen!'
   },
   es: {
     'nav-request': 'Solicitar',
@@ -57,7 +69,7 @@ const translations = {
     'lang-spanish': 'Español',
     'lang-french': 'Francés',
     'nav-login': 'Iniciar sesión',
-    'nav-register': 'Registrarse',
+    'nav-logout': 'Cerrar sesión',
     'hero-title': 'Bienvenido a Futbolx',
     'hero-subtitle': '¡Transmite boxeo PPV, UFC, baloncesto y más gratis, en vivo y bajo demanda!',
     'hero-button': 'Ver ahora',
@@ -70,7 +82,13 @@ const translations = {
     'footer-discord': 'Discord',
     'footer-changelog': 'Registro de cambios',
     'footer-donate': 'Donar / Acceso VIP',
-    'footer-contact': 'Contáctanos'
+    'footer-contact': 'Contáctanos',
+    'login-title': 'Iniciar sesión',
+    'login-username': 'Nombre de usuario',
+    'login-password': 'Contraseña',
+    'login-button': 'Iniciar sesión',
+    'vip-title': 'Streams Exclusivos VIP',
+    'vip-subtitle': '¡Disfruta de contenido premium solo para miembros VIP!'
   },
   fr: {
     'nav-request': 'Demander',
@@ -81,7 +99,7 @@ const translations = {
     'lang-spanish': 'Espagnol',
     'lang-french': 'Français',
     'nav-login': 'Connexion',
-    'nav-register': 'Inscription',
+    'nav-logout': 'Déconnexion',
     'hero-title': 'Bienvenue sur Futbolx',
     'hero-subtitle': 'Diffusez gratuitement des combats de boxe PPV, UFC, basketball et plus encore – en direct et à la demande !',
     'hero-button': 'Regarder maintenant',
@@ -94,7 +112,13 @@ const translations = {
     'footer-discord': 'Discord',
     'footer-changelog': 'Journal des changements',
     'footer-donate': 'Faire un don / Accès VIP',
-    'footer-contact': 'Contactez-nous'
+    'footer-contact': 'Contactez-nous',
+    'login-title': 'Connexion',
+    'login-username': 'Nom d’utilisateur',
+    'login-password': 'Mot de passe',
+    'login-button': 'Connexion',
+    'vip-title': 'Streams Exclusifs VIP',
+    'vip-subtitle': 'Profitez de contenus premium réservés aux membres VIP !'
   }
 };
 
