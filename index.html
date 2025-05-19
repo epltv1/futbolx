@@ -1,249 +1,69 @@
-<!doctype html>
-<html lang="en" data-bs-theme="dark">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Futbolx - Free PPV and More</title>
-    <meta name="description" content="Futbolx - Free PPV boxing, UFC, Basketball, Football, Darts and other content available live and on-demand.">
-    <meta name="keywords" content="futbolx, ppv, free ppv, ppv land, ppvland, ppv land down, ppv wtf, ppv land alternatives, pvp land, pvpland, basketball, nba, soccer, football, dazn, misfits, ufc, stream, online, free">
-    <meta property="og:title" content="Futbolx - free ppv and more" />
-    <meta property="og:url" content="https://futbolx.com" />
-    <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="Futbolx - free ppv and more">
-    <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=26">
-    <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-black">
-      <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('en');" data-lang="lang-english">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('de');" data-lang="lang-german">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('es');" data-lang="lang-spanish">Español</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('fr');" data-lang="lang-french">Français</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-lang="nav-login">Login</a></li>
-            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-lang="nav-logout">Logout</button></li>
-            <li class="nav-item">
-              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-              </button>
-            </li>
-          </ul>
-          <a class="navbar-brand ms-auto" href="https://futbolx.com"><img src="/assets/img/ppvwtf.png" height="30" alt="Futbolx Logo" /></a>
-        </div>
-      </div>
-    </nav>
-    <div class="container-fluid text-center py-5 bg-dark">
-      <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="hero-title">Welcome to Futbolx</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="hero-subtitle">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
-      <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200" data-lang="hero-button">Watch Now</a>
-    </div>
-    <div id="loadingOverlay" class="loading-overlay">
-      <noscript>
-        <div class="alert alert-danger" role="alert">
-          You must enable JavaScript for this site to work.
-        </div>
-      </noscript>
-      <div class="alert alert-danger d-none" role="alert" id="loaderError"></div>
-      <div class="custom-loader" id="loaderSpinner"></div>
-    </div>
-    <div class="container container-fluid pt-2 text-white">
-      <div id="live" class="mt-4">
-        <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
-          <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
-            <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
-          </h2>
-          <ul id="categorybuttons" class="nav justify-content-end"></ul>
-        </div>
-        <div id="livecards" class="event-grid py-3"></div>
-      </div>
-      <div id="categories" class="mt-5"></div>
-      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
-        <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futbolx - Watch Live Sports</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/main.css?v=26">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Futbolx</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/vip" id="vipLink" data-lang="nav-vip">VIP</a></li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-lang="nav-login">Login</a></li>
         </ul>
-      </footer>
+      </div>
     </div>
-    <script defer>
-      function zeropad(num) {
-        return num > 9 ? num : '0'+num;
-      }
-      function countdown() {
-        const now = Math.floor(Date.now() / 1000);
-        const countdownElements = document.querySelectorAll('[data-start]');
-        countdownElements.forEach(function(element) {
-          const startTime = parseInt(element.getAttribute('data-start'), 10);
-          let timer = startTime - now;
-          if (timer > 0) {
-            let days = Math.floor(timer / 86400),
-                hours = Math.floor(timer / 3600),
-                mins = Math.floor(timer / 60),
-                secs = Math.floor(timer);
-            let dd = days,
-                hh = hours - days * 24,
-                mm = mins - hours * 60,
-                ss = secs - mins * 60;
-            let clock = `${dd} days, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 1) clock = `${dd} day, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 0) clock = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            element.innerHTML = clock;
-          } else {
-            element.innerHTML = '<strong data-lang="live-soon">Live soon</strong>';
-            element.style.color = '#ff8280';
-          }
-        });
-        setTimeout(countdown, 1000);
-      }
-      function loadContent(api) {
-        try {
-          const ulElement = document.getElementById('categorybuttons');
-          api.get("/streams").then(data => {
-            ulElement.innerHTML = '';
-            document.getElementById("categories").innerHTML = '';
-            document.getElementById("livecards").innerHTML = '';
-            if (!data.success && data.error) {
-              $("#loaderError").removeClass('d-none');
-              $("#loaderSpinner").addClass('d-none');
-              $("#loaderError").text(data.error);
-              return;
-            }
-            if (data.streams.length >= 1) {
-              data.streams.forEach(categoryData => {
-                let categoryName = categoryData.category;
-                let alwaysLive = categoryData.always_live;
-                let streams = categoryData.streams;
-                let categoryId = categoryData.id;
-                const liElement = document.createElement('li');
-                liElement.className = 'nav-item';
-                const aElement = document.createElement('a');
-                aElement.className = 'nav-link';
-                aElement.href = `#${categoryId}`;
-                aElement.textContent = categoryName;
-                liElement.appendChild(aElement);
-                ulElement.appendChild(liElement);
-                let categoryHtml = `
-                  <div id="${categoryId}-container" class="mt-5">
-                    <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
-                    <div id="${categoryId}" class="event-grid py-3"></div>
-                  </div>`;
-                document.getElementById("categories").innerHTML += categoryHtml;
-                streams.forEach((stream, index) => {
-                  let isLive = stream.starts_at <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
-                  let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                  let livecounter = isLive
-                    ? `<span class="float-end viewer-count"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>`
-                    : `<span class="float-end countdown" data-start="${stream.starts_at}"></span>`;
-                  let streamHtml = `
-                    <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                      <a href="/live/${stream.uri_name}" class="card-link">
-                        <div class="card bg-black text-white">
-                          ${liveBadge}
-                          <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
-                          <div class="card-body">
-                            <h5 class="card-title">${stream.name}</h5>
-                            <p class="card-text">
-                              <span class="event-tag text-muted">${stream.tag}</span>
-                              ${livecounter}
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </div>`;
-                  if (isLive) {
-                    document.getElementById("livecards").innerHTML += streamHtml;
-                  } else {
-                    document.getElementById(categoryId).innerHTML += streamHtml;
-                  }
-                });
-                if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
-              });
-            } else {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            $("#loadingOverlay").hide();
-            if ($(`#livecards`).is(':empty')) {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            updateLanguage(); // Apply translations after content loads
-          }).catch(error => {
-            $("#loaderError").removeClass('d-none');
-            $("#loaderSpinner").addClass('d-none');
-            $("#loaderError").text("Failed to load streams");
-          });
-        } catch (err) {
-          $("#loaderError").removeClass('d-none');
-          $("#loaderSpinner").addClass('d-none');
-          $("#loaderError").text("API communication fail");
-        }
-      }
-      window.onload = function() {
-        var api = new Api(`${window.location.origin}`);
-        loadContent(api);
-        setInterval(() => loadContent(api), 60000);
-        countdown();
-        AOS.init();
+  </nav>
 
-        // Close navbar on outside click
-        document.addEventListener('click', function(event) {
-          const navbarCollapse = document.getElementById('navbarSupportedContent');
-          const navbarToggler = document.querySelector('.navbar-toggler');
-          const isNavbarOpen = navbarCollapse.classList.contains('show');
-          const clickedInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
-          if (isNavbarOpen && !clickedInsideNavbar) {
-            bootstrap.Collapse.getInstance(navbarCollapse).hide();
-          }
-        });
+  <div class="container mt-4">
+    <!-- Category Dropdown -->
+    <div class="mb-4">
+      <label for="categorySelect" class="form-label" data-lang="select-category">Select Category</label>
+      <select id="categorySelect" class="form-select" onchange="filterByCategory(this.value)">
+        <option value="Sports" data-lang="category-sports">Sports</option>
+        <option value="Football" data-lang="category-football">Football</option>
+        <option value="Basketball" data-lang="category-basketball">Basketball</option>
+        <option value="Fights" data-lang="category-fights">Fights</option>
+        <option value="Motorsports" data-lang="category-motorsports">Motorsports</option>
+        <option value="NBA" data-lang="category-nba">NBA</option>
+        <option value="MLB" data-lang="category-mlb">MLB</option>
+        <option value="NHL" data-lang="category-nhl">NHL</option>
+        <option value="NFL" data-lang="category-nfl">NFL</option>
+        <option value="Others" data-lang="category-others">Others</option>
+      </select>
+    </div>
 
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        htmlElement.setAttribute('data-bs-theme', currentTheme);
-        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        themeToggle.addEventListener('click', () => {
-          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-          htmlElement.setAttribute('data-bs-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
-          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        });
+    <!-- Back to Homepage Link (hidden by default) -->
+    <div id="backLink" class="mb-3" style="display: none;">
+      <a href="/" class="btn btn-link" data-lang="back-home">Back to Homepage</a>
+    </div>
 
-        // Initialize language
-        updateLanguage();
+    <!-- Live Now Section -->
+    <h2 data-lang="live-now">Live Now</h2>
+    <div id="liveNow" class="row mb-4">
+      <p id="noLiveMessage" class="text-center" data-lang="no-live-games" style="display: none;">No live games at the moment</p>
+    </div>
 
-        // Initialize auth
-        checkAuthStatus();
-      }
-    </script>
-    <script async src="/assets/js/api.js"></script>
-    <script async src="/assets/js/lang.js"></script>
-    <script async src="/assets/js/auth.js"></script>
-    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script defer data-domain="futbolx.com" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-  </body>
+    <!-- Soon Section -->
+    <h2 data-lang="soon">Soon</h2>
+    <div id="soonEvents" class="row mb-4"></div>
+
+    <!-- All Events (filtered by category) -->
+    <h2 id="eventsTitle" data-lang="all-events">All Events</h2>
+    <div id="events" class="row"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script async src="/assets/js/lang.js"></script>
+  <script async src="/assets/js/auth.js"></script>
+  <script async src="/assets/js/main.js"></script>
+</body>
 </html>
