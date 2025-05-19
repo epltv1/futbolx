@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=39">
+    <link rel="stylesheet" href="/assets/css/main.css?v=40">
     <style>
       .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
       .loading-overlay.hidden { display: none; }
@@ -203,7 +203,7 @@
                 : 'https://i.postimg.cc/Gh7S3Q5B/IMG-20241221-022220-640.jpg';
               let streamHtml = `
                 <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                  <a href="/player/${stream.uri_name}" class="card-link">
+                  <a href="/player/${stream.uri_name}" class="card-link" data-uri="${stream.uri_name}">
                     <div class="card bg-black text-white">
                       ${liveBadge}
                       <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
@@ -212,13 +212,14 @@
                         <p class="card-text">
                           <span class="event-tag text-muted">${stream.tag}</span>
                           <span class="float-end">${isLive 
-                            ? `<a href="/player/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>` 
+                            ? `<a href="/player/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now" data-uri="${stream.uri_name}">Watch</a>` 
                             : `<span class="countdown" data-start="${startTime}" data-uri="${stream.uri_name}"></span>`}</span>
                         </p>
                       </div>
                     </div>
                   </a>
                 </div>`;
+              console.log(`Generated card HTML for ${stream.name}: <a href="/player/${stream.uri_name}" class="card-link" data-uri="${stream.uri_name}">`);
               if (isLive) {
                 document.getElementById("livecards").innerHTML += streamHtml;
               } else {
@@ -234,6 +235,12 @@
           document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
         }
         updateLanguage();
+        // Add click event listener for debugging
+        document.querySelectorAll('.card-link, .watch-button').forEach(link => {
+          link.addEventListener('click', (e) => {
+            console.log(`Clicked link: ${e.target.href}, Uri: ${e.target.getAttribute('data-uri')}`);
+          });
+        });
       }
 
       window.onload = function() {
