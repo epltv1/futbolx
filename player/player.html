@@ -9,7 +9,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=46">
+    <link rel="stylesheet" href="/assets/css/main.css?v=47">
     <style>
       #playerContainer { width: 100%; max-width: 1280px; margin: 20px auto; padding: 0 15px; }
       #player { width: 100%; height: 720px; }
@@ -69,7 +69,7 @@
     <script src="https://cdn.jsdelivr.net/npm/playerjs@0.1.0/dist/player.min.js"></script>
     <script defer>
       function loadPlayer() {
-        const uriName = window.location.pathname.split('/player/')[1];
+        const uriName = window.location.pathname.split('/live/')[1];
         console.log(`Loading player for uri_name: ${uriName}`);
         const playerTitle = document.getElementById('playerTitle');
         const errorContainer = document.getElementById('errorContainer');
