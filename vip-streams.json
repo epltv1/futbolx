@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "streams": [
+    {
+      "category": "VIP Events",
+      "always_live": 0,
+      "id": "vip1",
+      "streams": [
+        {
+          "name": "VIP Boxing Championship",
+          "uri_name": "vip-boxing",
+          "poster": "https://via.placeholder.com/285x160?text=VIP+Boxing",
+          "tag": "Boxing",
+          "starts_at": 1625097600,
+          "viewers": 500,
+          "always_live": 0
+        },
+        {
+          "name": "VIP UFC Fight Night",
+          "uri_name": "vip-ufc",
+          "poster": "https://via.placeholder.com/285x160?text=VIP+UFC",
+          "tag": "UFC",
+          "starts_at": 1625184000,
+          "viewers": 300,
+          "always_live": 0
+        }
+      ]
+    }
+  ]
+}
