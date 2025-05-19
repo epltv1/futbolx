@@ -51,10 +51,9 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid text-center py-5 bg-dark">
+    <div class="container-fluid text-center py-5 bg-dark hero-background">
       <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="hero-title">Welcome to Futbolx</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="hero-subtitle">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
-      <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200" data-lang="hero-button">Watch Now</a>
     </div>
     <div id="loadingOverlay" class="loading-overlay">
       <noscript>
@@ -71,7 +70,6 @@
           <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
             <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
           </h2>
-          <ul id="categorybuttons" class="nav justify-content-end"></ul>
         </div>
         <div id="livecards" class="event-grid py-3"></div>
       </div>
@@ -119,9 +117,7 @@
       }
       function loadContent(api) {
         try {
-          const ulElement = document.getElementById('categorybuttons');
           api.get("/streams").then(data => {
-            ulElement.innerHTML = '';
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
             if (!data.success && data.error) {
@@ -136,14 +132,6 @@
                 let alwaysLive = categoryData.always_live;
                 let streams = categoryData.streams;
                 let categoryId = categoryData.id;
-                const liElement = document.createElement('li');
-                liElement.className = 'nav-item';
-                const aElement = document.createElement('a');
-                aElement.className = 'nav-link';
-                aElement.href = `#${categoryId}`;
-                aElement.textContent = categoryName;
-                liElement.appendChild(aElement);
-                ulElement.appendChild(liElement);
                 let categoryHtml = `
                   <div id="${categoryId}-container" class="mt-5">
                     <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
@@ -187,7 +175,7 @@
             if ($(`#livecards`).is(':empty')) {
               document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
-            updateLanguage(); // Apply translations after content loads
+            updateLanguage();
           }).catch(error => {
             $("#loaderError").removeClass('d-none');
             $("#loaderSpinner").addClass('d-none');
