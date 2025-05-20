@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
-    <link rel="stylesheet" href="/assets/css/main.css?v=10">
+    <link rel="stylesheet" href="/assets/css/main.css?v=11">
   </head>
   <body>
     <!-- Top Bar -->
@@ -63,15 +63,16 @@
         <div class="row">
           <div class="col-12">
             <a href="/" class="btn btn-back mb-3" data-navigate><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
               <video id="my-video" class="video-js vjs-big-play-centered vjs-fluid" controls preload="auto" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
-                <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading to a web browser that
                   <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
               </video>
             </div>
+            <div id="streamLinks" class="stream-links mt-3"></div>
           </div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
@@ -118,6 +119,51 @@
               bootstrap.Offcanvas.getInstance(offcanvas).hide();
             }
           });
+
+          // Load stream
+          const uriName = window.location.pathname.split('/').pop();
+          const api = new Api(`${window.location.origin}/api`);
+          fetch(api.baseUrl + '/stream')
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+              if (!data || !data.success || !Array.isArray(data.streams)) {
+                document.getElementById('eventTitle').innerText = 'Error: Stream not found';
+                return;
+              }
+              let event = null;
+              data.streams.forEach(category => {
+                if (category.streams) {
+                  event = category.streams.find(stream => stream.uri_name === uriName);
+                  if (event) return;
+                }
+              });
+              if (!event || !event.streams || event.streams.length === 0) {
+                document.getElementById('eventTitle').innerText = 'Error: No streams available';
+                return;
+              }
+              document.getElementById('eventTitle').innerText = event.name;
+              const player = videojs(document.querySelector('.video-js'));
+              player.src({ src: event.streams[0].url, type: 'application/x-mpegURL' });
+              const streamLinks = document.getElementById('streamLinks');
+              streamLinks.innerHTML = event.streams.map((stream, index) => `
+                <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
+                  ${stream.title || `Stream ${index + 1}`}
+                </button>
+              `).join('');
+              streamLinks.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-stream');
+                if (btn) {
+                  const url = btn.getAttribute('data-stream-url');
+                  player.src({ src: url, type: 'application/x-mpegURL' });
+                  streamLinks.querySelectorAll('.btn-stream').forEach(b => b.classList.remove('active'));
+                  btn.classList.add('active');
+                }
+              });
+            })
+            .catch(error => {
+              console.error('Stream fetch error:', error);
+              document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
+            });
 
           checkAuthStatus(); // Initialize auth status
         } catch (error) {
