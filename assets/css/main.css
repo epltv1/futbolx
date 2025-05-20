@@ -454,3 +454,26 @@ footer a:hover {
 .btn-danger:hover {
   background-color: #e63939;
 }
+
+/* Start Livestream Button */
+#startLivestream {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+/* Player and Stream Links Animation */
+.video-container, .stream-links {
+  display: none;
+}
+
+.video-container.fade-in, .stream-links.fade-in {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
