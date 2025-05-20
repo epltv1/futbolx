@@ -1,7 +1,8 @@
 {
-  "routes": [
-    { "src": "/auth/login", "dest": "/auth/login.html" },
-    { "src": "/vip", "dest": "/vip.html" },
-    { "src": "/live/:uri_name", "dest": "/player/player.html" }
+  "rewrites": [
+    { "source": "/api/streams", "destination": "/api/streams.js" },
+    { "source": "/auth/login", "destination": "/auth/login.html" },
+    { "source": "/vip", "destination": "/vip.html" },
+    { "source": "/live/:uri_name", "destination": "/player/player.html" }
   ]
 }
