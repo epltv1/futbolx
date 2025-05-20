@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=7">
+    <link rel="stylesheet" href="/assets/css/main.css?v=8">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
       .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
@@ -67,7 +67,7 @@
         <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
         <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       </div>
-      <div class="container pt-2 text-white">
+      <div class="container pt-2">
         <div id="errorContainer" class="d-none error-alert"></div>
         <div id="live" class="mt-4">
           <h2 class="m-0">
@@ -181,7 +181,7 @@
               let streamHtml = `
                 <div class="event-card">
                   <a href="/live/${stream.uri_name}" class="card-link">
-                    <div class="card bg-black text-white">
+                    <div class="card bg-black">
                       ${liveBadge}
                       <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
                       <div class="card-body">
@@ -253,6 +253,7 @@
             localStorage.setItem('theme', newTheme);
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
+          checkAuthStatus(); // Initialize auth status
         } catch (error) {
           console.error('Window onload error:', error);
           document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
