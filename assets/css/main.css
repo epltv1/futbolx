@@ -221,6 +221,36 @@ body {
   background: #cc3333;
 }
 
+/* Stream Buttons */
+.stream-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-stream {
+  padding: 8px 16px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.3s, background 0.3s;
+}
+
+[data-bs-theme="light"] .btn-stream {
+  background: #ccc;
+  color: #333;
+}
+
+.btn-stream:hover, .btn-stream.active {
+  background: #ff4d4d;
+  transform: scale(1.05);
+}
+
+[data-bs-theme="light"] .btn-stream:hover, [data-bs-theme="light"] .btn-stream.active {
+  background: #e63939;
+}
+
 /* Live Animation */
 .live-animation {
   display: inline-block;
