@@ -5,7 +5,7 @@ class Api {
   }
   async get(endpoint) {
     try {
-      const response = await fetch('/streams.json');
+      const response = await fetch('/stream.json'); // Changed from /streams.json to /stream.json
       if (!response.ok) throw new Error('Network error');
       return await response.json();
     } catch (error) {
