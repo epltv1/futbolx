@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
-    <link rel="stylesheet" href="/assets/css/main.css?v=9">
+    <link rel="stylesheet" href="/assets/css/main.css?v=10">
   </head>
   <body>
     <!-- Top Bar -->
@@ -62,13 +62,16 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-12">
-            <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="auto" data-setup='{"fluid": true}'>
-              <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
-              <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-              </p>
-            </video>
+            <a href="/" class="btn btn-back mb-3" data-navigate><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <div class="video-container">
+              <video id="my-video" class="video-js vjs-big-play-centered vjs-fluid" controls preload="auto" data-setup='{"fluid": true, "aspectRatio": "16:9"}'>
+                <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
+                <p class="vjs-no-js">
+                  To view this video please enable JavaScript, and consider upgrading to a web browser that
+                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+              </video>
+            </div>
           </div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
@@ -88,8 +91,7 @@
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script defer>
-      window.onload = function() {
-        console.log('Window loaded at', new Date().toISOString());
+      function initPage() {
         try {
           // Initialize theme
           const htmlElement = document.documentElement;
@@ -119,9 +121,51 @@
 
           checkAuthStatus(); // Initialize auth status
         } catch (error) {
-          console.error('Window onload error:', error);
+          console.error('Init page error:', error);
         }
+      }
+      window.onload = function() {
+        console.log('Window loaded at', new Date().toISOString());
+        initPage();
       };
+      // Handle dynamic navigation
+      document.addEventListener('click', function(event) {
+        const link = event.target.closest('[data-navigate]');
+        if (link) {
+          event.preventDefault();
+          const url = link.getAttribute('href');
+          history.pushState({}, '', url);
+          loadPage(url);
+        }
+      });
+      window.addEventListener('popstate', function(event) {
+        loadPage(window.location.pathname);
+      });
+      function loadPage(url) {
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            document.body.innerHTML = doc.body.innerHTML;
+            document.title = doc.title;
+            // Reinitialize scripts
+            const scripts = document.createElement('script');
+            scripts.textContent = `
+              ${initPage.toString()}
+              initPage();
+            `;
+            document.body.appendChild(scripts);
+            // Reinitialize Video.js if on live page
+            if (url.includes('/live')) {
+              videojs(document.querySelector('.video-js'));
+            }
+          })
+          .catch(error => {
+            console.error('Navigation error:', error);
+            window.location.href = url; // Fallback to full reload
+          });
+      }
     </script>
   </body>
 </html>
