@@ -15,9 +15,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=2">
+    <link rel="stylesheet" href="/assets/css/main.css?v=3">
     <style>
       .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
       .loading-overlay.hidden { display: none; }
@@ -58,12 +57,10 @@
       </div>
     </nav>
     <div class="container-fluid text-center py-5 bg-dark hero-background">
-      <h1 class="display-4 fw-bold" data-aos="fade-up">Welcome to StreamX</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+      <h1 class="display-4 fw-bold">Welcome to StreamX</h1>
+      <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
     </div>
-    <div id="loadingOverlay"
-
- class="loading-overlay">
+    <div id="loadingOverlay" class="loading-overlay">
       <noscript>
         <div class="alert alert-danger" role="alert">You must enable JavaScript for this site to work.</div>
       </noscript>
@@ -104,7 +101,7 @@
       function countdown() {
         const now = Math.floor(Date.now() / 1000);
         const countdownElements = document.querySelectorAll('[data-start]');
-        countdownElements.forEach(function(element) {
+        countdownElements.forEach(element => {
           const startTime = parseInt(element.getAttribute('data-start'), 10);
           let timer = startTime - now;
           if (timer > 0) {
@@ -134,21 +131,218 @@
       }
       function loadContent(api) {
         console.log('Starting loadContent');
-        const errorContainer = document.getElementById("errorContainer");
+        const errorContainer = document.createElement('div');
+        errorContainer.id = 'errorContainer';
         errorContainer.className = 'd-none error-alert';
-        errorContainer.innerHTML = '';
-        // Fallback to hide loading overlay after 10 seconds
+        document.querySelector('.container-fluid.pt-2').prepend(errorContainer);
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loaderSpinner = document.getElementById('loaderSpinner');
+        // Hide overlay after 5 seconds as fallback
         setTimeout(() => {
           console.log('Timeout: Hiding loading overlay');
-          $("#loaderSpinner").addClass('d-none');
-          $("#loadingOverlay").addClass('hidden');
-        }, 10000);
-        try {
-          console.log('Fetching streams from', api.baseUrl + '/streams');
-          api.get("/streams").then(data => {
+          loadingOverlay.classList.add('hidden');
+          loaderSpinner.classList.add('d-none');
+        }, 5000);
+        fetch(api.baseUrl + '/streams')
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+          })
+          .then(data => {
             console.log('API Response:', data);
-            document.getElementById("categories").innerHTML = '';
-            document.getElementById("livecards").innerHTML = '';
+            const categories = document.getElementById('categories');
+            const livecards = document.getElementById('livecards');
+            categories.innerHTML = '';
+            livecards.innerHTML = '';
+            if (!data || !data.success || !Array.isArray(data.streams)) {
+              console.error('Invalid API response:', data);
+              errorContainer.className = 'alert alert-danger error-alert';
+              errorContainer.innerHTML = 'Failed to load streams. Invalid data received.';
+              return;
+            }
+            if (data.streams.length >= 1) {
+              const ulElement = document.getElementById('categorybuttons');
+              ulElement.innerHTML = '';
+              data.streams.forEach(categoryData =>,…
+
+System: It looks like the response was cut off while providing the updated `index.html` file. I'll complete the simplified `index.html` and ensure the code addresses the loading screen issue by using vanilla JavaScript, removing external dependencies like jQuery and AOS, and ensuring the loading overlay hides reliably. I'll also verify that the other files (`live.html`, `main.css`, `api.js`, `auth.js`, `api/streams/index.json`, `vercel.json`, `.gitignore`) remain consistent with the previous update, as they are less likely to cause the loading issue. The focus is to get the site past the loading screen by simplifying the logic and ensuring robust error handling.
+
+---
+
+### Key Changes to Fix Loading Screen Issue
+- **Vanilla JavaScript**: Replaced jQuery with native JavaScript to eliminate dependency issues.
+- **Immediate Overlay Hiding**: Added a 5-second timeout to hide `#loadingOverlay` and improved error handling to ensure it hides even if the API fails.
+- **Simplified Logic**: Removed AOS animations and minimized DOM manipulations to reduce potential errors.
+- **Mock API**: Retained the static `api/streams/index.json` to ensure data loads without a live API.
+- **Console Logging**: Added extensive logging to help identify errors in the browser console.
+- **Deployment Check**: Ensured `vercel.json` routes correctly serve the mock API and static files.
+
+Below is the complete set of updated files, with the primary focus on the revised `index.html`. The other files are unchanged from the previous update unless noted.
+
+---
+
+### Updated Code Files
+
+#### 1. `index.html` (Homepage)
+This simplified version uses vanilla JavaScript, removes jQuery and AOS, and ensures the loading overlay hides.
+
+```html
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StreamX - Free PPV and More</title>
+    <meta name="description" content="StreamX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
+    <meta name="keywords" content="streamx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
+    <meta property="og:title" content="StreamX - Free PPV and More" />
+    <meta property="og:url" content="https://your-streamx-site.vercel.app" />
+    <meta property="og:image" content="/assets/img/og-image.jpg">
+    <meta name="twitter:title" content="StreamX - Free PPV and More">
+    <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=3">
+    <style>
+      .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
+      .loading-overlay.hidden { display: none; }
+      .error-alert { max-width: 500px; margin: 20px auto; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-black">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="/assets/img/logo.png" height="30" alt="StreamX Logo" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+            <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
+          </ul>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
+                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
+                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+            <li class="nav-item">
+              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid text-center py-5 bg-dark hero-background">
+      <h1 class="display-4 fw-bold">Welcome to StreamX</h1>
+      <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+    </div>
+    <div id="loadingOverlay" class="loading-overlay">
+      <noscript>
+        <div class="alert alert-danger" role="alert">You must enable JavaScript for this site to work.</div>
+      </noscript>
+      <div class="alert alert-danger d-none" role="alert" id="loaderError"></div>
+      <div class="custom-loader" id="loaderSpinner"></div>
+    </div>
+    <div class="container container-fluid pt-2 text-white">
+      <div class="alert alert-warning alert-dismissible mt-4" role="alert">
+        <h4 class="alert-heading"><strong>Join Our Community!</strong></h4>
+        Connect with us on <a href="https://discord.gg/5AMPdpckjH" class="alert-link">Discord</a> for updates and support.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div id="live" class="mt-4">
+        <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
+          <h2 class="m-0 justify-content-start w-100 align-content-center">
+            <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live Now
+          </h2>
+          <ul id="categorybuttons" class="nav justify-content-end"></ul>
+        </div>
+        <div id="livecards" class="event-grid py-3"></div>
+      </div>
+      <div id="categories" class="mt-5"></div>
+      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">StreamX 2025</p>
+        <ul class="nav justify-content-center justify-content-lg-end mb-0">
+          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
+          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+        </ul>
+      </footer>
+    </div>
+    <script defer>
+      function zeropad(num) {
+        return num > 9 ? num : '0' + num;
+      }
+      function countdown() {
+        const now = Math.floor(Date.now() / 1000);
+        const countdownElements = document.querySelectorAll('[data-start]');
+        countdownElements.forEach(element => {
+          const startTime = parseInt(element.getAttribute('data-start'), 10);
+          let timer = startTime - now;
+          if (timer > 0) {
+            let days = Math.floor(timer / 86400);
+            let weeks = Math.floor(days / 7);
+            let hours = Math.floor(timer / 3600);
+            let mins = Math.floor(timer / 60);
+            let secs = Math.floor(timer);
+            let displayText = '';
+            if (days >= 7) {
+              displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
+            } else if (days >= 1) {
+              displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
+            } else {
+              let hh = hours - days * 24;
+              let mm = mins - hours * 60;
+              let ss = secs - mins * 60;
+              displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
+            }
+            element.innerHTML = displayText;
+          } else {
+            element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+            element.style.color = '#ff8280';
+          }
+        });
+        setTimeout(countdown, 1000);
+      }
+      function loadContent(api) {
+        console.log('Starting loadContent');
+        const errorContainer = document.createElement('div');
+        errorContainer.id = 'errorContainer';
+        errorContainer.className = 'd-none error-alert';
+        document.querySelector('.container-fluid.pt-2').prepend(errorContainer);
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loaderSpinner = document.getElementById('loaderSpinner');
+        // Hide overlay after 5 seconds as fallback
+        setTimeout(() => {
+          console.log('Timeout: Hiding loading overlay');
+          loadingOverlay.classList.add('hidden');
+          loaderSpinner.classList.add('d-none');
+        }, 5000);
+        fetch(api.baseUrl + '/streams')
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+          })
+          .then(data => {
+            console.log('API Response:', data);
+            const categories = document.getElementById('categories');
+            const livecards = document.getElementById('livecards');
+            categories.innerHTML = '';
+            livecards.innerHTML = '';
             if (!data || !data.success || !Array.isArray(data.streams)) {
               console.error('Invalid API response:', data);
               errorContainer.className = 'alert alert-danger error-alert';
@@ -177,7 +371,7 @@
                     <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success">24/7</span>' : ''}</h2>
                     <div id="${categoryId}" class="event-grid py-3"></div>
                   </div>`;
-                document.getElementById("categories").innerHTML += categoryHtml;
+                categories.innerHTML += categoryHtml;
                 streams.forEach((stream, index) => {
                   let startTime;
                   try {
@@ -191,7 +385,7 @@
                   let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
                   let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=StreamX';
                   let streamHtml = `
-                    <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                    <div class="event-card">
                       <a href="/live/${stream.uri_name}" class="card-link">
                         <div class="card bg-black text-white">
                           ${liveBadge}
@@ -209,43 +403,39 @@
                       </a>
                     </div>`;
                   if (isLive) {
-                    document.getElementById("livecards").innerHTML += streamHtml;
+                    livecards.innerHTML += streamHtml;
                   } else {
                     document.getElementById(categoryId).innerHTML += streamHtml;
                   }
                 });
-                if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
+                if (!document.getElementById(categoryId).innerHTML) {
+                  document.getElementById(`${categoryId}-container`).remove();
+                }
               });
             } else {
-              document.getElementById("livecards").innerHTML += '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
+              livecards.innerHTML = '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
-            if ($(`#livecards`).is(':empty')) {
-              document.getElementById("livecards").innerHTML += '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
+            if (!livecards.innerHTML) {
+              livecards.innerHTML = '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
             }
-          }).catch(error => {
+          })
+          .catch(error => {
             console.error('API Error:', error);
             errorContainer.className = 'alert alert-danger error-alert';
             errorContainer.innerHTML = 'Failed to load streams due to a network issue. Please check your internet and try again.';
-          }).finally(() => {
+          })
+          .finally(() => {
             console.log('Hiding loading overlay');
-            $("#loaderSpinner").addClass('d-none');
-            $("#loadingOverlay").addClass('hidden');
+            loadingOverlay.classList.add('hidden');
+            loaderSpinner.classList.add('d-none');
           });
-        } catch (err) {
-          console.error('Script Error:', err);
-          errorContainer.className = 'alert alert-danger error-alert';
-          errorContainer.innerHTML = 'Error loading streams. Please try again later.';
-          $("#loaderSpinner").addClass('d-none');
-          $("#loadingOverlay").addClass('hidden');
-        }
       }
       window.onload = function() {
         console.log('Window loaded');
-        var api = new Api(`${window.location.origin}/api`);
+        const api = new Api(`${window.location.origin}/api`);
         loadContent(api);
         setInterval(() => loadContent(api), 60000);
         countdown();
-        AOS.init();
         document.addEventListener('click', function(event) {
           const navbarCollapse = document.getElementById('navbarSupportedContent');
           const navbarToggler = document.querySelector('.navbar-toggler');
@@ -268,9 +458,7 @@
         });
       };
     </script>
-    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script defer data-domain="your-streamx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
