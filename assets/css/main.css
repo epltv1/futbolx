@@ -181,6 +181,46 @@ body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* Video Player */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.video-js.vjs-fluid {
+  width: 100%;
+  max-height: 80vh; /* Limit height for large screens */
+}
+
+/* Back Button */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.3s, background 0.3s;
+}
+
+[data-bs-theme="light"] .btn-back {
+  background: #e63939;
+  color: #333;
+}
+
+.btn-back:hover {
+  transform: scale(1.05);
+  background: #e63939;
+}
+
+[data-bs-theme="light"] .btn-back:hover {
+  background: #cc3333;
+}
+
 /* Live Animation */
 .live-animation {
   display: inline-block;
