@@ -3,138 +3,118 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>StreamX - Watch Live Stream</title>
-    <meta name="description" content="Watch live PPV streams in HD for free on StreamX.">
-    <meta name="keywords" content="streamx, ppv, free ppv, live stream, boxing, ufc, basketball, football">
-    <meta property="og:title" content="StreamX - Watch Live Stream" />
-    <meta property="og:url" content="https://your-streamx-site.vercel.app/live" />
+    <title>FutbolX - Watch Live</title>
+    <meta name="description" content="FutbolX - Watch live PPV boxing, UFC, Basketball, Football, and more.">
+    <meta name="keywords" content="futbolx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
+    <meta property="og:title" content="FutbolX - Watch Live" />
+    <meta property="og:url" content="https://your-futbolx-site.vercel.app/live" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="StreamX - Watch Live Stream">
+    <meta name="twitter:title" content="FutbolX - Watch Live">
+    <meta name="twitter:description" content="Watch live PPV boxing and other content on FutbolX.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://vjs.zencdn.net/8.6.1/video-js.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=2">
-    <style>.video-js { width: 100%; height: auto; aspect-ratio: 16/9; }</style>
+    <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=7">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-black">
+    <!-- Top Bar -->
+    <nav class="top-bar fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/"><img src="/assets/img/logo.png" height="30" alt="StreamX Logo" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button class="btn btn-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+          <i class="fas fa-bars"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
-          </ul>
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
-            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
-            <li class="nav-item">
-              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
+        <span class="futbolx-brand">FutbolX</span>
       </div>
     </nav>
-    <div style="max-width:1510px;" class="container container-fluid pt-0 text-white" id="container">
-      <div class="row">
-        <div class="col p-0" id="video-col">
-          <video id="player" class="video-js" controls preload="auto" data-setup='{"fluid": true}'></video>
-          <div class="px-2 px-lg-0">
-            <div class="d-flex justify-content-between align-items-end mt-3">
-              <h3 id="title" class="my-auto">Loading...</h3>
-              <span><button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#embed">Embed this stream</button></span>
-            </div>
-            <p class="mt-2" id="viewersparent"><span id="viewers">1</span> viewers</p>
-          </div>
-        </div>
+    <!-- Left Sidebar -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-2">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">StreamX 2025</p>
-        <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+          <li class="nav-item">
+            <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+              <i class="fas fa-moon"></i>
+            </button>
+          </li>
         </ul>
-      </footer>
-    </div>
-    <div class="modal modal-lg fade" tabindex="-1" id="embed">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-darker">
-          <div class="modal-header">
-            <h5 class="modal-title">Embed this stream</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <h5>Interested in using our streams?</h5>
-            <p>Please see the <a href="/api" target="_blank">API reference</a> to use our API for embeds automatically.</p>
-            <hr>
-            <div class="d-flex justify-content-between align-items-end mb-3">
-              <h5>VidEmbed</h5>
-              <span><button type="button" class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('embedcode').value).then(() => alert('Copied to clipboard')).catch(err => console.error('Failed to copy:', err));">Copy</button></span>
-            </div>
-            <textarea class="form-control" id="embedcode" rows="4"><iframe id="player" marginheight="0" marginwidth="0" src="https://vecloud.eu/stream/PLACEHOLDER_STREAM_ID" scrolling="no" allowfullscreen="yes" allow="encrypted-media; picture-in-picture;" width="100%" height="100%" frameborder="0" style="position:absolute;"></iframe></textarea>
-          </div>
-        </div>
       </div>
     </div>
-    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Main Content -->
+    <div class="container-fluid main-content">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-12">
+            <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="auto" data-setup='{"fluid": true}'>
+              <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL">
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+              </p>
+            </video>
+          </div>
+        </div>
+        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
+          <ul class="nav justify-content-center justify-content-lg-end mb-0">
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+          </ul>
+        </footer>
+      </div>
+    </div>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
       window.onload = function() {
-        console.log('Live page loaded');
-        const streamId = window.location.pathname.split('/').pop();
-        const player = videojs('player', {
-          controls: true,
-          fluid: true,
-          sources: [{ src: 'https://vecloud.eu/stream/' + streamId, type: 'application/x-mpegURL' }]
-        });
-        var api = new Api(`${window.location.origin}/api`);
-        if (streamId) {
-          api.get(`/streams/${streamId}`).then(data => {
-            console.log('Stream Data:', data);
-            document.getElementById('title').textContent = data.name || 'Stream';
-            document.getElementById('viewers').textContent = data.viewers || 1;
-          }).catch(error => {
-            console.error('Error fetching stream:', error);
-            document.getElementById('title').textContent = 'Stream Unavailable';
+        console.log('Window loaded at', new Date().toISOString());
+        try {
+          document.addEventListener('click', function(event) {
+            const offcanvas = document.getElementById('sidebarMenu');
+            const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+            const isOffcanvasOpen = offcanvas.classList.contains('show');
+            const clickedInsideOffcanvas = offcanvas.contains(event.target) || toggler.contains(event.target);
+            if (isOffcanvasOpen && !clickedInsideOffcanvas) {
+              bootstrap.Offcanvas.getInstance(offcanvas).hide();
+            }
           });
+          const themeToggle = document.getElementById('themeToggle');
+          const htmlElement = document.documentElement;
+          const currentTheme = localStorage.getItem('theme') || 'dark';
+          htmlElement.setAttribute('data-bs-theme', currentTheme);
+          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          themeToggle.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          });
+        } catch (error) {
+          console.error('Window onload error:', error);
         }
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        htmlElement.setAttribute('data-bs-theme', currentTheme);
-        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        themeToggle.addEventListener('click', () => {
-          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-          htmlElement.setAttribute('data-bs-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
-          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        });
       };
     </script>
-    <script defer data-domain="your-streamx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
