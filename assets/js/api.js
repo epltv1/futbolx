@@ -5,7 +5,7 @@ class Api {
   }
   async get() {
     try {
-      const response = await fetch('/api/streams');
+      const response = await fetch('/public/stream.json');
       console.log('Fetch response status:', response.status, response.url);
       if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
       return await response.json();
