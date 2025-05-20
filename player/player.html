@@ -138,6 +138,7 @@
         const uriName = window.location.pathname.split('/').pop();
         const api = new Api(`${window.location.origin}`);
         api.get().then(data => {
+          console.log('Stream data loaded for player:', data);
           if (!data || !data.success || !Array.isArray(data.streams)) {
             throw new Error('Invalid stream data');
           }
