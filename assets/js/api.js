@@ -3,9 +3,9 @@ class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
-  async get() { // Removed endpoint parameter since it's hardcoded
+  async get() {
     try {
-      const response = await fetch('/stream.json');
+      const response = await fetch('/api/streams');
       console.log('Fetch response status:', response.status, response.url);
       if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
       return await response.json();
