@@ -8,30 +8,21 @@
       "streams": [
         {
           "uri_name": "brighton-vs-liverpool",
-          "player_url": "/live/brighton-vs-liverpool",
           "name": "Brighton vs Liverpool",
-          "poster": "https://plive.live/brighton-liverpool.jpg",
-          "tag": "Premier League",
-          "viewers": 5000,
-          "starts_at": "2025-05-19T20:00:00Z",
-          "end_time": "2025-05-19T22:00:00Z",
-          "links": [
-            { "title": "Main Stream", "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" },
-            { "title": "Backup Stream", "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" }
-          ]
+          "poster": "https://plive.live/uploads/682a05913eb5e.png",
+          "tag": "EPL",
+          "viewers": 2000,
+          "starts_at": "2025-05-19T19:00:00Z",
+          "end_time": "2025-05-19T21:00:00Z"
         },
         {
           "uri_name": "crystal-palace-vs-wolves",
-          "player_url": "/live/crystal-palace-vs-wolves",
           "name": "Crystal Palace vs Wolves",
-          "poster": "https://plive.live/crystal-wolves.jpg",
-          "tag": "Premier League",
-          "viewers": 2000,
-          "starts_at": "2025-05-21T12:00:00Z",
-          "end_time": "2025-05-21T14:00:00Z",
-          "links": [
-            { "title": "Main Stream", "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" }
-          ]
+          "poster": "https://plive.live/uploads/682a0600bd8f9.png",
+          "tag": "EPL",
+          "viewers": 1800,
+          "starts_at": "2025-05-20T19:00:00Z",
+          "end_time": "2025-05-20T21:00:00Z"
         }
       ]
     },
@@ -42,16 +33,12 @@
       "streams": [
         {
           "uri_name": "nba-game",
-          "player_url": "/live/nba-game",
           "name": "NBA: Lakers vs Warriors",
           "poster": "",
           "tag": "NBA",
-          "viewers": 3000,
-          "starts_at": "2025-05-19T00:00:00Z",
-          "end_time": "2025-05-20T23:59:59Z",
-          "links": [
-            { "title": "Main Stream", "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" }
-          ]
+          "viewers": 1500,
+          "starts_at": "2025-05-19T14:00:00Z",
+          "end_time": "2025-05-19T17:00:00Z"
         }
       ]
     },
@@ -62,29 +49,21 @@
       "streams": [
         {
           "uri_name": "boxing-match",
-          "player_url": "/live/boxing-match",
           "name": "Boxing: Championship Fight",
           "poster": "",
           "tag": "Boxing",
           "viewers": 1200,
           "starts_at": "2025-05-21T15:00:00Z",
-          "end_time": "2025-05-21T18:00:00Z",
-          "links": [
-            { "title": "Main Feed", "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" }
-          ]
+          "end_time": "2025-05-21T18:00:00Z"
         },
         {
           "uri_name": "ufc-fight",
-          "player_url": "/live/ufc-fight",
-          "name": "UFC Fight",
+          "name": "UFC 305: Main Event",
           "poster": "",
           "tag": "UFC",
-          "viewers": 1500,
-          "starts_at": "2025-05-21T17:00:00Z",
-          "end_time": "2025-05-21T20:00:00Z",
-          "links": [
-            { "title": "Main Feed", "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8" }
-          ]
+          "viewers": 800,
+          "starts_at": "2025-05-22T14:00:00Z",
+          "end_time": "2025-05-22T17:00:00Z"
         }
       ]
     },
@@ -95,16 +74,12 @@
       "streams": [
         {
           "uri_name": "tennis-match",
-          "player_url": "/live/tennis-match",
-          "name": "Tennis Match",
+          "name": "Tennis: French Open Qualifier",
           "poster": "",
-          "tag": "Tennis",
-          "viewers": 800,
-          "starts_at": "2025-05-20T22:00:00Z",
-          "end_time": "2025-05-21T00:00:00Z",
-          "links": [
-            { "title": "Court 1", "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8" }
-          ]
+          "tag": "ATP",
+          "viewers": 500,
+          "starts_at": "2025-05-20T10:00:00Z",
+          "end_time": "2025-05-20T13:00:00Z"
         }
       ]
     }
