@@ -11,15 +11,16 @@
           "poster": "https://i.postimg.cc/8PRrvYw4/IMG-20241226-211229-430.jpg",
           "tag": "Premier League",
           "starts_at": "2025-05-21T20:00:00Z",
+          "ends_at": "2025-05-21T22:00:00Z",
           "always_live": 1,
           "streams": [
             {
               "title": "Main Stream",
-              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+              "url": "https://epltv1.github.io/usa.m3u8"
             },
             {
               "title": "Alternate Stream",
-              "url": "https://epltv1.github.io/usa.m3u8"
+              "url": "https://test-streams.mux.dev/test.m3u8"
             }
           ]
         }
@@ -35,11 +36,12 @@
           "poster": "https://via.placeholder.com/285x160?text=NBA",
           "tag": "NBA Playoffs",
           "starts_at": "2025-05-22T21:00:00Z",
+          "ends_at": "2025-05-22T23:00:00Z",
           "always_live": 0,
           "streams": [
             {
               "title": "Primary Feed",
-              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+              "url": "https://epltv1.github.io/usa.m3u8"
             }
           ]
         }
@@ -55,11 +57,12 @@
           "poster": "https://via.placeholder.com/285x160?text=Esports",
           "tag": "Gaming",
           "starts_at": "2025-05-23T18:00:00Z",
+          "ends_at": "2025-05-23T21:00:00Z",
           "always_live": 0,
           "streams": [
             {
               "title": "Stream 1",
-              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+              "url": "https://epltv1.github.io/usa.m3u8"
             },
             {
               "title": "Stream 2",
