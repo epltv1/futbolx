@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=16">
+    <link rel="stylesheet" href="/assets/css/main.css?v=18">
     <link rel="preload" href="/assets/js/playerjs.js" as="script">
   </head>
   <body>
@@ -62,10 +62,14 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-12">
-            <a href="/" class="btn btn-back mb-3" data-navigate><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <a href="/" class="btn btn-back mb-3" onclick="window.location.href='/'; return false;"><i class="fas fa-arrow-left"></i> Back to Home</a>
             <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
               <div id="player"></div>
+              <div id="playerReload" class="d-none text-center mt-3">
+                <p>If video takes long, click here to refresh the page.</p>
+                <button class="btn btn-danger" onclick="window.location.reload()">Refresh</button>
+              </div>
             </div>
             <div id="streamLinks" class="stream-links mt-3"></div>
             <div id="playerError" class="alert alert-danger mt-3 d-none"></div>
@@ -86,18 +90,19 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
-    <script src="/assets/js/playerjs.js?v=1"></script>
+    <script src="/assets/js/playerjs.js?v=2"></script>
     <script defer>
-      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
+      function initPlayer(event, playerError, streamLinks, playerReload, attempt = 0, maxAttempts = 10) {
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to load player after multiple attempts. Please refresh the page.';
+          playerError.innerText = 'Failed to load player. Please refresh the page.';
+          playerReload.className = 'text-center mt-3';
           console.error('PlayerJS: Max retry attempts reached');
           return;
         }
         if (typeof Playerjs === 'undefined') {
           console.warn(`PlayerJS not loaded, attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
+          setTimeout(() => initPlayer(event, playerError, streamLinks, playerReload, attempt + 1, maxAttempts), 200);
           return;
         }
         try {
@@ -110,6 +115,7 @@
               console.error('PlayerJS Error:', err);
               playerError.className = 'alert alert-danger mt-3';
               playerError.innerText = 'Failed to play stream: ' + err.message;
+              playerReload.className = 'text-center mt-3';
             }
           });
           console.log('PlayerJS: Initialized successfully');
@@ -123,17 +129,19 @@
             if (btn) {
               const url = btn.getAttribute('data-stream-url');
               playerError.className = 'alert alert-danger mt-3 d-none';
+              playerReload.className = 'd-none';
               try {
                 console.log('PlayerJS: Switching to stream', url);
                 player.api('file', url);
                 player.api('play');
-                streamLinks.querySelectorAll('.btn-stream').forEach(b => b.classList.remove('active'));
+                streamLinks.querySelectorAll('.btn btn-stream').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 console.log('PlayerJS: Stream switched successfully');
               } catch (err) {
                 console.error('Stream switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'Failed to switch stream: ' + err.message;
+                playerReload.className = 'text-center mt-3';
               }
             }
           });
@@ -141,6 +149,7 @@
           console.error('Player init error:', err);
           playerError.className = 'alert alert-danger mt-3';
           playerError.innerText = 'Failed to initialize player: ' + err.message;
+          playerReload.className = 'text-center mt-3';
         }
       }
 
@@ -176,6 +185,7 @@
           const uriName = window.location.pathname.split('/').pop();
           const api = new Api(`${window.location.origin}/api`);
           const playerError = document.getElementById('playerError');
+          const playerReload = document.getElementById('playerReload');
           fetch(api.baseUrl + '/stream')
             .then(res => {
               if (!res.ok) throw new Error(`HTTP error ${res.status}`);
@@ -186,6 +196,7 @@
                 document.getElementById('eventTitle').innerText = 'Error: Stream not found';
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'No streams available.';
+                playerReload.className = 'text-center mt-3';
                 return;
               }
               let event = null;
@@ -199,17 +210,27 @@
                 document.getElementById('eventTitle').innerText = 'Error: No streams available';
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'No stream links found for this event.';
+                playerReload.className = 'text-center mt-3';
                 return;
               }
               document.getElementById('eventTitle').innerText = event.name;
-              initPlayer(event, playerError, document.getElementById('streamLinks'));
+              initPlayer(event, playerError, document.getElementById('streamLinks'), playerReload);
             })
             .catch(error => {
               console.error('Stream fetch error:', error);
               document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
               playerError.className = 'alert alert-danger mt-3';
               playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
+              playerReload.className = 'text-center mt-3';
             });
+
+          // Show reload button after 3 seconds if player not loaded
+          setTimeout(() => {
+            if (!document.querySelector('#player video') && playerError.className.includes('d-none')) {
+              playerReload.className = 'text-center mt-3';
+              console.log('PlayerJS: Showing reload button after timeout');
+            }
+          }, 3000);
 
           checkAuthStatus(); // Initialize auth status
         } catch (error) {
@@ -217,6 +238,7 @@
           document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
           document.getElementById('playerError').className = 'alert alert-danger mt-3';
           document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
+          document.getElementById('playerReload').className = 'text-center mt-3';
         }
       }
 
@@ -224,52 +246,6 @@
         console.log('DOM loaded at', new Date().toISOString());
         initPage();
       });
-
-      // Handle dynamic navigation
-      document.addEventListener('click', function(event) {
-        const link = event.target.closest('[data-navigate]');
-        if (link) {
-          event.preventDefault();
-          const url = link.getAttribute('href');
-          history.pushState({}, '', url);
-          loadPage(url);
-        }
-      });
-
-      window.addEventListener('popstate', function(event) {
-        loadPage(window.location.pathname);
-      });
-
-      function loadPage(url) {
-        console.log('Loading page:', url);
-        fetch(url)
-          .then(response => {
-            if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-            return response.text();
-          })
-          .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            document.body.innerHTML = doc.body.innerHTML;
-            document.title = doc.title;
-            // Reinitialize scripts
-            const scripts = document.createElement('script');
-            scripts.textContent = `
-              ${initPlayer ? initPlayer.toString() : ''}
-              ${initPage.toString()}
-              document.addEventListener('DOMContentLoaded', initPage);
-            `;
-            document.body.appendChild(scripts);
-            // Trigger DOMContentLoaded
-            const event = new Event('DOMContentLoaded');
-            document.dispatchEvent(event);
-            console.log('Page loaded:', url);
-          })
-          .catch(error => {
-            console.error('Navigation error:', error);
-            window.location.href = url; // Fallback to full reload
-          });
-      }
     </script>
   </body>
 </html>
