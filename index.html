@@ -3,20 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>StreamX - Free PPV and More</title>
-    <meta name="description" content="StreamX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
-    <meta name="keywords" content="streamx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
-    <meta property="og:title" content="StreamX - Free PPV and More" />
-    <meta property="og:url" content="https://your-streamx-site.vercel.app" />
+    <title>FutbolX - Free PPV and More</title>
+    <meta name="description" content="FutbolX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
+    <meta name="keywords" content="futbolx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
+    <meta property="og:title" content="FutbolX - Free PPV and More" />
+    <meta property="og:url" content="https://your-futbolx-site.vercel.app" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="StreamX - Free PPV and More">
+    <meta name="twitter:title" content="FutbolX - Free PPV and More">
     <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=6">
+    <link rel="stylesheet" href="/assets/css/main.css?v=7">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
       .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
@@ -24,10 +24,18 @@
     </style>
   </head>
   <body>
-    <!-- Left Sidebar Navbar -->
+    <!-- Top Bar -->
+    <nav class="top-bar fixed-top">
+      <div class="container-fluid">
+        <button class="btn btn-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <span class="futbolx-brand">FutbolX</span>
+      </div>
+    </nav>
+    <!-- Left Sidebar -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="sidebarMenuLabel">StreamX</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
@@ -54,21 +62,13 @@
       </div>
     </div>
     <!-- Main Content -->
-    <div class="container-fluid">
-      <button class="btn btn-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-        <i class="fas fa-bars"></i>
-      </button>
+    <div class="container-fluid main-content">
       <div class="text-center py-5 bg-dark hero-background">
-        <h1 class="display-4 fw-bold">Welcome to StreamX</h1>
+        <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
         <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       </div>
       <div class="container pt-2 text-white">
         <div id="errorContainer" class="d-none error-alert"></div>
-        <div class="alert alert-warning alert-dismissible mt-4" role="alert">
-          <h4 class="alert-heading"><strong>Join Our Community!</strong></h4>
-          Connect with us on <a href="https://discord.gg/5AMPdpckjH" class="alert-link">Discord</a> for updates and support.
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
         <div id="live" class="mt-4">
           <h2 class="m-0">
             <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live Now
@@ -82,7 +82,7 @@
           <div id="upcomingcards" class="event-grid py-3"></div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">StreamX 2025</p>
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
           <ul class="nav justify-content-center justify-content-lg-end mb-0">
             <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
             <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
@@ -177,7 +177,7 @@
               }
               let isLive = startTime <= Math.floor(Date.now() / 1000) || stream.always_live == 1;
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=StreamX';
+              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
               let streamHtml = `
                 <div class="event-card">
                   <a href="/live/${stream.uri_name}" class="card-link">
@@ -208,7 +208,6 @@
             if (!upcomingcards.innerHTML) {
               upcomingcards.innerHTML = '<p>No upcoming events scheduled.</p>';
             }
-            // Trigger scroll animations
             const cards = document.querySelectorAll('.event-card');
             const observer = new IntersectionObserver((entries) => {
               entries.forEach(entry => {
@@ -234,7 +233,6 @@
           loadContent(api);
           setInterval(() => loadContent(api), 60000);
           countdown();
-          // Close offcanvas on outside click
           document.addEventListener('click', function(event) {
             const offcanvas = document.getElementById('sidebarMenu');
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
@@ -266,7 +264,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
-    <script defer data-domain="your-streamx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+    <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
