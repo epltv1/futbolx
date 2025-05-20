@@ -125,7 +125,13 @@
         </footer>
       </div>
     </div>
-    <script defer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script async src="/assets/js/api.js"></script>
+    <script async src="/assets/js/auth.js"></script>
+    <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+    <script>
+      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
+      
       function zeropad(num) {
         return num > 9 ? num : '0' + num;
       }
@@ -211,7 +217,7 @@
               try {
                 startTime = new Date(stream.starts_at).getTime() / 1000;
                 if (isNaN(startTime)) throw new Error('Invalid start time');
-                endTime = stream.ends_at ? new Date(stream.ends_at).getTime() / 1000 : startTime + 3 * 3600; // Default 3 hours
+                endTime = stream.ends_at ? new Date(stream.ends_at).getTime() / 1000 : startTime + 3 * 3600;
                 if (isNaN(endTime)) endTime = startTime + 3 * 3600;
               } catch (e) {
                 console.warn(`Invalid time for stream ${stream.name}: ${stream.starts_at}, ${stream.ends_at}`);
@@ -220,7 +226,7 @@
               }
               let isLive = (startTime <= now && now <= endTime) || stream.always_live == 1;
               let isEnded = now > endTime;
-              if (isEnded) return; // Skip ended events
+              if (isEnded) return;
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
               let streamHtml = `
@@ -282,6 +288,7 @@
       }
       function initPage() {
         try {
+          console.log('Initializing page at', new Date().toISOString());
           // Initialize theme
           const htmlElement = document.documentElement;
           const themeToggle = document.getElementById('themeToggle');
@@ -298,13 +305,13 @@
           });
 
           // Offcanvas outside click
-          document.addEventListener('click', function(event) {
-            const offcanvas = document.getElementById('sidebarMenu');
+          const offcanvasElement = document.getElementById('sidebarMenu');
+          document.addEventListener('click', (event) => {
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
-            const isOffcanvasOpen = offcanvas.classList.contains('show');
-            const clickedInsideOffcanvas = offcanvas.contains(event.target) || toggler.contains(event.target);
-            if (isOffcanvasOpen && !clickedInsideOffcanvas) {
-              bootstrap.Offcanvas.getInstance(offcanvas).hide();
+            const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+            const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+            if (isOffcanvasOpen && !clickedInside) {
+              bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
             }
           });
 
@@ -313,7 +320,8 @@
           loadContent(api);
           setInterval(() => loadContent(api), 60000);
           countdown();
-          checkAuthStatus(); // Initialize auth status
+          checkAuthStatus();
+          console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
           document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
@@ -321,12 +329,12 @@
           document.getElementById('livecards').innerHTML = '<p>Unable to load streams. Check back later!</p>';
         }
       }
-      window.onload = function() {
-        console.log('Window loaded at', new Date().toISOString());
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM loaded at', new Date().toISOString());
         initPage();
-      };
+      });
       // Handle dynamic navigation
-      document.addEventListener('click', function(event) {
+      document.addEventListener('click', (event) => {
         const link = event.target.closest('[data-navigate]');
         if (link) {
           event.preventDefault();
@@ -338,7 +346,7 @@
       // Handle device back button
       window.addEventListener('popstate', (event) => {
         console.log('Back button detected, navigating to:', window.location.pathname);
-        window.location.href = window.location.pathname; // Hard reload to current or previous page
+        window.location.href = window.location.pathname;
       });
       function loadPage(url) {
         fetch(url)
@@ -361,14 +369,9 @@
           })
           .catch(error => {
             console.error('Navigation error:', error);
-            window.location.href = url; // Fallback to full reload
+            window.location.href = url;
           });
       }
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap/5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script async src="/assets/js/api.js"></script>
-    <script async src="/assets/js/auth.js"></script>
-    <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
