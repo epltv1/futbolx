@@ -62,14 +62,13 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-12">
-            <a href="/" class="btn btn-back mb-3" onclick="window.location.href='/'; return false;"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <div class="d-flex align-items-center mb-3">
+              <a href="/" class="btn btn-back" onclick="window.location.href='/'; return false;"><i class="fas fa-arrow-left"></i> Back to Home</a>
+              <button id="startLivestream" class="btn btn-danger ms-3">Click to Start Livestream</button>
+            </div>
             <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
               <div id="player"></div>
-              <div id="playerReload" class="d-none text-center mt-3">
-                <p>If video takes long, click here to refresh the page.</p>
-                <button class="btn btn-danger" onclick="window.location.reload()">Refresh</button>
-              </div>
             </div>
             <div id="streamLinks" class="stream-links mt-3"></div>
             <div id="playerError" class="alert alert-danger mt-3 d-none"></div>
@@ -87,24 +86,24 @@
         </footer>
       </div>
     </div>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script src="/assets/js/playerjs.js?v=3"></script>
-    <script defer>
-      let playerInstance = null; // Track PlayerJS instance
+    <script>
+      let playerInstance = null;
+      let streamData = null;
 
-      function initPlayer(event, playerError, streamLinks, playerReload, attempt = 0, maxAttempts = 10) {
+      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
           playerError.innerText = 'Failed to load player. Please refresh the page.';
-          playerReload.className = 'text-center mt-3';
           console.error('PlayerJS: Max retry attempts reached');
           return;
         }
         if (typeof Playerjs === 'undefined') {
           console.warn(`PlayerJS not loaded, attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, playerReload, attempt + 1, maxAttempts), 200);
+          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
           return;
         }
         try {
@@ -117,7 +116,6 @@
               console.error('PlayerJS Error:', err);
               playerError.className = 'alert alert-danger mt-3';
               playerError.innerText = 'Failed to play stream: ' + err.message;
-              playerReload.className = 'text-center mt-3';
             }
           });
           console.log('PlayerJS: Initialized successfully');
@@ -131,7 +129,6 @@
             if (btn) {
               const url = btn.getAttribute('data-stream-url');
               playerError.className = 'alert alert-danger mt-3 d-none';
-              playerReload.className = 'd-none';
               try {
                 console.log('PlayerJS: Switching to stream', url);
                 playerInstance.api('file', url);
@@ -143,7 +140,6 @@
                 console.error('Stream switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'Failed to switch stream: ' + err.message;
-                playerReload.className = 'text-center mt-3';
               }
             }
           });
@@ -151,12 +147,12 @@
           console.error('Player init error:', err);
           playerError.className = 'alert alert-danger mt-3';
           playerError.innerText = 'Failed to initialize player: ' + err.message;
-          playerReload.className = 'text-center mt-3';
         }
       }
 
       function initPage() {
         try {
+          console.log('Initializing page at', new Date().toISOString());
           // Initialize theme
           const htmlElement = document.documentElement;
           const themeToggle = document.getElementById('themeToggle');
@@ -173,21 +169,24 @@
           });
 
           // Offcanvas outside click
-          document.addEventListener('click', function(event) {
-            const offcanvas = document.getElementById('sidebarMenu');
+          const offcanvasElement = document.getElementById('sidebarMenu');
+          document.addEventListener('click', (event) => {
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
-            const isOffcanvasOpen = offcanvas.classList.contains('show');
-            const clickedInsideOffcanvas = offcanvas.contains(event.target) || toggler.contains(event.target);
-            if (isOffcanvasOpen && !clickedInsideOffcanvas) {
-              bootstrap.Offcanvas.getInstance(offcanvas).hide();
+            const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+            const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+            if (isOffcanvasOpen && !clickedInside) {
+              bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
             }
           });
 
-          // Load stream
+          // Load stream data
           const uriName = window.location.pathname.split('/').pop();
           const api = new Api(`${window.location.origin}/api`);
           const playerError = document.getElementById('playerError');
-          const playerReload = document.getElementById('playerReload');
+          const playerContainer = document.querySelector('.video-container');
+          const streamLinks = document.getElementById('streamLinks');
+          const startLivestreamBtn = document.getElementById('startLivestream');
+
           fetch(api.baseUrl + '/stream')
             .then(res => {
               if (!res.ok) throw new Error(`HTTP error ${res.status}`);
@@ -198,7 +197,6 @@
                 document.getElementById('eventTitle').innerText = 'Error: Stream not found';
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'No streams available.';
-                playerReload.className = 'text-center mt-3';
                 return;
               }
               let event = null;
@@ -212,35 +210,39 @@
                 document.getElementById('eventTitle').innerText = 'Error: No streams available';
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'No stream links found for this event.';
-                playerReload.className = 'text-center mt-3';
                 return;
               }
               document.getElementById('eventTitle').innerText = event.name;
-              initPlayer(event, playerError, document.getElementById('streamLinks'), playerReload);
+              streamData = event; // Store event for later use
             })
             .catch(error => {
               console.error('Stream fetch error:', error);
               document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
               playerError.className = 'alert alert-danger mt-3';
               playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
-              playerReload.className = 'text-center mt-3';
             });
 
-          // Show reload button after 2 seconds if player not loaded
-          setTimeout(() => {
-            if (!playerInstance) {
-              playerReload.className = 'text-center mt-3';
-              console.log('PlayerJS: Showing reload button after timeout');
+          // Start livestream button
+          startLivestreamBtn.addEventListener('click', () => {
+            if (streamData) {
+              playerContainer.classList.add('fade-in');
+              streamLinks.classList.add('fade-in');
+              startLivestreamBtn.style.display = 'none';
+              initPlayer(streamData, playerError, streamLinks);
+              console.log('Start Livestream clicked, player initialized');
+            } else {
+              playerError.className = 'alert alert-danger mt-3';
+              playerError.innerText = 'Stream data not loaded yet. Please try again.';
             }
-          }, 2000);
+          });
 
-          checkAuthStatus(); // Initialize auth status
+          checkAuthStatus();
+          console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
           document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
           document.getElementById('playerError').className = 'alert alert-danger mt-3';
           document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
-          document.getElementById('playerReload').className = 'text-center mt-3';
         }
       }
 
@@ -252,7 +254,7 @@
       // Handle device back button
       window.addEventListener('popstate', (event) => {
         console.log('Back button detected, navigating to:', window.location.pathname);
-        window.location.href = window.location.pathname; // Hard reload to current or previous page
+        window.location.href = window.location.pathname;
       });
     </script>
   </body>
