@@ -2,84 +2,70 @@
   "success": true,
   "streams": [
     {
-      "id": "football",
       "category": "Football",
       "always_live": 0,
       "streams": [
         {
-          "uri_name": "brighton-vs-liverpool",
           "name": "Brighton vs Liverpool",
-          "poster": "https://plive.live/uploads/682a05913eb5e.png",
-          "tag": "EPL",
-          "viewers": 2000,
-          "starts_at": "2025-05-19T19:00:00Z",
-          "end_time": "2025-05-19T21:00:00Z"
-        },
-        {
-          "uri_name": "crystal-palace-vs-wolves",
-          "name": "Crystal Palace vs Wolves",
-          "poster": "https://plive.live/uploads/682a0600bd8f9.png",
-          "tag": "EPL",
-          "viewers": 1800,
-          "starts_at": "2025-05-20T19:00:00Z",
-          "end_time": "2025-05-20T21:00:00Z"
+          "uri_name": "brighton-vs-liverpool",
+          "poster": "https://i.postimg.cc/8PRrvYw4/IMG-20241226-211229-430.jpg",
+          "tag": "Premier League",
+          "starts_at": "2025-05-21T20:00:00Z",
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Stream",
+              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+            },
+            {
+              "title": "Alternate Stream",
+              "url": "https://epltv1.github.io/usa.m3u8"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "nba",
       "category": "NBA",
-      "always_live": 1,
+      "always_live": 0,
       "streams": [
         {
-          "uri_name": "nba-game",
-          "name": "NBA: Lakers vs Warriors",
-          "poster": "",
-          "tag": "NBA",
-          "viewers": 1500,
-          "starts_at": "2025-05-19T14:00:00Z",
-          "end_time": "2025-05-19T17:00:00Z"
+          "name": "Lakers vs Warriors",
+          "uri_name": "lakers-vs-warriors",
+          "poster": "https://via.placeholder.com/285x160?text=NBA",
+          "tag": "NBA Playoffs",
+          "starts_at": "2025-05-22T21:00:00Z",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Primary Feed",
+              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "fights",
-      "category": "Fights",
+      "category": "Others",
       "always_live": 0,
       "streams": [
         {
-          "uri_name": "boxing-match",
-          "name": "Boxing: Championship Fight",
-          "poster": "",
-          "tag": "Boxing",
-          "viewers": 1200,
-          "starts_at": "2025-05-21T15:00:00Z",
-          "end_time": "2025-05-21T18:00:00Z"
-        },
-        {
-          "uri_name": "ufc-fight",
-          "name": "UFC 305: Main Event",
-          "poster": "",
-          "tag": "UFC",
-          "viewers": 800,
-          "starts_at": "2025-05-22T14:00:00Z",
-          "end_time": "2025-05-22T17:00:00Z"
-        }
-      ]
-    },
-    {
-      "id": "tennis",
-      "category": "Tennis",
-      "always_live": 0,
-      "streams": [
-        {
-          "uri_name": "tennis-match",
-          "name": "Tennis: French Open Qualifier",
-          "poster": "",
-          "tag": "ATP",
-          "viewers": 500,
-          "starts_at": "2025-05-20T10:00:00Z",
-          "end_time": "2025-05-20T13:00:00Z"
+          "name": "Esports Tournament",
+          "uri_name": "esports-tournament",
+          "poster": "https://via.placeholder.com/285x160?text=Esports",
+          "tag": "Gaming",
+          "starts_at": "2025-05-23T18:00:00Z",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Stream 1",
+              "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+            },
+            {
+              "title": "Stream 2",
+              "url": "https://test-streams.mux.dev/test.m3u8"
+            }
+          ]
         }
       ]
     }
