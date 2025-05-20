@@ -135,7 +135,8 @@
         errorContainer.innerHTML = '';
 
         try {
-          api.get().then(data => { // Changed to api.get()
+          api.get().then(data => {
+            console.log('Stream data loaded:', data);
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
 
