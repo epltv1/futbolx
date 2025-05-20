@@ -3,6 +3,7 @@
 body {
   font-family: 'Kanit', sans-serif;
   transition: background-color 0.3s, color 0.3s;
+  color: #fff; /* Default for dark mode */
 }
 
 [data-bs-theme="dark"] body {
@@ -38,21 +39,24 @@ body {
 
 /* FutbolX Brand Animation */
 .futbolx-brand {
-  color: #fff;
   font-size: 1.5rem;
   font-weight: 600;
-  overflow: hidden;
-  white-space: nowrap;
-  animation: typewriter 2s steps(7) forwards;
+  text-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+  animation: glow 2s ease-in-out infinite;
+}
+
+[data-bs-theme="dark"] .futbolx-brand {
+  color: #fff;
 }
 
 [data-bs-theme="light"] .futbolx-brand {
   color: #333;
 }
 
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
+@keyframes glow {
+  0% { text-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
+  50% { text-shadow: 0 0 15px rgba(255, 77, 77, 0.8), 0 0 20px rgba(255, 77, 77, 0.6); }
+  100% { text-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
 }
 
 /* Hamburger Button */
@@ -70,7 +74,8 @@ body {
 
 /* Sidebar */
 .offcanvas {
-  width: 250px;
+  width: 300px !important; /* Fixed width */
+  max-width: 70vw; /* Responsive on mobile */
   background: #000;
   transition: background-color 0.3s;
 }
@@ -93,8 +98,11 @@ body {
 }
 
 .nav-link {
-  color: #fff !important;
   transition: color 0.3s;
+}
+
+[data-bs-theme="dark"] .nav-link {
+  color: #fff !important;
 }
 
 [data-bs-theme="light"] .nav-link {
@@ -123,6 +131,10 @@ body {
 }
 
 .dropdown-item {
+  transition: color 0.3s, background 0.3s;
+}
+
+[data-bs-theme="dark"] .dropdown-item {
   color: #fff !important;
 }
 
@@ -143,7 +155,7 @@ body {
 /* Main Content */
 .main-content {
   padding-top: 60px; /* Space for top bar */
-  padding-left: 270px; /* Space for sidebar */
+  padding-left: 320px; /* Space for sidebar */
 }
 
 @media (max-width: 991.98px) {
@@ -169,11 +181,7 @@ body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.alert {
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
+/* Card Styles */
 .card {
   border: none;
   border-radius: 10px;
@@ -184,10 +192,12 @@ body {
 
 [data-bs-theme="dark"] .card {
   background: #222 !important;
+  color: #fff !important;
 }
 
 [data-bs-theme="light"] .card {
   background: #fff !important;
+  color: #333 !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -220,6 +230,7 @@ body {
   font-weight: 600;
 }
 
+/* Footer */
 footer {
   padding: 20px 0;
 }
@@ -240,12 +251,12 @@ footer a {
   color: #aaa !important;
 }
 
-[data-bs-theme="dark"] footer a:hover {
-  color: #ffd700 !important;
-}
-
 [data-bs-theme="light"] footer a {
   color: #555 !important;
+}
+
+footer a:hover {
+  color: #ff4d4d !important;
 }
 
 [data-bs-theme="light"] footer a:hover {
@@ -254,11 +265,14 @@ footer a {
 
 /* Theme toggle button */
 #themeToggle {
-  color: #fff;
   background: none;
   border: none;
   padding: 0.5rem;
   font-size: 1.2rem;
+}
+
+[data-bs-theme="dark"] #themeToggle {
+  color: #fff;
 }
 
 [data-bs-theme="light"] #themeToggle {
