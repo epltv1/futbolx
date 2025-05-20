@@ -16,77 +16,82 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=5">
+    <link rel="stylesheet" href="/assets/css/main.css?v=6">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
+      .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+      .event-card.visible { opacity: 1; transform: translateY(0); }
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-black">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/"><img src="/assets/img/logo.png" height="30" alt="StreamX Logo" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
-          </ul>
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
-            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
-            <li class="nav-item">
-              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
+    <!-- Left Sidebar Navbar -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarMenuLabel">StreamX</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-    </nav>
-    <div class="container-fluid text-center py-5 bg-dark hero-background">
-      <h1 class="display-4 fw-bold">Welcome to StreamX</h1>
-      <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+          <li class="nav-item">
+            <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+              <i class="fas fa-moon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="container container-fluid pt-2 text-white">
-      <div id="errorContainer" class="d-none error-alert"></div>
-      <div class="alert alert-warning alert-dismissible mt-4" role="alert">
-        <h4 class="alert-heading"><strong>Join Our Community!</strong></h4>
-        Connect with us on <a href="https://discord.gg/5AMPdpckjH" class="alert-link">Discord</a> for updates and support.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <button class="btn btn-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="text-center py-5 bg-dark hero-background">
+        <h1 class="display-4 fw-bold">Welcome to StreamX</h1>
+        <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       </div>
-      <div id="live" class="mt-4">
-        <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
-          <h2 class="m-0 justify-content-start w-100 align-content-center">
+      <div class="container pt-2 text-white">
+        <div id="errorContainer" class="d-none error-alert"></div>
+        <div class="alert alert-warning alert-dismissible mt-4" role="alert">
+          <h4 class="alert-heading"><strong>Join Our Community!</strong></h4>
+          Connect with us on <a href="https://discord.gg/5AMPdpckjH" class="alert-link">Discord</a> for updates and support.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div id="live" class="mt-4">
+          <h2 class="m-0">
             <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live Now
           </h2>
-          <ul id="categorybuttons" class="nav justify-content-end"></ul>
+          <div id="livecards" class="event-grid py-3">
+            <p>Loading streams...</p>
+          </div>
         </div>
-        <div id="livecards" class="event-grid py-3">
-          <p>Loading streams...</p>
+        <div id="upcoming" class="mt-5">
+          <h2 class="m-0">Upcoming Events</h2>
+          <div id="upcomingcards" class="event-grid py-3"></div>
         </div>
+        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">StreamX 2025</p>
+          <ul class="nav justify-content-center justify-content-lg-end mb-0">
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+          </ul>
+        </footer>
       </div>
-      <div id="categories" class="mt-5"></div>
-      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">StreamX 2025</p>
-        <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
-        </ul>
-      </footer>
     </div>
     <script defer>
       function zeropad(num) {
@@ -134,12 +139,10 @@
         ])
           .then(([streamsData, streamData]) => {
             console.log('API Responses:', { streamsData, streamData });
-            const categories = document.getElementById('categories');
             const livecards = document.getElementById('livecards');
-            const ulElement = document.getElementById('categorybuttons');
-            categories.innerHTML = '';
+            const upcomingcards = document.getElementById('upcomingcards');
             livecards.innerHTML = '';
-            ulElement.innerHTML = '';
+            upcomingcards.innerHTML = '';
             const allStreams = [];
             if (streamsData && streamsData.success && Array.isArray(streamsData.streams)) {
               allStreams.push(...streamsData.streams);
@@ -154,69 +157,68 @@
               livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
               return;
             }
+            const allEvents = [];
             allStreams.forEach(categoryData => {
-              if (!categoryData.streams || categoryData.streams.length === 0) return;
-              let categoryName = categoryData.category;
-              let alwaysLive = categoryData.always_live;
-              let streams = categoryData.streams;
-              let categoryId = categoryData.id;
-              const liElement = document.createElement('li');
-              liElement.className = 'nav-item';
-              const aElement = document.createElement('a');
-              aElement.className = 'nav-link';
-              aElement.href = `#${categoryId}`;
-              aElement.textContent = categoryName;
-              liElement.appendChild(aElement);
-              ulElement.appendChild(liElement);
-              let categoryHtml = `
-                <div id="${categoryId}-container" class="mt-5">
-                  <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success">24/7</span>' : ''}</h2>
-                  <div id="${categoryId}" class="event-grid py-3"></div>
-                </div>`;
-              categories.innerHTML += categoryHtml;
-              streams.forEach((stream, index) => {
-                let startTime;
-                try {
-                  startTime = new Date(stream.starts_at).getTime() / 1000;
-                  if (isNaN(startTime)) throw new Error('Invalid start time');
-                } catch (e) {
-                  console.warn(`Invalid starts_at for stream ${stream.name}: ${stream.starts_at}`);
-                  startTime = Math.floor(Date.now() / 1000);
-                }
-                let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
-                let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=StreamX';
-                let streamHtml = `
-                  <div class="event-card">
-                    <a href="/live/${stream.uri_name}" class="card-link">
-                      <div class="card bg-black text-white">
-                        ${liveBadge}
-                        <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                        <div class="card-body">
-                          <h2 class="card-title">${stream.name}</h2>
-                          <p class="card-text">
-                            <span class="event-tag text-muted">${stream.tag}</span>
-                            <span class="float-end">${isLive 
-                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}</span>
-                          </p>
-                        </div>
+              if (categoryData.streams && categoryData.streams.length > 0) {
+                allEvents.push(...categoryData.streams.map(stream => ({
+                  ...stream,
+                  always_live: categoryData.always_live || stream.always_live
+                })));
+              }
+            });
+            allEvents.forEach((stream, index) => {
+              let startTime;
+              try {
+                startTime = new Date(stream.starts_at).getTime() / 1000;
+                if (isNaN(startTime)) throw new Error('Invalid start time');
+              } catch (e) {
+                console.warn(`Invalid starts_at for stream ${stream.name}: ${stream.starts_at}`);
+                startTime = Math.floor(Date.now() / 1000);
+              }
+              let isLive = startTime <= Math.floor(Date.now() / 1000) || stream.always_live == 1;
+              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=StreamX';
+              let streamHtml = `
+                <div class="event-card">
+                  <a href="/live/${stream.uri_name}" class="card-link">
+                    <div class="card bg-black text-white">
+                      ${liveBadge}
+                      <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                      <div class="card-body">
+                        <h2 class="card-title">${stream.name}</h2>
+                        <p class="card-text">
+                          <span class="event-tag text-muted">${stream.tag}</span>
+                          <span class="float-end">${isLive 
+                            ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                            : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}</span>
+                        </p>
                       </div>
-                    </a>
-                  </div>`;
-                if (isLive) {
-                  livecards.innerHTML += streamHtml;
-                } else {
-                  document.getElementById(categoryId).innerHTML += streamHtml;
-                }
-              });
-              if (!document.getElementById(categoryId).innerHTML) {
-                document.getElementById(`${categoryId}-container`).remove();
+                    </div>
+                  </a>
+                </div>`;
+              if (isLive) {
+                livecards.innerHTML += streamHtml;
+              } else {
+                upcomingcards.innerHTML += streamHtml;
               }
             });
             if (!livecards.innerHTML) {
-              livecards.innerHTML = '<p>No streams are live right now. Scroll down to see what\'s on later.</p>';
+              livecards.innerHTML = '<p>No streams are live right now. Check out upcoming events!</p>';
             }
+            if (!upcomingcards.innerHTML) {
+              upcomingcards.innerHTML = '<p>No upcoming events scheduled.</p>';
+            }
+            // Trigger scroll animations
+            const cards = document.querySelectorAll('.event-card');
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1 });
+            cards.forEach(card => observer.observe(card));
           })
           .catch(error => {
             console.error('API Fetch Error:', error);
@@ -232,13 +234,14 @@
           loadContent(api);
           setInterval(() => loadContent(api), 60000);
           countdown();
+          // Close offcanvas on outside click
           document.addEventListener('click', function(event) {
-            const navbarCollapse = document.getElementById('navbarSupportedContent');
-            const navbarToggler = document.querySelector('.navbar-toggler');
-            const isNavbarOpen = navbarCollapse.classList.contains('show');
-            const clickedInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
-            if (isNavbarOpen && !clickedInsideNavbar) {
-              bootstrap.Collapse.getInstance(navbarCollapse).hide();
+            const offcanvas = document.getElementById('sidebarMenu');
+            const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+            const isOffcanvasOpen = offcanvas.classList.contains('show');
+            const clickedInsideOffcanvas = offcanvas.contains(event.target) || toggler.contains(event.target);
+            if (isOffcanvasOpen && !clickedInsideOffcanvas) {
+              bootstrap.Offcanvas.getInstance(offcanvas).hide();
             }
           });
           const themeToggle = document.getElementById('themeToggle');
