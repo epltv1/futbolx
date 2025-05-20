@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
@@ -17,8 +17,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=26">
-    <style>.loading-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);display: flex;align-items: center;justify-content: center;z-index: 9999;backdrop-filter: blur(8px);}.loading-overlay.hidden {display: none;}</style>
+    <link rel="stylesheet" href="/assets/css/main.css?v=36">
+    <style>
+      .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
+      .loading-overlay.hidden { display: none; }
+      .error-alert { max-width: 500px; margin: 20px auto; }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-black">
@@ -51,10 +55,9 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid text-center py-5 bg-dark">
+    <div class="container-fluid text-center py-5 bg-dark hero-background">
       <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="hero-title">Welcome to Futbolx</h1>
       <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="hero-subtitle">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
-      <a href="/live" class="btn btn-danger btn-lg mt-3" data-aos="fade-up" data-aos-delay="200" data-lang="hero-button">Watch Now</a>
     </div>
     <div id="loadingOverlay" class="loading-overlay">
       <noscript>
@@ -66,12 +69,12 @@
       <div class="custom-loader" id="loaderSpinner"></div>
     </div>
     <div class="container container-fluid pt-2 text-white">
+      <div id="errorContainer" class="d-none error-alert"></div>
       <div id="live" class="mt-4">
         <div class="d-flex flex-nowrap flex-lg-row justify-content-lg-between align-content-center">
           <h2 class="m-0 justify-content-start w-100 align-content-center" data-lang="live-title">
             <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live now
           </h2>
-          <ul id="categorybuttons" class="nav justify-content-end"></ul>
         </div>
         <div id="livecards" class="event-grid py-3"></div>
       </div>
@@ -89,8 +92,9 @@
     </div>
     <script defer>
       function zeropad(num) {
-        return num > 9 ? num : '0'+num;
+        return num > 9 ? num : '0' + num;
       }
+
       function countdown() {
         const now = Math.floor(Date.now() / 1000);
         const countdownElements = document.querySelectorAll('[data-start]');
@@ -98,107 +102,144 @@
           const startTime = parseInt(element.getAttribute('data-start'), 10);
           let timer = startTime - now;
           if (timer > 0) {
-            let days = Math.floor(timer / 86400),
-                hours = Math.floor(timer / 3600),
-                mins = Math.floor(timer / 60),
-                secs = Math.floor(timer);
-            let dd = days,
-                hh = hours - days * 24,
-                mm = mins - hours * 60,
-                ss = secs - mins * 60;
-            let clock = `${dd} days, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 1) clock = `${dd} day, ${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            if (dd === 0) clock = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            element.innerHTML = clock;
+            let days = Math.floor(timer / 86400);
+            let weeks = Math.floor(days / 7);
+            let hours = Math.floor(timer / 3600);
+            let mins = Math.floor(timer / 60);
+            let secs = Math.floor(timer);
+            let displayText = '';
+            if (days >= 7) {
+              displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
+            } else if (days >= 1) {
+              displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
+            } else {
+              let hh = hours - days * 24;
+              let mm = mins - hours * 60;
+              let ss = secs - mins * 60;
+              displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
+            }
+            element.innerHTML = displayText;
           } else {
-            element.innerHTML = '<strong data-lang="live-soon">Live soon</strong>';
+            element.innerHTML = '<a href="' + element.getAttribute('data-uri') + '" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>';
             element.style.color = '#ff8280';
           }
         });
         setTimeout(countdown, 1000);
       }
+
       function loadContent(api) {
+        // Reset error container
+        const errorContainer = document.getElementById("errorContainer");
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+
         try {
-          const ulElement = document.getElementById('categorybuttons');
           api.get("/streams").then(data => {
-            ulElement.innerHTML = '';
+            // Clear previous content
             document.getElementById("categories").innerHTML = '';
             document.getElementById("livecards").innerHTML = '';
-            if (!data.success && data.error) {
-              $("#loaderError").removeClass('d-none');
-              $("#loaderSpinner").addClass('d-none');
-              $("#loaderError").text(data.error);
+
+            // Validate API response
+            if (!data || !data.success || !Array.isArray(data.streams)) {
+              console.error('Invalid API response:', data);
+              errorContainer.className = 'alert alert-danger error-alert';
+              errorContainer.innerHTML = 'Failed to load streams. Invalid data received.';
               return;
             }
-            if (data.streams.length >= 1) {
-              data.streams.forEach(categoryData => {
-                let categoryName = categoryData.category;
-                let alwaysLive = categoryData.always_live;
-                let streams = categoryData.streams;
-                let categoryId = categoryData.id;
-                const liElement = document.createElement('li');
-                liElement.className = 'nav-item';
-                const aElement = document.createElement('a');
-                aElement.className = 'nav-link';
-                aElement.href = `#${categoryId}`;
-                aElement.textContent = categoryName;
-                liElement.appendChild(aElement);
-                ulElement.appendChild(liElement);
-                let categoryHtml = `
-                  <div id="${categoryId}-container" class="mt-5">
-                    <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
-                    <div id="${categoryId}" class="event-grid py-3"></div>
-                  </div>`;
-                document.getElementById("categories").innerHTML += categoryHtml;
-                streams.forEach((stream, index) => {
-                  let isLive = stream.starts_at <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
-                  let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                  let livecounter = isLive
-                    ? `<span class="float-end viewer-count"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>`
-                    : `<span class="float-end countdown" data-start="${stream.starts_at}"></span>`;
-                  let streamHtml = `
-                    <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                      <a href="/live/${stream.uri_name}" class="card-link">
-                        <div class="card bg-black text-white">
-                          ${liveBadge}
-                          <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
-                          <div class="card-body">
-                            <h5 class="card-title">${stream.name}</h5>
-                            <p class="card-text">
-                              <span class="event-tag text-muted">${stream.tag}</span>
-                              ${livecounter}
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </div>`;
-                  if (isLive) {
-                    document.getElementById("livecards").innerHTML += streamHtml;
-                  } else {
-                    document.getElementById(categoryId).innerHTML += streamHtml;
-                  }
-                });
-                if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
-              });
-            } else {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            $("#loadingOverlay").hide();
-            if ($(`#livecards`).is(':empty')) {
-              document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
-            }
-            updateLanguage(); // Apply translations after content loads
+
+            renderStreams(data);
           }).catch(error => {
-            $("#loaderError").removeClass('d-none');
-            $("#loaderSpinner").addClass('d-none');
-            $("#loaderError").text("Failed to load streams");
+            console.error('API Error:', error.message, error.stack);
+            errorContainer.className = 'alert alert-danger error-alert';
+            errorContainer.innerHTML = 'Failed to load streams due to a network issue. Please check your internet and try again.';
           });
         } catch (err) {
-          $("#loaderError").removeClass('d-none');
+          console.error('Script Error:', err.message, err.stack);
+          errorContainer.className = 'alert alert-danger error-alert';
+          errorContainer.innerHTML = 'Error loading streams. Please try again later.';
+        } finally {
           $("#loaderSpinner").addClass('d-none');
-          $("#loaderError").text("API communication fail");
+          $("#loadingOverlay").hide();
         }
       }
+
+      function renderStreams(data) {
+        // Ensure error container is hidden
+        const errorContainer = document.getElementById("errorContainer");
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+
+        if (data.streams.length >= 1) {
+          data.streams.forEach(categoryData => {
+            // Skip if no streams in category
+            if (!categoryData.streams || categoryData.streams.length === 0) {
+              console.log(`Skipping empty category: ${categoryData.id}`);
+              return;
+            }
+
+            let categoryName = categoryData.category;
+            let alwaysLive = categoryData.always_live;
+            let streams = categoryData.streams;
+            let categoryId = categoryData.id;
+            console.log(`Rendering category: ${categoryId}, Name: ${categoryName}, Streams: ${streams.length}`);
+
+            let categoryHtml = `
+              <div id="${categoryId}-container" class="mt-5">
+                <h2 class="m-0">${categoryName}${alwaysLive == 1 ? ' <span class="badge bg-success" data-lang="category-247">24/7</span>' : ''}</h2>
+                <div id="${categoryId}" class="event-grid py-3"></div>
+              </div>`;
+            document.getElementById("categories").innerHTML += categoryHtml;
+            streams.forEach((stream, index) => {
+              let startTime;
+              try {
+                startTime = new Date(stream.starts_at).getTime() / 1000;
+                if (isNaN(startTime)) throw new Error('Invalid start time');
+              } catch (e) {
+                console.warn(`Invalid starts_at for stream ${stream.name}: ${stream.starts_at}`);
+                startTime = Math.floor(Date.now() / 1000); // Fallback to now
+              }
+              let isLive = startTime <= Math.floor(Date.now() / 1000) || categoryData.always_live == 1 || stream.always_live == 1;
+              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+              // Debug poster value
+              console.log(`Stream: ${stream.name}, Poster: ${stream.poster}, Type: ${typeof stream.poster}`);
+              let poster = stream.poster && stream.poster !== '' && stream.poster !== null && stream.poster !== undefined
+                ? stream.poster
+                : 'https://i.postimg.cc/Gh7S3Q5B/IMG-20241221-022220-640.jpg';
+              let streamHtml = `
+                <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                  <a href="/live/${stream.uri_name}" class="card-link">
+                    <div class="card bg-black text-white">
+                      ${liveBadge}
+                      <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                      <div class="card-body">
+                        <h2 class="card-title">${stream.name}</h2>
+                        <p class="card-text">
+                          <span class="event-tag text-muted">${stream.tag}</span>
+                          <span class="float-end">${isLive 
+                            ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button" data-lang="watch-now">Watch</a>` 
+                            : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>`;
+              if (isLive) {
+                document.getElementById("livecards").innerHTML += streamHtml;
+              } else {
+                document.getElementById(categoryId).innerHTML += streamHtml;
+              }
+            });
+            if ($(`#${categoryId}`).is(':empty')) $(`#${categoryId}-container`).remove();
+          });
+        } else {
+          document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
+        }
+        if ($(`#livecards`).is(':empty')) {
+          document.getElementById("livecards").innerHTML += '<p data-lang="no-streams">No streams are live right now. Scroll down to see what\'s on later.</p>';
+        }
+        updateLanguage();
+      }
+
       window.onload = function() {
         var api = new Api(`${window.location.origin}`);
         loadContent(api);
@@ -230,12 +271,10 @@
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
-        // Initialize language
+        // Initialize language and auth
         updateLanguage();
-
-        // Initialize auth
         checkAuthStatus();
-      }
+      };
     </script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/lang.js"></script>
