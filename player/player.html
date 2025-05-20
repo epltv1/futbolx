@@ -136,38 +136,35 @@
         errorContainer.innerHTML = '';
 
         const uriName = window.location.pathname.split('/').pop();
-        fetch('/stream.json')
-          .then(response => response.json())
-          .then(data => {
-            if (!data || !data.success || !Array.isArray(data.streams)) {
-              throw new Error('Invalid stream data');
-            }
+        const api = new Api(`${window.location.origin}`);
+        api.get().then(data => {
+          if (!data || !data.success || !Array.isArray(data.streams)) {
+            throw new Error('Invalid stream data');
+          }
 
-            let selectedStream = null;
-            data.streams.forEach(category => {
-              category.streams.forEach(stream => {
-                if (stream.uri_name === uriName) {
-                  selectedStream = stream;
-                }
-              });
+          let selectedStream = null;
+          data.streams.forEach(category => {
+            category.streams.forEach(stream => {
+              if (stream.uri_name === uriName) {
+                selectedStream = stream;
+              }
             });
-
-            if (!selectedStream) {
-              throw new Error('Stream not found');
-            }
-
-            document.querySelector('.hero-background h1').textContent = selectedStream.name;
-            setupPlayer(selectedStream);
-          })
-          .catch(error => {
-            console.error('Error fetching streams:', error);
-            errorContainer.className = 'alert alert-danger error-alert';
-            errorContainer.innerHTML = 'Failed to load stream. Please try again later.';
-          })
-          .finally(() => {
-            $("#loaderSpinner").addClass('d-none');
-            $("#loadingOverlay").hide();
           });
+
+          if (!selectedStream) {
+            throw new Error('Stream not found');
+          }
+
+          document.querySelector('.hero-background h1').textContent = selectedStream.name;
+          setupPlayer(selectedStream);
+        }).catch(error => {
+          console.error('Error fetching streams:', error);
+          errorContainer.className = 'alert alert-danger error-alert';
+          errorContainer.innerHTML = 'Failed to load stream. Please try again later.';
+        }).finally(() => {
+          $("#loaderSpinner").addClass('d-none');
+          $("#loadingOverlay").hide();
+        });
       }
 
       function setupPlayer(stream) {
