@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=8">
+    <link rel="stylesheet" href="/assets/css/main.css?v=9">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
       .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
@@ -71,7 +71,7 @@
         <div id="errorContainer" class="d-none error-alert"></div>
         <div id="live" class="mt-4">
           <h2 class="m-0">
-            <span style="animation-duration:1.2s;" class="spinner-grow text-danger" role="status"></span> Live Now
+            Live Now <span id="liveAnimation" class="live-animation d-none"></span>
           </h2>
           <div id="livecards" class="event-grid py-3">
             <p>Loading streams...</p>
@@ -131,6 +131,7 @@
       function loadContent(api) {
         console.log('Starting loadContent at', new Date().toISOString());
         const errorContainer = document.getElementById('errorContainer');
+        const liveAnimation = document.getElementById('liveAnimation');
         errorContainer.className = 'd-none error-alert';
         errorContainer.innerHTML = '';
         Promise.all([
@@ -155,6 +156,7 @@
               errorContainer.className = 'alert alert-danger error-alert';
               errorContainer.innerHTML = 'No streams available. Please try again later.';
               livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
+              liveAnimation.classList.add('d-none');
               return;
             }
             const allEvents = [];
@@ -166,6 +168,7 @@
                 })));
               }
             });
+            let hasLiveEvents = false;
             allEvents.forEach((stream, index) => {
               let startTime;
               try {
@@ -198,12 +201,16 @@
                 </div>`;
               if (isLive) {
                 livecards.innerHTML += streamHtml;
+                hasLiveEvents = true;
               } else {
                 upcomingcards.innerHTML += streamHtml;
               }
             });
             if (!livecards.innerHTML) {
               livecards.innerHTML = '<p>No streams are live right now. Check out upcoming events!</p>';
+              liveAnimation.classList.add('d-none');
+            } else {
+              liveAnimation.classList.remove('d-none');
             }
             if (!upcomingcards.innerHTML) {
               upcomingcards.innerHTML = '<p>No upcoming events scheduled.</p>';
@@ -224,15 +231,28 @@
             errorContainer.className = 'alert alert-danger error-alert';
             errorContainer.innerHTML = 'Failed to load streams. Please check your internet and try again.';
             document.getElementById('livecards').innerHTML = '<p>Unable to load streams. Check back later!</p>';
+            liveAnimation.classList.add('d-none');
           });
       }
       window.onload = function() {
         console.log('Window loaded at', new Date().toISOString());
         try {
-          const api = new Api(`${window.location.origin}/api`);
-          loadContent(api);
-          setInterval(() => loadContent(api), 60000);
-          countdown();
+          // Initialize theme
+          const htmlElement = document.documentElement;
+          const themeToggle = document.getElementById('themeToggle');
+          const currentTheme = localStorage.getItem('theme') || 'dark';
+          htmlElement.setAttribute('data-bs-theme', currentTheme);
+          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          
+          // Theme toggle event
+          themeToggle.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          });
+
+          // Offcanvas outside click
           document.addEventListener('click', function(event) {
             const offcanvas = document.getElementById('sidebarMenu');
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
@@ -242,17 +262,12 @@
               bootstrap.Offcanvas.getInstance(offcanvas).hide();
             }
           });
-          const themeToggle = document.getElementById('themeToggle');
-          const htmlElement = document.documentElement;
-          const currentTheme = localStorage.getItem('theme') || 'dark';
-          htmlElement.setAttribute('data-bs-theme', currentTheme);
-          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-          themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-          });
+
+          // Load content
+          const api = new Api(`${window.location.origin}/api`);
+          loadContent(api);
+          setInterval(() => loadContent(api), 60000);
+          countdown();
           checkAuthStatus(); // Initialize auth status
         } catch (error) {
           console.error('Window onload error:', error);
