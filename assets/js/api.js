@@ -1,4 +1,4 @@
-api.js code. // assets/js/api.js
+// assets/js/api.js
 class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
