@@ -1,16 +1,14 @@
-// assets/js/api.js
+api.js code. // assets/js/api.js
 class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
-  async get() {
+  async get(endpoint) {
     try {
-      const response = await fetch('/public/stream.json');
-      console.log('Fetch response status:', response.status, response.url);
-      if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
+      const response = await fetch('/streams.json');
+      if (!response.ok) throw new Error('Network error');
       return await response.json();
     } catch (error) {
-      console.error('Fetch error:', error);
       throw new Error('Failed to fetch streams');
     }
   }
