@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
-    <link rel="stylesheet" href="/assets/css/main.css?v=7">
+    <link rel="stylesheet" href="/assets/css/main.css?v=8">
   </head>
   <body>
     <!-- Top Bar -->
@@ -87,7 +87,7 @@
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script async src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
-    <script>
+    <script defer>
       window.onload = function() {
         console.log('Window loaded at', new Date().toISOString());
         try {
@@ -111,6 +111,7 @@
             localStorage.setItem('theme', newTheme);
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
+          checkAuthStatus(); // Initialize auth status
         } catch (error) {
           console.error('Window onload error:', error);
         }
