@@ -177,6 +177,7 @@
         });
 
         const streamLinksContainer = document.getElementById('streamLinks');
+        streamLinksContainer.innerHTML = ''; // Clear previous links
         stream.links.forEach((link, index) => {
           const button = document.createElement('button');
           button.className = 'stream-link-btn';
