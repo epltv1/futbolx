@@ -9,9 +9,6 @@
     <meta property="og:title" content="Futbolx - Stream Player" />
     <meta property="og:url" content="https://futbolx.com" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="Futbolx - Stream Player">
-    <meta name="twitter:description" content="Watch live PPV boxing and other content.">
-    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -19,44 +16,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video-js.min.css" integrity="sha512-1ZAD0x9B+DXC3c0DOKfglK2OOc+6YV0thB+n7+0xW7kZbw6O9+1Z7aYPHx6+vT0R/0uV7EGOc0N+LEjkjFZyng==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/main.css?v=47">
     <style>
-      .video-container {
-        max-width: 800px;
-        margin: 2rem auto;
-        position: relative;
-      }
-      .video-js {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 16/9;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      .stream-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-        margin-top: 1rem;
-      }
-      .stream-link-btn {
-        background-color: #ff4d4d;
-        color: #fff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        transition: background-color 0.3s;
-      }
-      [data-bs-theme="light"] .stream-link-btn {
-        background-color: #e63939;
-      }
-      .stream-link-btn:hover {
-        background-color: #e63939;
-      }
-      .stream-link-btn.active {
-        background-color: #ffd700;
-        color: #000;
-      }
+      .video-container { max-width: 800px; margin: 2rem auto; position: relative; }
+      .video-js { width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; }
+      .stream-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 1rem; }
+      .stream-link-btn { background-color: #ff4d4d; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; transition: background-color 0.3s; }
+      [data-bs-theme="light"] .stream-link-btn { background-color: #e63939; }
+      .stream-link-btn:hover { background-color: #e63939; }
+      .stream-link-btn.active { background-color: #ffd700; color: #000; }
       .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px); }
       .loading-overlay.hidden { display: none; }
       .error-alert { max-width: 500px; margin: 20px auto; }
@@ -70,19 +36,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('en');" data-lang="lang-english">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('de');" data-lang="lang-german">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('es');" data-lang="lang-spanish">Español</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('fr');" data-lang="lang-french">Français</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-lang="nav-login">Login</a></li>
-            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-lang="nav-logout">Logout</button></li>
+            <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH">Discord</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
             <li class="nav-item">
               <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
                 <i class="fas fa-moon"></i>
@@ -94,8 +50,8 @@
       </div>
     </nav>
     <div class="container-fluid text-center py-5 bg-dark hero-background">
-      <h1 class="display-4 fw-bold" data-aos="fade-up" data-lang="player-title">Stream Player</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100" data-lang="player-subtitle">Watch your favorite events live!</p>
+      <h1 class="display-4 fw-bold" data-aos="fade-up">Stream Player</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">Watch your favorite events live!</p>
     </div>
     <div id="loadingOverlay" class="loading-overlay">
       <div class="alert alert-danger d-none" role="alert" id="loaderError"></div>
@@ -106,18 +62,18 @@
       <div class="video-container">
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="auto">
           <source src="" type="application/x-mpegURL">
-          <p class="vjs-no-js">To view this video, please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video.</p>
+          <p class="vjs-no-js">To view this video, please enable JavaScript.</p>
         </video>
         <div class="stream-links" id="streamLinks"></div>
       </div>
       <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-lang="footer-text">Futbolx 2025</p>
+        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">Futbolx 2025</p>
         <ul class="nav justify-content-center justify-content-lg-end mb-0">
-          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-lang="footer-api">API</a></li>
-          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary" data-lang="footer-discord">Discord</a></li>
-          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-lang="footer-changelog">Changelog</a></li>
-          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-lang="footer-donate">Donate / VIP Access</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-lang="footer-contact">Contact us</a></li>
+          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+          <li class="nav-item"><a href="https://discord.gg/5AMPdpckjH" class="nav-link px-2 text-body-secondary">Discord</a></li>
+          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
         </ul>
       </footer>
     </div>
@@ -127,8 +83,6 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js" integrity="sha512-wT67vO/3rY+3MnM3lud2G+pa9iG0vW0AS01TkmB3g3M5sXON+WI2H9qZNCvP2c7W6axQmoNVpf4vMp+E/2C2yA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js" integrity="sha512-6HZMvNmnYDuXSRm+KBQdJC1pI8T0pZ8HjfG8aZ7NFrJ6fF7A8N4VngB6+sg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script async src="/assets/js/api.js"></script>
-    <script async src="/assets/js/lang.js"></script>
-    <script async src="/assets/js/auth.js"></script>
     <script defer>
       function getStreamData() {
         const errorContainer = document.getElementById("errorContainer");
@@ -136,24 +90,26 @@
         errorContainer.innerHTML = '';
 
         const uriName = window.location.pathname.split('/').pop();
-        const api = new Api(`${window.location.origin}`);
+        const api = new Api(window.location.origin);
         api.get().then(data => {
           console.log('Stream data loaded for player:', data);
           if (!data || !data.success || !Array.isArray(data.streams)) {
-            throw new Error('Invalid stream data');
+            errorContainer.className = 'alert alert-danger error-alert';
+            errorContainer.innerHTML = 'Invalid stream data.';
+            return;
           }
 
           let selectedStream = null;
           data.streams.forEach(category => {
             category.streams.forEach(stream => {
-              if (stream.uri_name === uriName) {
-                selectedStream = stream;
-              }
+              if (stream.uri_name === uriName) selectedStream = stream;
             });
           });
 
           if (!selectedStream) {
-            throw new Error('Stream not found');
+            errorContainer.className = 'alert alert-danger error-alert';
+            errorContainer.innerHTML = 'Stream not found.';
+            return;
           }
 
           document.querySelector('.hero-background h1').textContent = selectedStream.name;
@@ -161,10 +117,10 @@
         }).catch(error => {
           console.error('Error fetching streams:', error);
           errorContainer.className = 'alert alert-danger error-alert';
-          errorContainer.innerHTML = 'Failed to load stream. Please try again later.';
+          errorContainer.innerHTML = 'Failed to load stream. Please try again.';
         }).finally(() => {
-          $("#loaderSpinner").addClass('d-none');
-          $("#loadingOverlay").hide();
+          document.getElementById("loaderSpinner").classList.add('d-none');
+          document.getElementById("loadingOverlay").style.display = 'none';
         });
       }
 
@@ -177,7 +133,7 @@
         });
 
         const streamLinksContainer = document.getElementById('streamLinks');
-        streamLinksContainer.innerHTML = ''; // Clear previous links
+        streamLinksContainer.innerHTML = '';
         stream.links.forEach((link, index) => {
           const button = document.createElement('button');
           button.className = 'stream-link-btn';
@@ -201,9 +157,7 @@
           const hls = new Hls();
           hls.loadSource(url);
           hls.attachMedia(player.tech().el());
-          hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            player.play();
-          });
+          hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
           hls.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
               document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
@@ -234,22 +188,7 @@
           localStorage.setItem('theme', newTheme);
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
-
-        document.addEventListener('click', function(event) {
-          const navbarCollapse = document.getElementById('navbarSupportedContent');
-          const navbarToggler = document.querySelector('.navbar-toggler');
-          const isNavbarOpen = navbarCollapse.classList.contains('show');
-          const clickedInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
-          if (isNavbarOpen && !clickedInsideNavbar) {
-            bootstrap.Collapse.getInstance(navbarCollapse).hide();
-          }
-        });
-
-        updateLanguage();
-        checkAuthStatus();
       };
     </script>
-    <script defer data-domain="futbolx.com" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </body>
 </html>
