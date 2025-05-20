@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
-    <link rel="stylesheet" href="/assets/css/main.css?v=8">
+    <link rel="stylesheet" href="/assets/css/main.css?v=9">
   </head>
   <body>
     <!-- Top Bar -->
@@ -91,6 +91,22 @@
       window.onload = function() {
         console.log('Window loaded at', new Date().toISOString());
         try {
+          // Initialize theme
+          const htmlElement = document.documentElement;
+          const themeToggle = document.getElementById('themeToggle');
+          const currentTheme = localStorage.getItem('theme') || 'dark';
+          htmlElement.setAttribute('data-bs-theme', currentTheme);
+          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          
+          // Theme toggle event
+          themeToggle.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          });
+
+          // Offcanvas outside click
           document.addEventListener('click', function(event) {
             const offcanvas = document.getElementById('sidebarMenu');
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
@@ -100,17 +116,7 @@
               bootstrap.Offcanvas.getInstance(offcanvas).hide();
             }
           });
-          const themeToggle = document.getElementById('themeToggle');
-          const htmlElement = document.documentElement;
-          const currentTheme = localStorage.getItem('theme') || 'dark';
-          htmlElement.setAttribute('data-bs-theme', currentTheme);
-          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-          themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-          });
+
           checkAuthStatus(); // Initialize auth status
         } catch (error) {
           console.error('Window onload error:', error);
