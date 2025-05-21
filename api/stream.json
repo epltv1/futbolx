@@ -16,7 +16,7 @@
           "streams": [
             {
               "title": "Main Stream",
-              "url": "http://main.light-ott.net:80/play/live.php?mac=00:1A:79:3A:93:FD&stream=1174231&extension=m3u8"
+              "url": "https://flixtvlive.vercel.app/tnt2.m3u8"
             },
             {
               "title": "Alternate Stream",
