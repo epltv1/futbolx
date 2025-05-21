@@ -8,10 +8,10 @@
         {
           "name": "Brighton vs Liverpool",
           "uri_name": "brighton-vs-liverpool",
-          "poster": "https://i.postimg.cc/8PRrvYw4/IMG-20241226-211229-430.jpg",
-          "tag": "Premier League",
-          "starts_at": "2025-05-21T20:00:00Z",
-          "ends_at": "2025-05-21T22:00:00Z",
+          "poster": "https://plive.live/uploads/682b43e2d32b0.webp",
+          "tag": "UEL Final",
+          "starts_at": "2025-05-21T22:00:00Z",
+          "ends_at": "2025-05-21T00:00:00Z",
           "always_live": 1,
           "streams": [
             {
