@@ -51,7 +51,7 @@
               <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="/auth/ login" id="loginLink">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
           <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
           <li class="nav-item">
             <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
@@ -71,7 +71,7 @@
         <div id="errorContainer" class="d-none error-alert"></div>
         <div id="live" class="mt-4">
           <h2 class="m-0">
-            Live Now <span id="liveAnimation" class="new-live-animation d-none"></span>
+            Live Now <span id="liveAnimation" class="live-animation d-none"></span>
           </h2>
           <div id="livecards" class="event-grid py-3">
             <p>Loading streams...</p>
@@ -125,7 +125,7 @@
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjr7508a7AYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
@@ -161,7 +161,7 @@
             }
             element.innerHTML = displayText;
           } else {
-            element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button watch-button-animation">Watch</a>`;
+            element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
             element.style.color = '#ff8280';
           }
         });
@@ -282,7 +282,7 @@
                         <p class="card-text">
                           <span class="event-tag text-muted">${stream.tag}</span>
                           <span class="float-end">${isLive 
-                            ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button watch-button-animation">Watch</a>` 
+                            ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
                             : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}</span>
                         </p>
                       </div>
