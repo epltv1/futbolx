@@ -36,20 +36,19 @@
       </div>
       <div class="offcanvas-body">
         <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" href="/request" data-i18n="nav_request">Request</a></li>
-          <li class="nav-item"><a class="nav-link" href="/vods" data-i18n="nav_vods">VODs</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k" data-i18n="nav_discord">Discord</a></li>
+          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="nav_language">Language</a>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
-              <li><a class="dropdown-item" href="#" data-lang="es">Español</a></li>
-              <li><a class="dropdown-item" href="#" data-lang="fr">Français</a></li>
-              <li><a class="dropdown-item" href="#" data-lang="de">Deutsch</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
+              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-i18n="nav_login">Login</a></li>
-          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-i18n="nav_logout">Logout</button></li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
           <li class="nav-item">
             <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
               <i class="fas fa-moon"></i>
@@ -64,7 +63,7 @@
         <div class="row">
           <div class="col-12">
             <div class="d-flex align-items-center mb-3">
-              <a href="/" class="btn btn-back" onclick="window.location.href='/'; return false;" data-i18n="back_to_home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+              <a href="/" class="btn btn-back" onclick="window.location.href='/'; return false;"><i class="fas fa-arrow-left"></i> Back to Home</a>
               <button id="startLivestream" class="btn btn-danger ms-3" disabled>Loading...</button>
             </div>
             <h2 id="eventTitle" class="mb-3"></h2>
@@ -76,13 +75,13 @@
           </div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-i18n="footer_text">FutbolX 2025</p>
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
           <ul class="nav justify-content-center justify-content-lg-end mb-0">
-            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-i18n="footer_api">API</a></li>
-            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary" data-i18n="nav_discord">Discord</a></li>
-            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-i18n="footer_changelog">Changelog</a></li>
-            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-i18n="footer_donate">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-i18n="footer_contact">Contact us</a></li>
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
           </ul>
         </footer>
       </div>
@@ -90,7 +89,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
-    <script src="/assets/js/lang.js"></script>
     <script src="/assets/js/playerjs.js?v=3"></script>
     <script>
       let playerInstance = null;
@@ -100,7 +98,7 @@
         console.log('initPlayer called, attempt:', attempt);
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+          playerError.innerText = 'Failed to load player. Please refresh the page.';
           console.error('PlayerJS: Max retry attempts reached');
           return;
         }
@@ -118,7 +116,7 @@
             error: (err) => {
               console.error('PlayerJS Error:', err);
               playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error + ': ' + err.message;
+              playerError.innerText = 'Failed to play stream: ' + err.message;
             }
           });
           console.log('PlayerJS: Initialized successfully');
@@ -142,14 +140,14 @@
               } catch (err) {
                 console.error('Stream switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error + ': ' + err.message;
+                playerError.innerText = 'Failed to switch stream: ' + err.message;
               }
             }
           });
         } catch (err) {
           console.error('Player init error:', err);
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error + ': ' + err.message;
+          playerError.innerText = 'Failed to initialize player: ' + err.message;
         }
       }
 
@@ -217,9 +215,9 @@
 
           if (typeof Api === 'undefined') {
             console.error('Api class not defined. Ensure api.js is loaded.');
-            document.getElementById('eventTitle').innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+            document.getElementById('eventTitle').innerText = 'Error: Failed to initialize';
             playerError.className = 'alert alert-danger mt-3';
-            playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+            playerError.innerText = 'Failed to initialize API. Please refresh.';
             return;
           }
 
@@ -228,11 +226,11 @@
             .then(data => {
               console.log('Stream API Response:', data);
               if (!data || !data.success || !Array.isArray(data.streams)) {
-                document.getElementById('eventTitle').innerText = translations[localStorage.getItem('fs_locale') || 'en'].stream_unavailable;
+                document.getElementById('eventTitle').innerText = 'Error: Stream not found';
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].no_streams;
+                playerError.innerText = 'No streams available.';
                 startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = translations[localStorage.getItem('fs_locale') || 'en'].stream_unavailable;
+                startLivestreamBtn.innerText = 'Stream Unavailable';
                 return;
               }
               let event = null;
@@ -243,26 +241,26 @@
                 }
               }
               if (!event || !event.streams || event.streams.length === 0) {
-                document.getElementById('eventTitle').innerText = translations[localStorage.getItem('fs_locale') || 'en'].no_streams_found;
+                document.getElementById('eventTitle').innerText = 'Error: No streams available';
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].no_streams;
+                playerError.innerText = 'No stream links found for this event.';
                 startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = translations[localStorage.getItem('fs_locale') || 'en'].no_streams_found;
+                startLivestreamBtn.innerText = 'No Streams';
                 return;
               }
               document.getElementById('eventTitle').innerText = event.name;
               streamData = event;
               startLivestreamBtn.disabled = false;
-              startLivestreamBtn.innerText = translations[localStorage.getItem('fs_locale') || 'en'].click_to_start;
+              startLivestreamBtn.innerText = 'Click to Start Livestream';
               console.log('Stream data loaded:', event);
             })
             .catch(error => {
               console.error('Stream fetch error:', error);
-              document.getElementById('eventTitle').innerText = translations[localStorage.getItem('fs_locale') || 'en'].fetch_failed;
+              document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
               playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].fetch_failed;
+              playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
               startLivestreamBtn.disabled = true;
-              startLivestreamBtn.innerText = translations[localStorage.getItem('fs_locale') || 'en'].fetch_failed;
+              startLivestreamBtn.innerText = 'Fetch Failed';
             });
 
           // Start livestream button
@@ -277,7 +275,7 @@
             } else {
               console.warn('No stream data available');
               playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+              playerError.innerText = 'Stream data not loaded. Please refresh the page.';
             }
           });
 
@@ -285,11 +283,11 @@
           console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
-          document.getElementById('eventTitle').innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+          document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
           document.getElementById('playerError').className = 'alert alert-danger mt-3';
-          document.getElementById('playerError').innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+          document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
           document.getElementById('startLivestream').disabled = true;
-          document.getElementById('startLivestream').innerText = translations[localStorage.getItem('fs_locale') || 'en'].error;
+          document.getElementById('startLivestream').innerText = 'Error';
         }
       }
 
