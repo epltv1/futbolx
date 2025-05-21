@@ -12,7 +12,7 @@
           "tag": "UEL Final",
           "starts_at": "2025-05-21T22:00:00Z",
           "ends_at": "2025-05-21T00:00:00Z",
-          "always_live": 1,
+          "always_live": 0,
           "streams": [
             {
               "title": "Main Stream",
