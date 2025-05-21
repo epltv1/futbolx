@@ -169,6 +169,26 @@ body {
   border-color: #000;
 }
 
+.live-animation {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #ff4d4d;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+[data-bs-theme="light"] .live-animation {
+  background: #e63939;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 @keyframes glow {
   0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
   50% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); }
@@ -176,21 +196,21 @@ body {
 }
 
 /* Watch Button Animation */
-.watch-button {
+.watch-button-animation {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
 
-.watch-button:hover {
+.watch-button-animation:hover {
   transform: scale(1.1);
 }
 
-.watch-button:active {
+.watch-button-animation:active {
   transform: scale(0.95);
 }
 
-.watch-button::after {
+.watch-button-animation::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -203,20 +223,20 @@ body {
   transition: width 0.4s ease, height 0.4s ease;
 }
 
-.watch-button:active::after {
+.watch-button-animation:active::after {
   width: 100px;
   height: 100px;
 }
 
-[data-bs-theme="light"] .watch-button::after {
+[data-bs-theme="light"] .watch-button-animation::after {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Live Animation */
-.live-animation {
+/* New Live Animation */
+.new-live-animation {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   margin-left: 8px;
   border: 2px solid #ff4d4d;
   border-radius: 50%;
@@ -224,30 +244,30 @@ body {
   animation: glow-ring 1.5s ease-in-out infinite;
 }
 
-[data-bs-theme="light"] .live-animation {
+[data-bs-theme="light"] .new-live-animation {
   border-color: #e63939;
 }
 
-.live-animation::before {
+.new-live-animation::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background: #ff4d4d;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: pulse-inner 1.5s ease-in-out infinite;
 }
 
-[data-bs-theme="light"] .live-animation::before {
+[data-bs-theme="light"] .new-live-animation::before {
   background: #e63939;
 }
 
 @keyframes glow-ring {
   0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
-  50% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.8), 0 0 20px rgba(255, 77, 77, 0.4); }
+  50% { box-shadow: 0 0 10px rgba(255, 77, 77, 0.8), 0 0 15px rgba(255, 77, 77, 0.4); }
   100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
 }
 
