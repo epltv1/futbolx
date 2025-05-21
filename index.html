@@ -40,19 +40,20 @@
       </div>
       <div class="offcanvas-body">
         <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
+          <li class="nav-item"><a class="nav-link" href="/request" data-i18n="nav_request">Request</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vods" data-i18n="nav_vods">VODs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k" data-i18n="nav_discord">Discord</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Language</a>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="nav_language">Language</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=en; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">English</a></li>
-              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=de; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Deutsch</a></li>
-              <li><a class="dropdown-item" href="#" onclick="document.cookie = 'fs_locale=es; expires=Mon, 18 Jan 2038 12:00:00 UTC; path=/';location.reload();">Español</a></li>
+              <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+              <li><a class="dropdown-item" href="#" data-lang="es">Español</a></li>
+              <li><a class="dropdown-item" href="#" data-lang="fr">Français</a></li>
+              <li><a class="dropdown-item" href="#" data-lang="de">Deutsch</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
-          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-i18n="nav_login">Login</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-i18n="nav_logout">Logout</button></li>
           <li class="nav-item">
             <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
               <i class="fas fa-moon"></i>
@@ -64,63 +65,63 @@
     <!-- Main Content -->
     <div class="container-fluid main-content">
       <div class="text-center py-5 bg-dark hero-background">
-        <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
-        <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+        <h1 class="display-4 fw-bold" data-i18n="hero_title">Welcome to FutbolX</h1>
+        <p class="lead" data-i18n="hero_subtitle">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       </div>
       <div class="container pt-2">
         <div id="errorContainer" class="d-none error-alert"></div>
         <div id="live" class="mt-4">
-          <h2 class="m-0">
+          <h2 class="m-0" data-i18n="live_now">
             Live Now <span id="liveAnimation" class="live-animation d-none"></span>
           </h2>
           <div id="livecards" class="event-grid py-3">
-            <p>Loading streams...</p>
+            <p data-i18n="loading_streams">Loading streams...</p>
           </div>
         </div>
         <div id="football" class="mt-5 d-none">
-          <h2 class="m-0">Football</h2>
+          <h2 class="m-0" data-i18n="football">Football</h2>
           <div id="footballcards" class="event-grid py-3"></div>
         </div>
         <div id="nba" class="mt-5 d-none">
-          <h2 class="m-0">NBA</h2>
+          <h2 class="m-0" data-i18n="nba">NBA</h2>
           <div id="nbacards" class="event-grid py-3"></div>
         </div>
         <div id="fights" class="mt-5 d-none">
-          <h2 class="m-0">Fights</h2>
+          <h2 class="m-0" data-i18n="fights">Fights</h2>
           <div id="fightscards" class="event-grid py-3"></div>
         </div>
         <div id="motorsports" class="mt-5 d-none">
-          <h2 class="m-0">Motorsports</h2>
+          <h2 class="m-0" data-i18n="motorsports">Motorsports</h2>
           <div id="motorsportscards" class="event-grid py-3"></div>
         </div>
         <div id="nfl" class="mt-5 d-none">
-          <h2 class="m-0">NFL</h2>
+          <h2 class="m-0" data-i18n="nfl">NFL</h2>
           <div id="nflcards" class="event-grid py-3"></div>
         </div>
         <div id="nhl" class="mt-5 d-none">
-          <h2 class="m-0">NHL</h2>
+          <h2 class="m-0" data-i18n="nhl">NHL</h2>
           <div id="nhlcards" class="event-grid py-3"></div>
         </div>
         <div id="mlb" class="mt-5 d-none">
-          <h2 class="m-0">MLB</h2>
+          <h2 class="m-0" data-i18n="mlb">MLB</h2>
           <div id="mlbcards" class="event-grid py-3"></div>
         </div>
         <div id="icehockey" class="mt-5 d-none">
-          <h2 class="m-0">Ice Hockey</h2>
+          <h2 class="m-0" data-i18n="ice_hockey">Ice Hockey</h2>
           <div id="icehockeycards" class="event-grid py-3"></div>
         </div>
         <div id="others" class="mt-5 d-none">
-          <h2 class="m-0">Others</h2>
+          <h2 class="m-0" data-i18n="others">Others</h2>
           <div id="otherscards" class="event-grid py-3"></div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start" data-i18n="footer_text">FutbolX 2025</p>
           <ul class="nav justify-content-center justify-content-lg-end mb-0">
-            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
-            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary" data-i18n="footer_api">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary" data-i18n="nav_discord">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary" data-i18n="footer_changelog">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary" data-i18n="footer_donate">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary" data-i18n="footer_contact">Contact us</a></li>
           </ul>
         </footer>
       </div>
@@ -128,6 +129,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
+    <script src="/assets/js/lang.js"></script>
     <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
     <script>
       window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
@@ -202,7 +204,7 @@
         
         errorContainer.className = 'd-none error-alert';
         errorContainer.innerHTML = '';
-        livecards.innerHTML = '<p>Loading streams...</p>';
+        livecards.innerHTML = '<p data-i18n="loading_streams">Loading streams...</p>';
 
         fetchWithRetry(api.baseUrl + '/stream')
           .then(streamData => {
@@ -211,7 +213,7 @@
             // Validate stream data
             if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
               console.warn('Invalid stream data received');
-              livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+              livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
               liveAnimation.classList.add('d-none');
               return;
             }
@@ -306,7 +308,7 @@
             });
 
             if (!hasLiveEvents) {
-              livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
+              livecards.innerHTML = '<p data-i18n="no_streams">No streams are live right now. Check back later!</p>';
               liveAnimation.classList.add('d-none');
             } else {
               liveAnimation.classList.remove('d-none');
@@ -322,11 +324,15 @@
               });
             }, { threshold: 0.1 });
             cards.forEach(card => observer.observe(card));
+
+            // Reapply translations after loading dynamic content
+            initLanguage();
           })
           .catch(error => {
             console.error('API Fetch Error:', error);
-            livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+            livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
             liveAnimation.classList.add('d-none');
+            initLanguage();
           });
       }
 
@@ -379,9 +385,10 @@
           console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
-          livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+          livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
           errorContainer.className = 'd-none error-alert';
           errorContainer.innerHTML = '';
+          initLanguage();
         }
       }
 
