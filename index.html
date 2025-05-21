@@ -215,6 +215,7 @@
               console.warn('Invalid stream data received');
               livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
               liveAnimation.classList.add('d-none');
+              setLanguage(localStorage.getItem('fs_locale') || 'en'); // Reapply translations
               return;
             }
 
@@ -245,6 +246,8 @@
                 })));
               }
             });
+
+            console.log('All events:', allEvents); // Debug: Log events
 
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
@@ -307,6 +310,8 @@
               }
             });
 
+            console.log('Has live events:', hasLiveEvents); // Debug: Log live events status
+
             if (!hasLiveEvents) {
               livecards.innerHTML = '<p data-i18n="no_streams">No streams are live right now. Check back later!</p>';
               liveAnimation.classList.add('d-none');
@@ -315,6 +320,7 @@
             }
 
             const cards = document.querySelectorAll('.event-card');
+            console.log('Event cards rendered:', cards.length); // Debug: Log number of cards
             const observer = new IntersectionObserver((entries) => {
               entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -325,14 +331,27 @@
             }, { threshold: 0.1 });
             cards.forEach(card => observer.observe(card));
 
-            // Reapply translations after loading dynamic content
-            initLanguage();
+            // Reapply translations for static elements only
+            document.querySelectorAll('[data-i18n]:not(.event-card *)').forEach(element => {
+              const key = element.getAttribute('data-i18n');
+              const lang = localStorage.getItem('fs_locale') || 'en';
+              if (translations[lang] && translations[lang][key]) {
+                element.innerHTML = translations[lang][key];
+              }
+            });
           })
           .catch(error => {
             console.error('API Fetch Error:', error);
             livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
             liveAnimation.classList.add('d-none');
-            initLanguage();
+            // Reapply translations for static elements
+            document.querySelectorAll('[data-i18n]:not(.event-card *)').forEach(element => {
+              const key = element.getAttribute('data-i18n');
+              const lang = localStorage.getItem('fs_locale') || 'en';
+              if (translations[lang] && translations[lang][key]) {
+                element.innerHTML = translations[lang][key];
+              }
+            });
           });
       }
 
@@ -388,7 +407,14 @@
           livecards.innerHTML = '<p data-i18n="no_streams">No streams are available right now. Check back later!</p>';
           errorContainer.className = 'd-none error-alert';
           errorContainer.innerHTML = '';
-          initLanguage();
+          // Reapply translations for static elements
+          document.querySelectorAll('[data-i18n]:not(.event-card *)').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const lang = localStorage.getItem('fs_locale') || 'en';
+            if (translations[lang] && translations[lang][key]) {
+              element.innerHTML = translations[lang][key];
+            }
+          });
         }
       }
 
