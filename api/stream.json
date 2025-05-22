@@ -41,7 +41,7 @@
           "streams": [
             {
               "title": "Primary Feed",
-              "url": "https://epltv1.github.io/cbs.m3u8"
+              "url": "https://flixtvlive.vercel.app/tnt2.m3u8"
             }
           ]
         }
