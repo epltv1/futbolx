@@ -176,53 +176,6 @@ body {
   max-height: 80vh;
 }
 
-/* Play Overlay */
-.play-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-[data-bs-theme="light"] .play-overlay {
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.play-button {
-  background: #ff4d4d;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.3s, background 0.3s;
-}
-
-[data-bs-theme="light"] .play-button {
-  background: #e63939;
-  color: #333;
-}
-
-.play-button:hover {
-  transform: scale(1.1);
-  background: #e63939;
-}
-
-[data-bs-theme="light"] .play-button:hover {
-  background: #cc3333;
-}
-
 /* Clappr Player Custom Styles */
 .clappr-player {
   width: 100%;
@@ -245,6 +198,42 @@ body {
 [data-bs-theme="light"] .clappr-player .media-control-button,
 [data-bs-theme="light"] .clappr-player .media-control-icon {
   color: #e63939;
+}
+
+/* Start Stream Button */
+.btn-stream-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.3s, background 0.3s;
+}
+
+[data-bs-theme="light"] .btn-stream-start {
+  background: #e63939;
+  color: #333;
+}
+
+.btn-stream-start:hover {
+  transform: scale(1.05);
+  background: #e63939;
+}
+
+[data-bs-theme="light"] .btn-stream-start:hover {
+  background: #cc3333;
+}
+
+.btn-stream-start.disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+[data-bs-theme="light"] .btn-stream-start.disabled {
+  background: #999;
 }
 
 /* Back Button */
@@ -684,10 +673,9 @@ footer {
     font-size: 1.5rem;
   }
 
-  .play-button {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
+  .btn-stream-start {
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
 }
 
@@ -711,5 +699,15 @@ footer {
   .admin-section .telegram-btn {
     font-size: 1rem;
     padding: 10px 20px;
+  }
+
+  .d-flex.justifiably-content-between {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .btn-back, .btn-stream-start {
+    width: 100%;
   }
 }
