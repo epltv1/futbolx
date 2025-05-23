@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=25">
+    <link rel="stylesheet" href="/assets/css/main.css?v=26">
   </head>
   <body>
     <!-- Top Bar -->
@@ -56,6 +56,11 @@
         <div id="errorContainer" class="alert alert-danger d-none" role="alert"></div>
         <div class="video-container">
           <div id="player"></div>
+          <div id="playOverlay" class="play-overlay">
+            <button id="playButton" class="play-button">
+              <i class="fas fa-play"></i>
+            </button>
+          </div>
         </div>
         <div class="stream-links mt-3"></div>
       </div>
@@ -75,10 +80,14 @@
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
+      let player = null;
+
       function loadStream(api, streamUri) {
         const errorContainer = document.getElementById('errorContainer');
         const streamLinks = document.querySelector('.stream-links');
         const playerElement = document.getElementById('player');
+        const playOverlay = document.getElementById('playOverlay');
+        const playButton = document.getElementById('playButton');
 
         errorContainer.classList.add('d-none');
         errorContainer.innerHTML = '';
@@ -89,6 +98,7 @@
             if (!data || !data.success || !Array.isArray(data.streams)) {
               errorContainer.classList.remove('d-none');
               errorContainer.innerHTML = 'No streams are available right now. Check back later!';
+              playOverlay.style.display = 'none';
               return;
             }
 
@@ -103,6 +113,7 @@
             if (!streamData) {
               errorContainer.classList.remove('d-none');
               errorContainer.innerHTML = 'Stream not found!';
+              playOverlay.style.display = 'none';
               return;
             }
 
@@ -113,12 +124,14 @@
             if (now < startTime) {
               errorContainer.classList.remove('d-none');
               errorContainer.innerHTML = `Stream "${streamData.name}" has not started yet. Check back later!`;
+              playOverlay.style.display = 'none';
               return;
             }
 
             if (now > endTime && !streamData.always_live) {
               errorContainer.classList.remove('d-none');
               errorContainer.innerHTML = `Stream "${streamData.name}" has ended.`;
+              playOverlay.style.display = 'none';
               return;
             }
 
@@ -126,13 +139,15 @@
             if (sources.length === 0) {
               errorContainer.classList.remove('d-none');
               errorContainer.innerHTML = 'No stream sources available!';
+              playOverlay.style.display = 'none';
               return;
             }
 
-            let player = new Clappr.Player({
+            // Initialize Clappr player without autoPlay
+            player = new Clappr.Player({
               source: sources[0].url,
               parentId: '#player',
-              autoPlay: true,
+              autoPlay: false,
               width: '100%',
               height: '100%',
               playback: {
@@ -145,6 +160,14 @@
               plugins: []
             });
 
+            // Show play overlay until user clicks
+            playOverlay.style.display = 'flex';
+            playButton.addEventListener('click', () => {
+              playOverlay.style.display = 'none';
+              player.play();
+            });
+
+            // Create source buttons
             sources.forEach((source, index) => {
               const button = document.createElement('button');
               button.className = `btn btn-stream ${index === 0 ? 'active' : ''}`;
@@ -152,7 +175,9 @@
               button.addEventListener('click', () => {
                 document.querySelectorAll('.btn-stream').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
+                playOverlay.style.display = 'none';
                 player.load(source.url);
+                player.play();
               });
               streamLinks.appendChild(button);
             });
@@ -161,6 +186,7 @@
             console.error('API Fetch Error:', error);
             errorContainer.classList.remove('d-none');
             errorContainer.innerHTML = 'Error loading stream. Please try again later.';
+            playOverlay.style.display = 'none';
           });
       }
 
@@ -218,7 +244,7 @@
 
           const streamUri = window.location.pathname.split('/').pop();
           if (typeof Api === 'undefined') {
-            console警告('Api class not defined. Using default API path.');
+            console.warn('Api class not defined. Using default API path.');
             const api = { baseUrl: window.location.origin };
             loadStream(api, streamUri);
           } else {
