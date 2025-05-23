@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=19">
+    <link rel="stylesheet" href="/assets/css/main.css?v=20">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
       .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
@@ -201,7 +201,6 @@
           .then(streamData => {
             console.log('API Response:', streamData);
             
-            // Validate stream data
             if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
               console.warn('Invalid stream data received');
               livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
@@ -221,7 +220,6 @@
               others: document.getElementById('otherscards')
             };
             
-            // Clear category cards and hide sections
             Object.values(categories).forEach(card => card.innerHTML = '');
             Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
             livecards.innerHTML = '';
@@ -269,7 +267,7 @@
                   <a href="/live/${stream.uri_name}" class="card-link">
                     <div class="card bg-black">
                       ${liveBadge}
-                      <img src="${poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                      <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
                       <div class="card-body">
                         <h2 class="card-title">${stream.name}</h2>
                         <p class="card-text">
@@ -336,7 +334,6 @@
           htmlElement.setAttribute('data-bs-theme', currentTheme);
           themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           
-          // Theme toggle event
           themeToggle.addEventListener('click', () => {
             const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
             htmlElement.setAttribute('data-bs-theme', newTheme);
@@ -355,7 +352,7 @@
             }
           });
 
-          // Load content with fallback
+          // Load content
           if (typeof Api === 'undefined') {
             console.warn('Api class not defined. Using default API path.');
             const api = { baseUrl: window.location.origin };
@@ -383,21 +380,21 @@
         initPage();
       });
 
-      // Handle navigation
+      // Modified navigation handler to allow default behavior for certain links
       document.addEventListener('click', (event) => {
         const link = event.target.closest('a[href]');
-        if (link && link.getAttribute('href').startsWith('/')) {
-          event.preventDefault();
-          const url = link.getAttribute('href');
-          console.log('Navigating to:', url);
-          window.location.href = url;
+        if (link) {
+          const href = link.getAttribute('href');
+          // Allow default navigation for specific links
+          if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods') {
+            return; // Let browser handle navigation
+          }
+          if (href.startsWith('/')) {
+            event.preventDefault();
+            console.log('Navigating to:', href);
+            window.location.href = href;
+          }
         }
-      });
-
-      // Handle device back button
-      window.addEventListener('popstate', (event) => {
-        console.log('Back button detected, navigating to:', window.location.pathname);
-        window.location.href = window.location.pathname;
       });
     </script>
   </body>
