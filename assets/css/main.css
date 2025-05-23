@@ -35,6 +35,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 100%;
+  padding: 0 1rem;
 }
 
 /* FutbolX Brand Animation */
@@ -43,6 +45,8 @@ body {
   font-weight: 600;
   text-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
   animation: glow 2s ease-in-out infinite;
+  flex-grow: 1;
+  text-align: center;
 }
 
 [data-bs-theme="dark"] .futbolx-brand {
@@ -155,13 +159,7 @@ body {
 /* Main Content */
 .main-content {
   padding-top: 60px; /* Space for top bar */
-  padding-left: 320px; /* Space for sidebar */
-}
-
-@media (max-width: 991.98px) {
-  .main-content {
-    padding-left: 15px;
-  }
+  padding-left: 15px; /* Adjusted to prevent sidebar overlap */
 }
 
 /* Hero Section */
@@ -354,7 +352,9 @@ footer a:hover {
 
 /* Theme toggle button */
 #themeToggle {
-  background: none;
+ 
+
+ background: none;
   border: none;
   padding: 0.5rem;
   font-size: 1.2rem;
