@@ -155,12 +155,49 @@ body {
   max-width: 100%;
   margin: 0 auto;
   aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000; /* Fallback for Clappr */
 }
 
-.video-container #player {
+[data-bs-theme="dark"] .video-container {
+  background: #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-bs-theme="light"] .video-container {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#player {
   width: 100%;
   height: 100%;
   max-height: 80vh;
+}
+
+/* Clappr Player Custom Styles */
+.clappr-player {
+  width: 100%;
+  height: 100%;
+}
+
+.clappr-player .media-control {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-bs-theme="light"] .clappr-player .media-control {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.clappr-player .media-control-button,
+.clappr-player .media-control-icon {
+  color: #ff4d4d;
+}
+
+[data-bs-theme="light"] .clappr-player .media-control-button,
+[data-bs-theme="light"] .clappr-player .media-control-icon {
+  color: #e63939;
 }
 
 /* Back Button */
@@ -283,12 +320,12 @@ body {
 .card-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
-  border-bottom: none; /* No border below title */
-  padding-bottom: 0; /* Remove any padding that could cause a line */
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .card-title::after {
-  content: none; /* Disable any pseudo-element that might create a line */
+  content: none;
 }
 
 .card-title.non-clickable {
@@ -335,15 +372,15 @@ body {
 }
 
 .event-timer .countdown {
-  color: #ff4d4d; /* Classic cool red for dark mode */
+  color: #ff4d4d;
 }
 
 [data-bs-theme="light"] .event-timer .countdown {
-  color: #e63939; /* Slightly darker red for light mode */
+  color: #e63939;
 }
 
 .event-timer .watch-button {
-  color: #fff; /* Ensure watch button text remains white */
+  color: #fff;
 }
 
 /* Live Badge */
