@@ -274,6 +274,16 @@ body {
   margin-bottom: 10px;
 }
 
+.card-title.non-clickable {
+  cursor: default;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.card-title.non-clickable:hover {
+  color: inherit;
+}
+
 .card-text {
   display: flex;
   justify-content: space-between;
@@ -353,10 +363,37 @@ footer {
   padding: 20px;
 }
 
+.pricing-plans .classic-card {
+  border: 2px solid #ff4d4d;
+  background: linear-gradient(135deg, #333 0%, #222 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+[data-bs-theme="light"] .pricing-plans .classic-card {
+  border: 2px solid #e63939;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pricing-plans .classic-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-bs-theme="light"] .pricing-plans .classic-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
 .pricing-plans .price {
   font-size: 2rem;
   font-weight: bold;
   margin: 15px 0;
+  color: #ff4d4d;
+}
+
+[data-bs-theme="light"] .pricing-plans .price {
+  color: #e63939;
 }
 
 .pricing-plans .price span {
@@ -376,27 +413,6 @@ footer {
 
 [data-bs-theme="light"] .pricing-plans .duration {
   color: #666;
-}
-
-.league-section {
-  padding: 20px;
-}
-
-.league-icons .league-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  text-align: center;
-  min-height: 120px;
-}
-
-.league-icons .league-icon img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  margin-bottom: 10px;
 }
 
 .payment-methods .method {
@@ -440,44 +456,6 @@ footer {
 [data-bs-theme="light"] .info-section .instructions li::before,
 [data-bs-theme="light"] .info-section .benefits li::before {
   color: #e63939;
-}
-
-.faq .faq-item {
-  overflow: hidden;
-}
-
-.faq .faq-question {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #333;
-  padding: 15px;
-}
-
-[data-bs-theme="light"] .faq .faq-question {
-  background: #ccc;
-  color: #333;
-}
-
-.faq .faq-item.active .faq-question {
-  background: #ff4d4d;
-  color: #fff;
-}
-
-[data-bs-theme="light"] .faq .faq-item.active .faq-question {
-  background: #e63939;
-}
-
-.faq .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
-}
-
-.faq .faq-item.active .faq-answer {
-  max-height: 500px;
-  padding: 15px;
 }
 
 .admin-section {
@@ -568,10 +546,6 @@ footer {
 
   .pricing-plans .price {
     font-size: 1.5rem;
-  }
-
-  .league-icons .league-icon {
-    min-height: 100px;
   }
 }
 
