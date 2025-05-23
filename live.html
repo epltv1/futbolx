@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=19">
+    <link rel="stylesheet" href="/assets/css/main.css?v=20">
     <link rel="preload" href="/assets/js/playerjs.js" as="script">
   </head>
   <body>
@@ -180,7 +180,6 @@
           htmlElement.setAttribute('data-bs-theme', currentTheme);
           themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           
-          // Theme toggle event
           themeToggle.addEventListener('click', () => {
             const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
             htmlElement.setAttribute('data-bs-theme', newTheme);
@@ -256,7 +255,6 @@
               startLivestreamBtn.innerText = 'Fetch Failed';
             });
 
-          // Start livestream button
           startLivestreamBtn.addEventListener('click', () => {
             console.log('Start Livestream button clicked, streamData:', streamData);
             if (streamData) {
@@ -289,10 +287,20 @@
         initPage();
       });
 
-      // Handle device back button
-      window.addEventListener('popstate', (event) => {
-        console.log('Back button detected, navigating to:', window.location.pathname);
-        window.location.href = window.location.pathname;
+      // Modified navigation handler
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href]');
+        if (link) {
+          const href = link.getAttribute('href');
+          if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods') {
+            return;
+          }
+          if (href.startsWith('/')) {
+            event.preventDefault();
+            console.log('Navigating to:', href);
+            window.location.href = href;
+          }
+        }
       });
     </script>
   </body>
