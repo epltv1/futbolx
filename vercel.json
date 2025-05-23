@@ -3,6 +3,7 @@
     { "source": "/api/streams", "destination": "/api/streams/index.json" },
     { "source": "/api/stream", "destination": "/api/stream.json" },
     { "source": "/live/:path*", "destination": "/live.html" },
+    { "source": "/vip", "destination": "/vip.html" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }
