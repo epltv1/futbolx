@@ -1,102 +1,373 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Futbolx - VIP</title>
+    <title>FutbolX - VIP Membership</title>
+    <meta name="description" content="FutbolX - Unlock premium sports streaming with VIP membership. Watch PPV boxing, UFC, Basketball, Football, and more in HD.">
+    <meta name="keywords" content="futbolx, vip, premium streaming, ppv, boxing, ufc, basketball, football, stream, online">
+    <meta property="og:title" content="FutbolX - VIP Membership" />
+    <meta property="og:url" content="https://your-futbolx-site.vercel.app/vip" />
+    <meta property="og:image" content="/assets/img/og-image.jpg">
+    <meta name="twitter:title" content="FutbolX - VIP Membership">
+    <meta name="twitter:description" content="Unlock premium sports streaming with FutbolX VIP membership.">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link href="https://fonts.bunny.net/css?family=kanit:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> 
+    <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=26">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=19">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-black">
+    <!-- Top Bar -->
+    <nav class="top-bar fixed-top">
       <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+          <i class="fas fa-bars"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="/request" data-lang="nav-request">Request</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://discord.gg/5AMPdpckjH" data-lang="nav-discord">Discord</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-lang="nav-language">English</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('en');" data-lang="lang-english">English</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('de');" data-lang="lang-german">Deutsch</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('es');" data-lang="lang-spanish">Español</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setLanguage('fr');" data-lang="lang-french">Français</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-lang="nav-login">Login</a></li>
-            <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-lang="nav-logout">Logout</button></li>
-            <li class="nav-item">
-              <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-              </button>
-            </li>
-          </ul>
-          <a class="navbar-brand ms-auto" href="https://futbolx.com"><img src="/assets/img/ppvwtf.png" height="30" alt="Futbolx Logo" /></a>
-        </div>
+        <span class="futbolx-brand">FutbolX</span>
       </div>
     </nav>
-    <div class="container py-5">
-      <h1 class="display-4 fw-bold text-center" data-lang="vip-title">VIP Exclusive Streams</h1>
-      <p class="lead text-center" data-lang="vip-subtitle">Enjoy premium content available only to VIP members!</p>
-      <div id="vipStreams" class="event-grid py-3"></div>
-      <div id="vipError" class="alert alert-danger d-none" role="alert"></div>
+    <!-- Left Sidebar -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
+          <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
+          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+          <li class="nav-item">
+            <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+              <i class="fas fa-moon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <script async src="/assets/js/lang.js"></script>
-    <script async src="/assets/js/auth.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Main Content -->
+    <div class="container-fluid main-content">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section py-5">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+              <h1 class="display-4 fw-bold">Premium Sports Streaming in HD Quality</h1>
+              <p class="lead">Watch all your favorite sports leagues and tournaments in crystal clear HD quality with zero buffering. Our premium streams work on all devices with multi-language commentary options.</p>
+              <a href="#pricing" class="btn btn-danger mt-3">View Pricing Plans</a>
+            </div>
+            <div class="col-lg-6 text-center">
+              <img src="https://l.top4top.io/p3424mditd1.png" alt="FutbolX Sports Streaming" class="img-fluid rounded shadow" style="max-width: 100%;">
+            </div>
+          </div>
+        </section>
+
+        <!-- Pricing Plans -->
+        <h2 id="pricing" class="mt-5">Choose Your Plan</h2>
+        <div class="event-grid pricing-plans mb-5">
+          <div class="card plan">
+            <h3 class="card-title">Silver Package</h3>
+            <p class="price">$8.00 <span>per month</span></p>
+            <p class="duration">1 Month Subscription</p>
+            <a href="#admin" class="btn btn-danger">Choose Plan</a>
+          </div>
+          <div class="card plan">
+            <h3 class="card-title">Golden Package</h3>
+            <p class="price">$21.00 <span>3 Months</span></p>
+            <p class="duration">Save 13% ($7.00/month)</p>
+            <a href="#admin" class="btn btn-danger">Choose Plan</a>
+          </div>
+          <div class="card plan position-relative">
+            <span class="live-badge" style="background: #ff4d4d;">MOST POPULAR</span>
+            <h3 class="card-title">VIP Package</h3>
+            <p class="price">$50.00 <span>12 Months</span></p>
+            <p class="duration">Save 48% ($4.17/month)</p>
+            <a href="#admin" class="btn btn-danger">Choose Plan</a>
+          </div>
+        </div>
+
+        <!-- Sports Leagues -->
+        <h2>Sports Leagues and Tournaments</h2>
+        <div class="card league-section mb-5">
+          <p class="text-center text-muted mb-4">We cover all major sports leagues and tournaments from around the world</p>
+          <div class="event-grid league-icons">
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/169-fifa-club-world-cup.png?q=75&w=50" alt="FIFA Club World Cup">
+              <p>FIFA Club World Cup</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/8-primera-division.png?q=75&w=50" alt="La Liga">
+              <p>La Liga</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/6-premier-league.png?q=75&w=50" alt="Premier League">
+              <p>Premier League</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/50-uefa-champions-league.png?q=75&w=50" alt="UEFA Champions League">
+              <p>UEFA Champions League</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/4-uefa-europa-league.png?q=75&w=50" alt="UEFA Europa League">
+              <p>UEFA Europa League</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://1000logos.net/wp-content/uploads/2017/06/Logo-UFC.png" alt="UFC">
+              <p>UFC</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://static.vecteezy.com/system/resources/previews/047/918/092/non2x/kick-boxing-and-boxing-logo-design-illustration-vector.jpg" alt="Boxing">
+              <p>Boxing</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/7-bundesliga.png?q=75&w=50" alt="Bundesliga">
+              <p>Bundesliga</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/19-championship.png?q=75&w=50" alt="Championship">
+              <p>Championship</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/25-fa-cup.png?q=75&w=50" alt="FA Cup">
+              <p>FA Cup</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmA0FtEvWPb-eXKhS5J88SqlTQOg6R5WnMjQ&s" alt="Formula 1">
+              <p>Formula 1</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/28-football-league-cup.png?q=75&w=50" alt="League Cup">
+              <p>League Cup</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/10-ligue-1.png?q=75&w=50" alt="Ligue 1">
+              <p>Ligue 1</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://i.pinimg.com/736x/90/6e/51/906e51825875defc35d0c15899ddd22d.jpg" alt="NBA">
+              <p>NBA</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://upload.wikimedia.org/wikipedia/en/a/a2/National_Football_League_logo.svg" alt="NFL">
+              <p>NFL</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/270-pro-league.png?q=75&w=50" alt="Saudi Pro League">
+              <p>Saudi Pro League</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/39-serie-a.png?q=75&w=50" alt="Serie A">
+              <p>Serie A</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/738-uefa-europa-conference-league.png?q=75&w=50" alt="UEFA Conference League">
+              <p>UEFA Conference League</p>
+            </div>
+            <div class="card league-icon">
+              <img src="https://cdn.livesoccertv.com/tt/images/competitions/669-uefa-nations-league.png?q=75&w=50" alt="UEFA Nations League">
+              <p>UEFA Nations League</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <h2>Secure Payment Methods</h2>
+        <div class="event-grid payment-methods mb-5">
+          <div class="card method">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            <p>PayPal</p>
+          </div>
+          <div class="card method">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+            <p>Credit/Debit</p>
+          </div>
+          <div class="card method">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin">
+            <p>Crypto</p>
+          </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="row info-section mb-5">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card instructions">
+              <h3 class="card-title text-center">How To Subscribe</h3>
+              <ul>
+                <li>Contact the admin on Telegram</li>
+                <li>The admin will send you payment links</li>
+                <li>After payment, send a screenshot and payment email</li>
+                <li>The admin will send you login details</li>
+                <li>Enjoy unlimited sports streaming!</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card benefits">
+              <h3 class="card-title text-center">Premium Benefits</h3>
+              <ul>
+                <li>No ads or popups - pure streaming</li>
+                <li>Up to Full HD and 4K quality</li>
+                <li>The membership renews manually, not automatically</li>
+                <li>Multiple language audio options</li>
+                <li>Global CDN for fastest streaming</li>
+                <li>Works on all devices</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq mb-5">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              What is the main language of the stream? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              The main stream is in English. Additional audio streams are available in Arabic, French, and Spanish.
+            </div>
+          </div>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              What streaming qualities are available? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              We offer high-quality streams in 720p, 1080p, and 4K depending on your internet connection.
+            </div>
+          </div>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              Can I test the stream before paying? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              Yes, you can contact the admin to receive a short trial period.
+            </div>
+          </div>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              What devices can I use to watch? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              You can watch on iPhone, Android, tablet, laptop/PC, or directly through your smart TV browser.
+            </div>
+          </div>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              How many devices can I use at the same time? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              Only one device is allowed per session.
+            </div>
+          </div>
+          <div class="faq-item card mb-3">
+            <div class="faq-question card-header">
+              Is a free trial available? <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer card-body">
+              Yes, you can contact the admin to request a free trial session for a limited time.
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Contact -->
+        <div id="admin" class="card admin-section mb-5">
+          <h3 class="card-title text-center">✨ Want To Buy Account? ✨</h3>
+          <div class="contact-card card">
+            <div class="contact-header">
+              <i class="fas fa-headset"></i>
+              <span>Contact The Admin On Telegram</span>
+            </div>
+            <a href="https://t.me/FcTvAdmin" class="telegram-btn btn btn-danger" target="_blank">
+              <i class="fab fa-telegram"></i> 
+              <span>Message on Telegram</span>
+              <i class="fas fa-paper-plane"></i>
+            </a>
+          </div>
+          <p class="support-text text-center text-muted"><i class="fas fa-clock"></i> 24/7 support available</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
+          <ul class="nav justify-content-center justify-content-lg-end mb-0">
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+          </ul>
+        </footer>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/assets/js/auth.js" async></script>
     <script>
-      window.onload = async function() {
-        updateLanguage();
-        AOS.init();
-        const token = localStorage.getItem('token');
-        if (!token) {
-          window.location.href = '/auth/login';
-          return;
-        }
+      function initPage() {
         try {
-          const response = await fetch('https://your-backend-url/vip/streams', {
-            headers: { 'Authorization': `Bearer ${token}` }
+          console.log('Initializing page at', new Date().toISOString());
+          // Initialize theme
+          const htmlElement = document.documentElement;
+          const themeToggle = document.getElementById('themeToggle');
+          const currentTheme = localStorage.getItem('theme') || 'dark';
+          htmlElement.setAttribute('data-bs-theme', currentTheme);
+          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          
+          // Theme toggle event
+          themeToggle.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
-          const data = await response.json();
-          if (response.ok) {
-            const vipStreams = document.getElementById('vipStreams');
-            data.streams.forEach((stream, index) => {
-              const streamHtml = `
-                <div class="event-card" data-aos="fade-up" data-aos-delay="${index * 100}">
-                  <a href="/live/${stream.uri_name}" class="card-link">
-                    <div class="card bg-black text-white">
-                      <span class="live-badge">LIVE</span>
-                      <img src="${stream.poster}" class="card-img-top cover" width="285px" height="160px" alt="${stream.name}" loading="lazy">
-                      <div class="card-body">
-                        <h5 class="card-title">${stream.name}</h5>
-                        <p class="card-text">
-                          <span class="event-tag text-muted">${stream.tag}</span>
-                          <span class="float-end viewer-count"><span class="text-danger"><strong>●</strong></span> ${stream.viewers}</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </div>`;
-              vipStreams.innerHTML += streamHtml;
+
+          // Offcanvas outside click
+          const offcanvasElement = document.getElementById('sidebarMenu');
+          document.addEventListener('click', (event) => {
+            const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+            const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+            const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+            if (isOffcanvasOpen && !clickedInside) {
+              bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
+            }
+          });
+
+          // FAQ toggle functionality
+          document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+              const item = question.parentNode;
+              item.classList.toggle('active');
+              const icon = question.querySelector('i');
+              if (item.classList.contains('active')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+              } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+              }
             });
-          } else {
-            document.getElementById('vipError').classList.remove('d-none');
-            document.getElementById('vipError').textContent = data.message || 'Access denied';
-            setTimeout(() => window.location.href = '/auth/login', 3000);
-          }
-        } catch (err) {
-          document.getElementById('vipError').classList.remove('d-none');
-          document.getElementById('vipError').textContent = 'Network error';
-          setTimeout(() => window.location.href = '/auth/login', 3000);
+          });
+
+          checkAuthStatus();
+          console.log('Page initialized successfully');
+        } catch (error) {
+          console.error('Init page error:', error);
         }
-      };
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM loaded at', new Date().toISOString());
+        initPage();
+      });
+
+      // Handle device back button
+      window.addEventListener('popstate', (event) => {
+        console.log('Back button detected, navigating to:', window.location.pathname);
+        window.location.href = window.location.pathname;
+      });
     </script>
   </body>
 </html>
