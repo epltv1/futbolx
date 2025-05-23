@@ -283,7 +283,12 @@ body {
 .card-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
-  border-bottom: none; /* Ensure no border below title */
+  border-bottom: none; /* No border below title */
+  padding-bottom: 0; /* Remove any padding that could cause a line */
+}
+
+.card-title::after {
+  content: none; /* Disable any pseudo-element that might create a line */
 }
 
 .card-title.non-clickable {
@@ -329,12 +334,16 @@ body {
   font-size: 0.9rem;
 }
 
-[data-bs-theme="dark"] .event-timer {
-  color: #fff;
+.event-timer .countdown {
+  color: #ff4d4d; /* Classic cool red for dark mode */
 }
 
-[data-bs-theme="light"] .event-timer {
-  color: #333;
+[data-bs-theme="light"] .event-timer .countdown {
+  color: #e63939; /* Slightly darker red for light mode */
+}
+
+.event-timer .watch-button {
+  color: #fff; /* Ensure watch button text remains white */
 }
 
 /* Live Badge */
