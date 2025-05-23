@@ -267,11 +267,23 @@ body {
 
 .card-body {
   padding: 15px;
+  background: inherit;
+}
+
+[data-bs-theme="dark"] .card-body {
+  background: #222;
+  color: #fff;
+}
+
+[data-bs-theme="light"] .card-body {
+  background: #fff;
+  color: #333;
 }
 
 .card-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
+  border-bottom: none; /* Ensure no border below title */
 }
 
 .card-title.non-clickable {
@@ -288,10 +300,41 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: inherit;
+}
+
+[data-bs-theme="dark"] .card-text {
+  background: #222;
+  color: #fff;
+}
+
+[data-bs-theme="light"] .card-text {
+  background: #fff;
+  color: #333;
 }
 
 .event-tag {
   font-size: 0.9rem;
+}
+
+[data-bs-theme="dark"] .event-tag {
+  color: #999;
+}
+
+[data-bs-theme="light"] .event-tag {
+  color: #666;
+}
+
+.event-timer {
+  font-size: 0.9rem;
+}
+
+[data-bs-theme="dark"] .event-timer {
+  color: #fff;
+}
+
+[data-bs-theme="light"] .event-timer {
+  color: #333;
 }
 
 /* Live Badge */
