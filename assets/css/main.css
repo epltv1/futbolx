@@ -3,7 +3,7 @@
 body {
   font-family: 'Kanit', sans-serif;
   transition: background-color 0.3s, color 0.3s;
-  color: #fff; /* Default for dark mode */
+  color: #fff;
 }
 
 [data-bs-theme="dark"] body {
@@ -78,8 +78,8 @@ body {
 
 /* Sidebar */
 .offcanvas {
-  width: 300px !important; /* Fixed width */
-  max-width: 70vw; /* Responsive on mobile */
+  width: 300px !important;
+  max-width: 70vw;
   background: #000;
   transition: background-color 0.3s;
 }
@@ -125,41 +125,10 @@ body {
   margin-bottom: 10px;
 }
 
-.dropdown-menu {
-  background: #222;
-  border: none;
-}
-
-[data-bs-theme="light"] .dropdown-menu {
-  background: #f5f5f5;
-}
-
-.dropdown-item {
-  transition: color 0.3s, background 0.3s;
-}
-
-[data-bs-theme="dark"] .dropdown-item {
-  color: #fff !important;
-}
-
-[data-bs-theme="light"] .dropdown-item {
-  color: #333 !important;
-}
-
-.dropdown-item:hover {
-  color: #ff4d4d !important;
-  background: #333;
-}
-
-[data-bs-theme="light"] .dropdown-item:hover {
-  color: #e63939 !important;
-  background: #e5e5e5;
-}
-
 /* Main Content */
 .main-content {
-  padding-top: 60px; /* Space for top bar */
-  padding-left: 15px; /* Adjusted to prevent sidebar overlap */
+  padding-top: 60px;
+  padding-left: 15px;
 }
 
 /* Hero Section */
@@ -273,6 +242,7 @@ body {
   transition: transform 0.3s, box-shadow 0.3s;
   border: none;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 [data-bs-theme="dark"] .card {
@@ -293,6 +263,25 @@ body {
   object-fit: cover;
   width: 100%;
   height: 160px;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-tag {
+  font-size: 0.9rem;
 }
 
 /* Live Badge */
