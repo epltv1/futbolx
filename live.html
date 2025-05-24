@@ -85,29 +85,17 @@
     <script>
       let playerInstance = null;
       let streamData = null;
-      const useProxy = true;
-
-      async function validateStreamUrl(url) {
-        try {
-          const response = await fetch(useProxy ? `/api/proxy?url=${encodeURIComponent(url)}` : url, {
-            method: 'HEAD',
-            headers: { 'Accept': 'application/vnd.apple.mpegurl, */*' }
-          });
-          return response.ok && response.headers.get('content-type')?.includes('mpegurl');
-        } catch {
-          return false;
-        }
-      }
+      const useProxy = true; // Set to false to test direct URLs
 
       function getStreamUrl(url) {
         return useProxy ? `/api/proxy?url=${encodeURIComponent(url)}` : url;
       }
 
-      async function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10, streamIndex = 0) {
+      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10, streamIndex = 0) {
         console.log('initPlayer called, attempt:', attempt, 'streamIndex:', streamIndex);
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to load player. Please refresh or try another stream.';
+          playerError.innerText = 'Failed to load player. Please refresh the page or try another stream.';
           console.error('Clappr: Max retry attempts reached');
           return;
         }
@@ -122,19 +110,10 @@
           console.error('Clappr: No more streams to try');
           return;
         }
-        const streamUrl = event.streams[streamIndex].url;
-        const isValid = await validateStreamUrl(streamUrl);
-        if (!isValid) {
-          console.warn('Invalid stream URL:', streamUrl);
-          playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Stream URL is invalid or inaccessible.';
-          initPlayer(event, playerError, streamLinks, 0, maxAttempts, streamIndex + 1);
-          return;
-        }
         try {
-          console.log('Clappr: Initializing with stream', streamUrl);
+          console.log('Clappr: Initializing with stream', event.streams[streamIndex].url);
           playerInstance = new Clappr.Player({
-            source: getStreamUrl(streamUrl),
+            source: getStreamUrl(event.streams[streamIndex].url),
             parentId: '#player',
             autoPlay: true,
             width: '100%',
@@ -155,7 +134,7 @@
             },
             events: {
               onError: (err) => {
-                console.error('Clappr Error for stream', streamUrl, err);
+                console.error('Clappr Error for stream', event.streams[streamIndex].url, err);
                 let errorMessage = 'Failed to play stream: ';
                 if (err.message && err.message.includes('CORS')) {
                   errorMessage += 'Stream blocked by CORS policy.';
@@ -175,10 +154,10 @@
                 initPlayer(event, playerError, streamLinks, 0, maxAttempts, streamIndex + 1);
               },
               onReady: () => {
-                console.log('Clappr: Player ready for stream', streamUrl);
+                console.log('Clappr: Player ready for stream', event.streams[streamIndex].url);
               },
               onPlay: () => {
-                console.log('Clappr: Playback started for stream', streamUrl);
+                console.log('Clappr: Playback started for stream', event.streams[streamIndex].url);
               }
             }
           });
@@ -223,7 +202,9 @@
             fetch(url)
               .then(res => {
                 console.log(`Fetch status: ${res.status}`);
-                if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+                if (!res.ok) {
+                  throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+                }
                 return res.json();
               })
               .then(data => resolve(data))
@@ -360,6 +341,7 @@
         initPage();
       });
 
+      // Modified navigation handler
       document.addEventListener('click', (event) => {
         const link = event.target.closest('a[href]');
         if (link) {
