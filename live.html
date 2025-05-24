@@ -16,8 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=20">
-    <link rel="preload" href="/assets/js/playerjs.js" as="script">
+    <link rel="stylesheet" href="/assets/css/main.css?v=24">
   </head>
   <body>
     <!-- Top Bar -->
@@ -80,9 +79,9 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
-    <script src="/assets/js/playerjs.js?v=3"></script>
     <script>
       let playerInstance = null;
       let streamData = null;
@@ -92,27 +91,31 @@
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
           playerError.innerText = 'Failed to load player. Please refresh the page.';
-          console.error('PlayerJS: Max retry attempts reached');
+          console.error('Clappr: Max retry attempts reached');
           return;
         }
-        if (typeof Playerjs === 'undefined') {
-          console.warn(`PlayerJS not loaded, attempt ${attempt + 1}/${maxAttempts}`);
+        if (typeof Clappr === 'undefined') {
+          console.warn(`Clappr not loaded, attempt ${attempt + 1}/${maxAttempts}`);
           setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
           return;
         }
         try {
-          console.log('PlayerJS: Initializing with stream', event.streams[0].url);
-          playerInstance = new Playerjs({
-            id: 'player',
-            file: event.streams[0].url,
-            autoplay: true,
-            error: (err) => {
-              console.error('PlayerJS Error:', err);
-              playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = 'Failed to play stream: ' + err.message;
+          console.log('Clappr: Initializing with stream', event.streams[0].url);
+          playerInstance = new Clappr.Player({
+            source: event.streams[0].url,
+            parentId: '#player',
+            autoPlay: true,
+            width: '100%',
+            height: '100%',
+            events: {
+              onError: (err) => {
+                console.error('Clappr Error:', err);
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'Failed to play stream: ' + (err.message || 'Unknown error');
+              }
             }
           });
-          console.log('PlayerJS: Initialized successfully');
+          console.log('Clappr: Initialized successfully');
           streamLinks.innerHTML = event.streams.map((stream, index) => `
             <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
               ${stream.title || `Stream ${index + 1}`}
@@ -124,23 +127,22 @@
               const url = btn.getAttribute('data-stream-url');
               playerError.className = 'alert alert-danger mt-3 d-none';
               try {
-                console.log('PlayerJS: Switching to stream', url);
-                playerInstance.api('file', url);
-                playerInstance.api('play');
+                console.log('Clappr: Switching to stream', url);
+                playerInstance.load(url);
                 streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                console.log('PlayerJS: Stream switched successfully');
+                console.log('Clappr: Stream switched successfully');
               } catch (err) {
                 console.error('Stream switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'Failed to switch stream: ' + err.message;
+                playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
               }
             }
           });
         } catch (err) {
           console.error('Player init error:', err);
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to initialize player: ' + err.message;
+          playerError.innerText = 'Failed to initialize player: ' + (err.message || 'Unknown error');
         }
       }
 
