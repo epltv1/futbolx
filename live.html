@@ -78,42 +78,31 @@
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
       let playerInstance = null;
       let streamData = null;
-      const useProxy = true; // Set to false to test direct URLs
 
-      function getStreamUrl(url) {
-        return useProxy ? `/api/proxy?url=${encodeURIComponent(url)}` : url;
-      }
-
-      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10, streamIndex = 0) {
-        console.log('initPlayer called, attempt:', attempt, 'streamIndex:', streamIndex);
+      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
+        console.log('initPlayer called, attempt:', attempt);
         if (attempt >= maxAttempts) {
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to load player. Please refresh the page or try another stream.';
+          playerError.innerText = 'Failed to load player. Please refresh the page.';
           console.error('Clappr: Max retry attempts reached');
           return;
         }
         if (typeof Clappr === 'undefined') {
           console.warn(`Clappr not loaded, attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts, streamIndex), 200);
-          return;
-        }
-        if (streamIndex >= event.streams.length) {
-          playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'All streams failed. Please try again later.';
-          console.error('Clappr: No more streams to try');
+          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
           return;
         }
         try {
-          console.log('Clappr: Initializing with stream', event.streams[streamIndex].url);
+          console.log('Clappr: Initializing with stream', event.streams[0].url);
           playerInstance = new Clappr.Player({
-            source: getStreamUrl(event.streams[streamIndex].url),
+            source: event.streams[0].url,
             parentId: '#player',
             autoPlay: true,
             width: '100%',
@@ -123,9 +112,6 @@
                 enableWorker: true,
                 maxBufferLength: 30,
                 maxMaxBufferLength: 60,
-                liveSyncDurationCount: 3,
-                maxFragLookUpTolerance: 0.2,
-                nudgeMaxRetry: 6,
                 xhrSetup: function(xhr, url) {
                   xhr.withCredentials = false;
                   xhr.setRequestHeader('Accept', '*/*');
@@ -134,36 +120,26 @@
             },
             events: {
               onError: (err) => {
-                console.error('Clappr Error for stream', event.streams[streamIndex].url, err);
+                console.error('Clappr Error:', err);
                 let errorMessage = 'Failed to play stream: ';
                 if (err.message && err.message.includes('CORS')) {
-                  errorMessage += 'Stream blocked by CORS policy.';
+                  errorMessage += 'Stream blocked by CORS policy. Try a different source.';
                 } else if (err.code) {
-                  if (err.code.includes('networkError')) {
-                    errorMessage += 'Network error loading stream.';
-                  } else if (err.code.includes('levelLoadError')) {
-                    errorMessage += 'Failed to load M3U8 playlist. URL may be invalid or blocked.';
-                  } else {
-                    errorMessage += `Error code ${err.code}: ${err.message || 'Unknown error'}`;
-                  }
+                  errorMessage += `Error code ${err.code}: ${err.message || 'Unknown error'}`;
                 } else {
                   errorMessage += err.message || 'Unknown error';
                 }
-                console.warn('Trying next stream, index:', streamIndex + 1);
-                playerInstance.destroy();
-                initPlayer(event, playerError, streamLinks, 0, maxAttempts, streamIndex + 1);
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = errorMessage;
               },
               onReady: () => {
-                console.log('Clappr: Player ready for stream', event.streams[streamIndex].url);
-              },
-              onPlay: () => {
-                console.log('Clappr: Playback started for stream', event.streams[streamIndex].url);
+                console.log('Clappr: Player ready');
               }
             }
           });
           console.log('Clappr: Initialized successfully');
           streamLinks.innerHTML = event.streams.map((stream, index) => `
-            <button class="btn btn-stream ${index === streamIndex ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
+            <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
               ${stream.title || `Stream ${index + 1}`}
             </button>
           `).join('');
@@ -171,14 +147,13 @@
             const btn = e.target.closest('.btn.btn-stream');
             if (btn) {
               const url = btn.getAttribute('data-stream-url');
-              const newIndex = parseInt(btn.getAttribute('data-stream-index'));
               playerError.className = 'alert alert-danger mt-3 d-none';
               try {
                 console.log('Clappr: Switching to stream', url);
-                if (playerInstance) {
-                  playerInstance.destroy();
-                }
-                initPlayer(event, playerError, streamLinks, 0, maxAttempts, newIndex);
+                playerInstance.load(url);
+                streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                console.log('Clappr: Stream switched successfully');
               } catch (err) {
                 console.error('Stream switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
@@ -202,9 +177,7 @@
             fetch(url)
               .then(res => {
                 console.log(`Fetch status: ${res.status}`);
-                if (!res.ok) {
-                  throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
-                }
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
                 return res.json();
               })
               .then(data => resolve(data))
@@ -265,15 +238,13 @@
           }
 
           const api = new Api(`${window.location.origin}/api`);
-          console.log('Fetching stream data from:', api.baseUrl + '/stream');
           fetchWithRetry(api.baseUrl + '/stream')
             .then(data => {
               console.log('Stream API Response:', data);
               if (!data || !data.success || !Array.isArray(data.streams)) {
-                console.error('Invalid stream data:', data);
                 document.getElementById('eventTitle').innerText = 'Error: Stream not found';
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'No streams available. Check server configuration.';
+                playerError.innerText = 'No streams available.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'Stream Unavailable';
                 return;
@@ -286,10 +257,9 @@
                 }
               }
               if (!event || !event.streams || event.streams.length === 0) {
-                console.error('No event found for uriName:', uriName);
                 document.getElementById('eventTitle').innerText = 'Error: No streams available';
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = `No stream links found for event: ${uriName}`;
+                playerError.innerText = 'No stream links found for this event.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'No Streams';
                 return;
@@ -304,7 +274,7 @@
               console.error('Stream fetch error:', error);
               document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
               playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = `Failed to fetch stream data: ${error.message}. Please check your connection or server.`;
+              playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
               startLivestreamBtn.disabled = true;
               startLivestreamBtn.innerText = 'Fetch Failed';
             });
