@@ -85,6 +85,11 @@
     <script>
       let playerInstance = null;
       let streamData = null;
+      const useProxy = true; // Toggle to false to test direct URLs
+
+      function getStreamUrl(url) {
+        return useProxy ? `/api/proxy?url=${encodeURIComponent(url)}` : url;
+      }
 
       function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
         console.log('initPlayer called, attempt:', attempt);
@@ -102,7 +107,7 @@
         try {
           console.log('Clappr: Initializing with stream', event.streams[0].url);
           playerInstance = new Clappr.Player({
-            source: event.streams[0].url,
+            source: getStreamUrl(event.streams[0].url),
             parentId: '#player',
             autoPlay: true,
             width: '100%',
@@ -112,6 +117,9 @@
                 enableWorker: true,
                 maxBufferLength: 30,
                 maxMaxBufferLength: 60,
+                liveSyncDurationCount: 3,
+                maxFragLookUpTolerance: 0.2,
+                nudgeMaxRetry: 6,
                 xhrSetup: function(xhr, url) {
                   xhr.withCredentials = false;
                   xhr.setRequestHeader('Accept', '*/*');
@@ -125,7 +133,13 @@
                 if (err.message && err.message.includes('CORS')) {
                   errorMessage += 'Stream blocked by CORS policy. Try a different source.';
                 } else if (err.code) {
-                  errorMessage += `Error code ${err.code}: ${err.message || 'Unknown error'}`;
+                  if (err.code.includes('networkError')) {
+                    errorMessage += 'Network error loading stream. Check the URL or try another stream.';
+                  } else if (err.code.includes('levelLoadError')) {
+                    errorMessage += 'Failed to load M3U8 playlist. URL may be invalid or blocked.';
+                  } else {
+                    errorMessage += `Error code ${err.code}: ${err.message || 'Unknown error'}`;
+                  }
                 } else {
                   errorMessage += err.message || 'Unknown error';
                 }
@@ -134,6 +148,9 @@
               },
               onReady: () => {
                 console.log('Clappr: Player ready');
+              },
+              onPlay: () => {
+                console.log('Clappr: Playback started');
               }
             }
           });
@@ -150,7 +167,7 @@
               playerError.className = 'alert alert-danger mt-3 d-none';
               try {
                 console.log('Clappr: Switching to stream', url);
-                playerInstance.load(url);
+                playerInstance.load(getStreamUrl(url));
                 streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 console.log('Clappr: Stream switched successfully');
