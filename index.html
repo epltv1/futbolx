@@ -61,7 +61,7 @@
         <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
       </div>
       <div class="container pt-2">
-        <div id="errorContainer" class="d-none error-alert"></div>
+        <div id="errorContainer" class="error-alert alert alert-danger d-none"></div>
         <div id="live" class="mt-4">
           <h2 class="m-0">
             Live Now <span id="liveAnimation" class="live-animation d-none"></span>
@@ -155,7 +155,6 @@
             element.innerHTML = displayText;
           } else {
             element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
-            // Removed inline style to avoid overriding CSS
           }
         });
         setTimeout(countdown, 1000);
@@ -170,7 +169,7 @@
             fetch(url)
               .then(res => {
                 console.log(`Fetch status: ${res.status}`);
-                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
                 return res.json();
               })
               .then(data => resolve(data))
@@ -193,7 +192,7 @@
         const liveAnimation = document.getElementById('liveAnimation');
         const livecards = document.getElementById('livecards');
         
-        errorContainer.className = 'd-none error-alert';
+        errorContainer.className = 'error-alert alert alert-danger d-none';
         errorContainer.innerHTML = '';
         livecards.innerHTML = '<p>Loading streams...</p>';
 
@@ -202,9 +201,11 @@
             console.log('API Response:', streamData);
             
             if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
-              console.warn('Invalid stream data received');
+              console.error('Invalid stream data:', streamData);
               livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
               liveAnimation.classList.add('d-none');
+              errorContainer.className = 'error-alert alert alert-danger';
+              errorContainer.innerHTML = 'Failed to load streams: Invalid data received.';
               return;
             }
 
@@ -234,6 +235,14 @@
                 })));
               }
             });
+
+            if (allEvents.length === 0) {
+              livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+              liveAnimation.classList.add('d-none');
+              errorContainer.className = 'error-alert alert alert-danger';
+              errorContainer.innerHTML = 'No events found in stream data.';
+              return;
+            }
 
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
@@ -318,6 +327,8 @@
             console.error('API Fetch Error:', error);
             livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
             liveAnimation.classList.add('d-none');
+            errorContainer.className = 'error-alert alert alert-danger';
+            errorContainer.innerHTML = `Failed to load streams: ${error.message}. Please check your connection or try again later.`;
           });
       }
 
@@ -354,8 +365,10 @@
 
           // Load content
           if (typeof Api === 'undefined') {
-            console.warn('Api class not defined. Using default API path.');
-            const api = { baseUrl: window.location.origin };
+            console.error('Api class not defined. Ensure api.js is loaded.');
+            errorContainer.className = 'error-alert alert alert-danger';
+            errorContainer.innerHTML = 'Failed to initialize API. Please refresh the page.';
+            const api = { baseUrl: `${window.location.origin}/api` }; // Fixed fallback
             loadContent(api);
             setInterval(() => loadContent(api), 60000);
           } else {
@@ -370,8 +383,8 @@
         } catch (error) {
           console.error('Init page error:', error);
           livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
-          errorContainer.className = 'd-none error-alert';
-          errorContainer.innerHTML = '';
+          errorContainer.className = 'error-alert alert alert-danger';
+          errorContainer.innerHTML = `Initialization error: ${error.message}. Please refresh the page.`;
         }
       }
 
@@ -389,6 +402,7 @@
           }
           if (href.startsWith('/')) {
             event.preventDefault();
+            console.log('Navigating to:', href);
             window.location.href = href;
           }
         }
