@@ -107,33 +107,11 @@
             autoPlay: true,
             width: '100%',
             height: '100%',
-            playback: {
-              hlsjsConfig: {
-                enableWorker: true,
-                maxBufferLength: 30,
-                maxMaxBufferLength: 60,
-                xhrSetup: function(xhr, url) {
-                  xhr.withCredentials = false;
-                  xhr.setRequestHeader('Accept', '*/*');
-                }
-              }
-            },
             events: {
               onError: (err) => {
                 console.error('Clappr Error:', err);
-                let errorMessage = 'Failed to play stream: ';
-                if (err.message && err.message.includes('CORS')) {
-                  errorMessage += 'Stream blocked by CORS policy. Try a different source.';
-                } else if (err.code) {
-                  errorMessage += `Error code ${err.code}: ${err.message || 'Unknown error'}`;
-                } else {
-                  errorMessage += err.message || 'Unknown error';
-                }
                 playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = errorMessage;
-              },
-              onReady: () => {
-                console.log('Clappr: Player ready');
+                playerError.innerText = 'Failed to play stream: ' + (err.message || 'Unknown error');
               }
             }
           });
