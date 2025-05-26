@@ -10,13 +10,13 @@
           "uri_name": "brighton-vs-liverpool",
           "poster": "https://plive.live/uploads/682b43e2d32b0.webp",
           "tag": "UEL Final",
-          "starts_at": "2025-05-25T07:00:00Z",
-          "ends_at": "2025-05-25T23:59:00Z",
+          "starts_at": "2025-05-26T07:00:00Z",
+          "ends_at": "2025-05-26T23:59:00Z",
           "always_live": 0,
           "streams": [
             {
               "title": "Main Stream",
-              "url": "https://rex-streaming.vercel.app/api/x/388690.m3u8"
+              "url": "http://67.219.215.19:80/play/live.php?mac=00:1A:79:dd:41:02&stream=303206&extension=m3u8"
             },
             {
               "title": "Alternate Stream",
