@@ -16,11 +16,11 @@
           "streams": [
             {
               "title": "Main Stream",
-              "url": "https://m2.merichunidya.com:999/hls/laligauk.m3u8?md5=GYn-njWmBTImrK9GBF8AkA&expires=1748281247"
+              "url": "https://epltv1.github.io/itv1.m3u8"
             },
             {
               "title": "Alternate Stream",
-              "url": "https://anym3u8player.com/player-generator/mplay.php?data=nCLCQmLtFml/wHRSNI+EmeWTWnPSpwJRzlsKhFoZc27GOF8Soum5gtmAojdhjj0LLk03CvEiULHCxW2Kl9FvjMAEAACNzMeBoUCmjwR886e5sJP7janBYEjcAiTg+U97XBz3RG9CcSxLbjMZQaOUxjtC3LtoMwre73Wa3ZRUPf0AEWtoaHufcvwMlXySQH0qx2anNf/7xra2p98iR9M7m8pSNXtw3NbQylusYsqDwRSM3Cv1hkK3AFkA3cVgmPl89znkTn9V+nUWl80E29wXh/aB1TzK"
+              "url": "https://flixtvlive.vercel.app/tnt2.m3u8"
             }
           ]
         }
