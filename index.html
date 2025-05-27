@@ -102,6 +102,18 @@
           <h2 class="m-0">Ice Hockey</h2>
           <div id="icehockeycards" class="event-grid py-3"></div>
         </div>
+        <div id="tennis" class="mt-5 d-none">
+          <h2 class="m-0">Tennis</h2>
+          <div id="tenniscards" class="event-grid py-3"></div>
+        </div>
+        <div id="rugby" class="mt-5 d-none">
+          <h2 class="m-0">Rugby</h2>
+          <div id="rugbycards" class="event-grid py-3"></div>
+        </div>
+        <div id="golf" class="mt-5 d-none">
+          <h2 class="m-0">Golf</h2>
+          <div id="golfcards" class="event-grid py-3"></div>
+        </div>
         <div id="others" class="mt-5 d-none">
           <h2 class="m-0">Others</h2>
           <div id="otherscards" class="event-grid py-3"></div>
@@ -230,6 +242,9 @@
               nhl: document.getElementById('nhlcards'),
               mlb: document.getElementById('mlbcards'),
               icehockey: document.getElementById('icehockeycards'),
+              tennis: document.getElementById('tenniscards'),
+              rugby: document.getElementById('rugbycards'),
+              golf: document.getElementById('golfcards'),
               others: document.getElementById('otherscards')
             };
             
@@ -250,6 +265,10 @@
 
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
+            // Object to store events by category for non-live sections
+            const categoryEvents = {};
+            Object.keys(categories).forEach(key => categoryEvents[key] = []);
+
             allEvents.forEach((stream, index) => {
               let startTime, endTime;
               try {
@@ -275,7 +294,6 @@
 
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-              // Determine if card should be clickable based on time (within 30 minutes)
               let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
               let streamHtml = `
                 <div class="event-card">
@@ -305,12 +323,19 @@
                 hasLiveEvents = true;
               } else {
                 if (categories[categoryKey]) {
-                  categories[categoryKey].innerHTML += streamHtml;
-                  document.getElementById(categoryKey).classList.remove('d-none');
+                  categoryEvents[categoryKey].push(streamHtml);
                 } else {
-                  categories.others.innerHTML += streamHtml;
-                  document.getElementById('others').classList.remove('d-none');
+                  categoryEvents.others.push(streamHtml);
                 }
+              }
+            });
+
+            // Render non-live categories, limiting to 4 events
+            Object.keys(categories).forEach(key => {
+              if (categoryEvents[key].length > 0) {
+                // Show only the first 4 events
+                categories[key].innerHTML = categoryEvents[key].slice(0, 4).join('');
+                document.getElementById(key).classList.remove('d-none');
               }
             });
 
