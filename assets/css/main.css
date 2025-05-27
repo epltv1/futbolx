@@ -573,6 +573,93 @@ footer {
   margin-right: 5px;
 }
 
+/* Enhanced Match Cards */
+.event-card .card {
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #333 0%, #222 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+[data-bs-theme="light"] .event-card .card {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.event-card .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border-color: #ff4d4d;
+}
+
+[data-bs-theme="light"] .event-card .card:hover {
+  border-color: #e63939;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.event-card .card-body {
+  padding: 12px;
+}
+
+.event-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.event-card .card-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Watch Button */
+.watch-button {
+  order: -1; /* Moves watch button to the left */
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 15px;
+}
+
+/* Updated Live Animation */
+.live-animation {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.live-animation::before,
+.live-animation::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #ff4d4d;
+  border-radius: 50%;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.live-animation::before {
+  animation-delay: 0s;
+}
+
+.live-animation::after {
+  animation-delay: 0.5s;
+}
+
+[data-bs-theme="light"] .live-animation::before,
+[data-bs-theme="light"] .live-animation::after {
+  background: #e63939;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .futbolx-brand {
