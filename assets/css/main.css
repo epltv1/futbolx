@@ -282,24 +282,27 @@ body {
 
 .card-title {
   font-size: 1.2rem;
-  margin-bottom: 8px;
-  border: none; /* Remove all borders */
-  padding-bottom: 0; /* No padding to avoid visual lines */
+  margin: 0 0 8px 0;
+  padding: 0;
+  border: none;
+  text-decoration: none; /* Remove any underlines */
 }
 
 .card-title::before,
 .card-title::after {
-  content: none; /* Disable any pseudo-elements */
+  content: none; /* Disable pseudo-elements */
 }
 
 .card-title.non-clickable {
   cursor: default;
   pointer-events: none;
-  text-decoration: none;
+  text-decoration: none; /* Explicitly remove underlines */
+  color: inherit; /* Ensure consistent color */
 }
 
 .card-title.non-clickable:hover {
   color: inherit;
+  text-decoration: none; /* No underline on hover */
 }
 
 .card-text {
@@ -307,8 +310,9 @@ body {
   justify-content: space-between;
   align-items: center;
   background: inherit;
-  border: none; /* Remove all borders */
-  margin-bottom: 0; /* Ensure no extra spacing */
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 [data-bs-theme="dark"] .card-text {
@@ -323,6 +327,7 @@ body {
 
 .event-tag {
   font-size: 0.9rem;
+  text-decoration: none; /* Remove any underlines */
 }
 
 [data-bs-theme="dark"] .event-tag {
@@ -335,20 +340,24 @@ body {
 
 .event-timer {
   font-size: 0.9rem;
-  border: none; /* Explicitly remove any borders */
-  padding: 0; /* Remove padding to avoid visual lines */
+  border: none;
+  padding: 0;
+  text-decoration: none; /* Remove any underlines */
 }
 
 .event-timer .countdown {
   color: #ff4d4d; /* Classic cool red for dark mode */
+  text-decoration: none; /* Explicitly remove underlines */
 }
 
 [data-bs-theme="light"] .event-timer .countdown {
   color: #e63939; /* Slightly darker red for light mode */
+  text-decoration: none; /* Explicitly remove underlines */
 }
 
 .event-timer .watch-button {
   color: #fff; /* Ensure watch button text remains white */
+  text-decoration: none; /* Remove any underlines */
 }
 
 /* Live Badge */
@@ -609,14 +618,15 @@ footer {
 .event-card .card-title {
   font-size: 1.1rem;
   font-weight: 500;
-  margin-bottom: 8px;
-  border: none; /* Remove all borders */
-  padding: 0; /* Remove padding that could cause lines */
+  margin: 0 0 8px 0;
+  padding: 0;
+  border: none;
+  text-decoration: none; /* Remove any underlines */
 }
 
 .event-card .card-title::before,
 .event-card .card-title::after {
-  content: none; /* Disable any pseudo-elements */
+  content: none; /* Disable pseudo-elements */
 }
 
 .event-card .card-text {
@@ -625,8 +635,9 @@ footer {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  border: none; /* Remove all borders */
-  margin: 0; /* Ensure no extra spacing */
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Watch Button */
@@ -635,6 +646,7 @@ footer {
   padding: 6px 12px;
   font-size: 0.9rem;
   border-radius: 15px;
+  text-decoration: none; /* Remove any underlines */
 }
 
 /* Updated Live Animation */
