@@ -306,6 +306,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background: inherit;
+  border-bottom: none; /* Explicitly remove any border */
 }
 
 [data-bs-theme="dark"] .card-text {
@@ -605,6 +606,8 @@ footer {
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 8px;
+  border-bottom: none; /* Explicitly remove any border */
+  padding-bottom: 0; /* Remove padding that could cause lines */
 }
 
 .event-card .card-text {
@@ -613,6 +616,7 @@ footer {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+  border-bottom: none; /* Explicitly remove any border */
 }
 
 /* Watch Button */
