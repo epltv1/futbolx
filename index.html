@@ -135,6 +135,8 @@
         countdownElements.forEach(element => {
           const startTime = parseInt(element.getAttribute('data-start'), 10);
           let timer = startTime - now;
+          const uri = element.getAttribute('data-uri');
+          const cardLink = element.closest('.card-link');
           if (timer > 0) {
             let days = Math.floor(timer / 86400);
             let weeks = Math.floor(days / 7);
@@ -153,8 +155,20 @@
               displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
             }
             element.innerHTML = displayText;
+            // Enable card clickability if within 30 minutes (1800 seconds)
+            if (timer <= 1800 && cardLink) {
+              cardLink.style.pointerEvents = 'auto';
+              cardLink.style.cursor = 'pointer';
+            } else if (cardLink) {
+              cardLink.style.pointerEvents = 'none';
+              cardLink.style.cursor = 'default';
+            }
           } else {
-            element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+            element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+            if (cardLink) {
+              cardLink.style.pointerEvents = 'auto';
+              cardLink.style.cursor = 'pointer';
+            }
           }
         });
         setTimeout(countdown, 1000);
@@ -261,9 +275,11 @@
 
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+              // Determine if card should be clickable based on time (within 30 minutes)
+              let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
               let streamHtml = `
                 <div class="event-card">
-                  <a href="/live/${stream.uri_name}" class="card-link">
+                  <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
                     <div class="card">
                       ${liveBadge}
                       <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
