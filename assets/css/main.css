@@ -282,13 +282,14 @@ body {
 
 .card-title {
   font-size: 1.2rem;
-  margin-bottom: 10px;
-  border-bottom: none; /* No border below title */
-  padding-bottom: 0; /* Remove any padding that could cause a line */
+  margin-bottom: 8px;
+  border: none; /* Remove all borders */
+  padding-bottom: 0; /* No padding to avoid visual lines */
 }
 
+.card-title::before,
 .card-title::after {
-  content: none; /* Disable any pseudo-element that might create a line */
+  content: none; /* Disable any pseudo-elements */
 }
 
 .card-title.non-clickable {
@@ -306,7 +307,8 @@ body {
   justify-content: space-between;
   align-items: center;
   background: inherit;
-  border-bottom: none; /* Explicitly remove any border */
+  border: none; /* Remove all borders */
+  margin-bottom: 0; /* Ensure no extra spacing */
 }
 
 [data-bs-theme="dark"] .card-text {
@@ -333,6 +335,8 @@ body {
 
 .event-timer {
   font-size: 0.9rem;
+  border: none; /* Explicitly remove any borders */
+  padding: 0; /* Remove padding to avoid visual lines */
 }
 
 .event-timer .countdown {
@@ -606,8 +610,13 @@ footer {
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 8px;
-  border-bottom: none; /* Explicitly remove any border */
-  padding-bottom: 0; /* Remove padding that could cause lines */
+  border: none; /* Remove all borders */
+  padding: 0; /* Remove padding that could cause lines */
+}
+
+.event-card .card-title::before,
+.event-card .card-title::after {
+  content: none; /* Disable any pseudo-elements */
 }
 
 .event-card .card-text {
@@ -616,7 +625,8 @@ footer {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  border-bottom: none; /* Explicitly remove any border */
+  border: none; /* Remove all borders */
+  margin: 0; /* Ensure no extra spacing */
 }
 
 /* Watch Button */
