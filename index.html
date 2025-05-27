@@ -155,7 +155,6 @@
             element.innerHTML = displayText;
           } else {
             element.innerHTML = `<a href="${element.getAttribute('data-uri')}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
-            // Removed inline style to avoid overriding CSS
           }
         });
         setTimeout(countdown, 1000);
@@ -272,9 +271,12 @@
                         <h2 class="card-title non-clickable">${stream.name}</h2>
                         <p class="card-text">
                           <span class="event-tag">${stream.tag}</span>
-                          <span class="float-end event-timer">${isLive 
-                            ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                            : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}</span>
+                          <span class="event-timer">
+                            ${isLive 
+                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                            ${isLive ? '<span class="live-animation"></span>' : ''}
+                          </span>
                         </p>
                       </div>
                     </div>
