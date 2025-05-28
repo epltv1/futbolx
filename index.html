@@ -1,465 +1,467 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FutbolX - Free PPV and More</title>
-    <meta name="description" content="FutbolX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
-    <meta name="keywords" content="futbolx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
-    <meta property="og:title" content="FutbolX - Free PPV and More" />
-    <meta property="og:url" content="https://your-futbolx-site.vercel.app" />
-    <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="FutbolX - Free PPV and More">
-    <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=24">
-    <style>
-      .error-alert { max-width: 500px; margin: 20px auto; }
-      .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-      .event-card.visible { opacity: 1; transform: translateY(0); }
-    </style>
-  </head>
-  <body>
-    <!-- Top Bar -->
-    <nav class="top-bar fixed-top">
-      <div class="container-fluid">
-        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-          <i class="fas fa-bars"></i>
-        </button>
-        <span class="futbolx-brand">FutbolX</span>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FutbolX - Free PPV and More</title>
+  <meta name="description" content="FutbolX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
+  <meta name="keywords" content="futbolx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
+  <meta property="og:title" content="FutbolX - Free PPV and More" />
+  <meta property="og:url" content="https://your-futbolx-site.vercel.app" />
+  <meta property="og:image" content="/assets/img/og-image.jpg">
+  <meta name="twitter:title" content="FutbolX - Free PPV and More">
+  <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+  <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=24">
+  <style>
+    .error-alert { max-width: 500px; margin: 20px auto; }
+    .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .event-card.visible { opacity: 1; transform: translateY(0); }
+    .card-title.non-clickable, .event-tag { pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <nav class="top-bar fixed-top">
+    <div class="container-fluid">
+      <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <span class="futbolx-brand">FutbolX</span>
+    </div>
+  </nav>
+  <!-- Left Sidebar -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+        <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+        <li class="nav-item">
+          <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="container-fluid main-content">
+    <div class="text-center py-5 bg-dark hero-background">
+      <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
+      <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+    </div>
+    <div class="container pt-2">
+      <div id="errorContainer" class="d-none error-alert"></div>
+      <div id="live" class="mt-4">
+        <h2 class="m-0">
+          Live Now <span id="liveAnimation" class="live-animation d-none"></span>
+        </h2>
+        <div id="livecards" class="event-grid py-3">
+          <p>Loading streams...</p>
+        </div>
       </div>
-    </nav>
-    <!-- Left Sidebar -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <div id="football" class="mt-5 d-none">
+        <h2 class="m-0">Football</h2>
+        <div id="footballcards" class="event-grid py-3"></div>
       </div>
-      <div class="offcanvas-body">
-        <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-          <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
-          <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
-          <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
-          <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
-          <li class="nav-item">
-            <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
-              <i class="fas fa-moon"></i>
-            </button>
-          </li>
+      <div id="nba" class="mt-5 d-none">
+        <h2 class="m-0">NBA</h2>
+        <div id="nbacards" class="event-grid py-3"></div>
+      </div>
+      <div id="fights" class="mt-5 d-none">
+        <h2 class="m-0">Fights</h2>
+        <div id="fightscards" class="event-grid py-3"></div>
+      </div>
+      <div id="motorsports" class="mt-5 d-none">
+        <h2 class="m-0">Motorsports</h2>
+        <div id="motorsportscards" class="event-grid py-3"></div>
+      </div>
+      <div id="nfl" class="mt-5 d-none">
+        <h2 class="m-0">NFL</h2>
+        <div id="nflcards" class="event-grid py-3"></div>
+      </div>
+      <div id="nhl" class="mt-5 d-none">
+        <h2 class="m-0">NHL</h2>
+        <div id="nhlcards" class="event-grid py-3"></div>
+      </div>
+      <div id="mlb" class="mt-5 d-none">
+        <h2 class="m-0">MLB</h2>
+        <div id="mlbcards" class="event-grid py-3"></div>
+      </div>
+      <div id="icehockey" class="mt-5 d-none">
+        <h2 class="m-0">Ice Hockey</h2>
+        <div id="icehockeycards" class="event-grid py-3"></div>
+      </div>
+      <div id="tennis" class="mt-5 d-none">
+        <h2 class="m-0">Tennis</h2>
+        <div id="tenniscards" class="event-grid py-3"></div>
+      </div>
+      <div id="rugby" class="mt-5 d-none">
+        <h2 class="m-0">Rugby</h2>
+        <div id="rugbycards" class="event-grid py-3"></div>
+      </div>
+      <div id="golf" class="mt-5 d-none">
+        <h2 class="m-0">Golf</h2>
+        <div id="golfcards" class="event-grid py-3"></div>
+      </div>
+      <div id="others" class="mt-5 d-none">
+        <h2 class="m-0">Others</h2>
+        <div id="otherscards" class="event-grid py-3"></div>
+      </div>
+      <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+        <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
+        <ul class="nav justify-content-center justify-content-lg-end mb-0">
+          <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+          <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
+          <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+          <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+          <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
         </ul>
-      </div>
+      </footer>
     </div>
-    <!-- Main Content -->
-    <div class="container-fluid main-content">
-      <div class="text-center py-5 bg-dark hero-background">
-        <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
-        <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
-      </div>
-      <div class="container pt-2">
-        <div id="errorContainer" class="d-none error-alert"></div>
-        <div id="live" class="mt-4">
-          <h2 class="m-0">
-            Live Now <span id="liveAnimation" class="live-animation d-none"></span>
-          </h2>
-          <div id="livecards" class="event-grid py-3">
-            <p>Loading streams...</p>
-          </div>
-        </div>
-        <div id="football" class="mt-5 d-none">
-          <h2 class="m-0">Football</h2>
-          <div id="footballcards" class="event-grid py-3"></div>
-        </div>
-        <div id="nba" class="mt-5 d-none">
-          <h2 class="m-0">NBA</h2>
-          <div id="nbacards" class="event-grid py-3"></div>
-        </div>
-        <div id="fights" class="mt-5 d-none">
-          <h2 class="m-0">Fights</h2>
-          <div id="fightscards" class="event-grid py-3"></div>
-        </div>
-        <div id="motorsports" class="mt-5 d-none">
-          <h2 class="m-0">Motorsports</h2>
-          <div id="motorsportscards" class="event-grid py-3"></div>
-        </div>
-        <div id="nfl" class="mt-5 d-none">
-          <h2 class="m-0">NFL</h2>
-          <div id="nflcards" class="event-grid py-3"></div>
-        </div>
-        <div id="nhl" class="mt-5 d-none">
-          <h2 class="m-0">NHL</h2>
-          <div id="nhlcards" class="event-grid py-3"></div>
-        </div>
-        <div id="mlb" class="mt-5 d-none">
-          <h2 class="m-0">MLB</h2>
-          <div id="mlbcards" class="event-grid py-3"></div>
-        </div>
-        <div id="icehockey" class="mt-5 d-none">
-          <h2 class="m-0">Ice Hockey</h2>
-          <div id="icehockeycards" class="event-grid py-3"></div>
-        </div>
-        <div id="tennis" class="mt-5 d-none">
-          <h2 class="m-0">Tennis</h2>
-          <div id="tenniscards" class="event-grid py-3"></div>
-        </div>
-        <div id="rugby" class="mt-5 d-none">
-          <h2 class="m-0">Rugby</h2>
-          <div id="rugbycards" class="event-grid py-3"></div>
-        </div>
-        <div id="golf" class="mt-5 d-none">
-          <h2 class="m-0">Golf</h2>
-          <div id="golfcards" class="event-grid py-3"></div>
-        </div>
-        <div id="others" class="mt-5 d-none">
-          <h2 class="m-0">Others</h2>
-          <div id="otherscards" class="event-grid py-3"></div>
-        </div>
-        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
-          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
-          <ul class="nav justify-content-center justify-content-lg-end mb-0">
-            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
-            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
-          </ul>
-        </footer>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cwV0rV7C8sIVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="/assets/js/api.js"></script>
-    <script async src="/assets/js/auth.js"></script>
-    <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
-    <script>
-      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
-      
-      let lastApiCall = 0;
-      let apiInstance = null;
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script src="/assets/js/api.js"></script>
+  <script async src="/assets/js/auth.js"></script>
+  <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+  <script>
+    window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
+    
+    let lastApiCall = 0;
+    let apiInstance = null;
 
-      function zeropad(num) {
-        return num > 9 ? num : '0' + num;
-      }
+    function zeropad(num) {
+      return num > 9 ? num : '0' + num;
+    }
 
-      function countdown() {
-        const now = Math.floor(Date.now() / 1000);
-        let needsRefresh = false;
-        const countdownElements = document.querySelectorAll('[data-start]');
-        countdownElements.forEach(element => {
-          const startTime = parseInt(element.getAttribute('data-start'), 10);
-          let timer = startTime - now;
-          const uri = element.getAttribute('data-uri');
-          const cardLink = element.closest('.card-link');
-          if (timer > 0) {
-            let days = Math.floor(timer / 86400);
-            let weeks = Math.floor(days / 7);
-            let hours = Math.floor(timer / 3600);
-            let mins = Math.floor(timer / 60);
-            let secs = Math.floor(timer);
-            let displayText = '';
-            if (days >= 7) {
-              displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
-            } else if (days >= 1) {
-              displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
-            } else {
-              let hh = hours - days * 24;
-              let mm = mins - hours * 60;
-              let ss = secs - mins * 60;
-              displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
-            }
-            if (element.innerHTML !== displayText) {
-              element.innerHTML = displayText;
-            }
-            // Enable card clickability if within 30 minutes (1800 seconds)
-            if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
-              cardLink.style.pointerEvents = 'auto';
-              cardLink.style.cursor = 'pointer';
-            } else if (timer > 1800 && cardLink && cardLink.style.pointerEvents !== 'none') {
-              cardLink.style.pointerEvents = 'none';
-              cardLink.style.cursor = 'default';
-            }
-            // Check if event is about to go live (within 1 second)
-            if (timer <= 1 && timer > 0) {
-              needsRefresh = true;
-            }
-          } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
-            element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
-            if (cardLink) {
-              cardLink.style.pointerEvents = 'auto';
-              cardLink.style.cursor = 'pointer';
-            }
+    function countdown() {
+      const now = Math.floor(Date.now() / 1000);
+      let needsRefresh = false;
+      const countdownElements = document.querySelectorAll('[data-start]');
+      countdownElements.forEach(element => {
+        const startTime = parseInt(element.getAttribute('data-start'), 10);
+        let timer = startTime - now;
+        const uri = element.getAttribute('data-uri');
+        const cardLink = element.closest('.card-link');
+        if (timer > 0) {
+          let days = Math.floor(timer / 86400);
+          let weeks = Math.floor(days / 7);
+          let hours = Math.floor(timer / 3600);
+          let mins = Math.floor(timer / 60);
+          let secs = Math.floor(timer);
+          let displayText = '';
+          if (days >= 7) {
+            displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
+          } else if (days >= 1) {
+            displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
+          } else {
+            let hh = hours - days * 24;
+            let mm = mins - hours * 60;
+            let ss = secs - mins * 60;
+            displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
+          }
+          if (element.innerHTML !== displayText) {
+            element.innerHTML = displayText;
+          }
+          // Enable card clickability if within 30 minutes (1800 seconds)
+          if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
+            cardLink.style.pointerEvents = 'auto';
+            cardLink.style.cursor = 'pointer';
+          } else if (timer > 1800 && cardLink && cardLink.style.pointerEvents !== 'none') {
+            cardLink.style.pointerEvents = 'none';
+            cardLink.style.cursor = 'default';
+          }
+          // Trigger refresh if event is about to go live
+          if (timer <= 1 && timer > 0) {
             needsRefresh = true;
           }
-        });
-        // Trigger loadContent if an event goes live
-        if (needsRefresh && apiInstance) {
-          const currentTime = Date.now();
-          if (currentTime - lastApiCall >= 1000) { // Rate limit to 1 call per second
-            lastApiCall = currentTime;
-            loadContent(apiInstance);
+        } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
+          element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+          if (cardLink) {
+            cardLink.style.pointerEvents = 'auto';
+            cardLink.style.cursor = 'pointer';
           }
+          needsRefresh = true;
         }
-        setTimeout(countdown, 1000);
+      });
+      if (needsRefresh && apiInstance) {
+        const currentTime = Date.now();
+        if (currentTime - lastApiCall >= 1000) {
+          lastApiCall = currentTime;
+          loadContent(apiInstance);
+        }
       }
+      setTimeout(countdown, 1000);
+    }
 
-      function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
-        return new Promise((resolve, reject) => {
-          let attempts = 0;
-          function attempt() {
-            attempts++;
-            console.log(`Fetching ${url}, attempt ${attempts}`);
-            fetch(url)
-              .then(res => {
-                console.log(`Fetch status: ${res.status}`);
-                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-                return res.json();
-              })
-              .then(data => resolve(data))
-              .catch(error => {
-                console.error(`Fetch attempt ${attempts} failed:`, error);
-                if (attempts < maxRetries) {
-                  setTimeout(attempt, delay);
-                } else {
-                  reject(error);
-                }
-              });
-          }
-          attempt();
-        });
-      }
-
-      function loadContent(api) {
-        console.log('Starting loadContent at', new Date().toISOString());
-        const errorContainer = document.getElementById('errorContainer');
-        const liveAnimation = document.getElementById('liveAnimation');
-        const livecards = document.getElementById('livecards');
-        
-        errorContainer.className = 'd-none error-alert';
-        errorContainer.innerHTML = '';
-        livecards.innerHTML = '<p>Loading streams...</p>';
-
-        fetchWithRetry(api.baseUrl + '/stream')
-          .then(streamData => {
-            console.log('Stream API Response:', streamData);
-            
-            if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
-              console.warn('Invalid stream data received');
-              livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
-              liveAnimation.classList.add('d-none');
-              return;
-            }
-
-            const categories = {
-              football: document.getElementById('footballcards'),
-              nba: document.getElementById('nbacards'),
-              fights: document.getElementById('fightscards'),
-              motorsports: document.getElementById('motorsportscards'),
-              nfl: document.getElementById('nflcards'),
-              nhl: document.getElementById('nhlcards'),
-              mlb: document.getElementById('mlbcards'),
-              icehockey: document.getElementById('icehockeycards'),
-              tennis: document.getElementById('tennis'),
-              rugby: document.getElementById('rugbycards'),
-              golf: document.getElementById('golfcards'),
-              others: document.getElementById('otherscards')
-            };
-            
-            Object.values(categories).forEach(card => card.innerHTML = '');
-            Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
-            livecards.innerHTML = '';
-
-            let hasLiveEvents = false;
-            const now = Math.floor(Date.now() / 1000);
-            const categoryEvents = {};
-            Object.keys(categories).forEach(key => categoryEvents[key] = []);
-
-            streamData.streams.forEach(category => {
-              if (!category.streams || !Array.isArray(category.streams)) return;
-              const categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
-              category.streams.forEach(stream => {
-                let startTime, endTime;
-                try {
-                  // Convert EAT (UTC+3) to UTC by subtracting 3 hours (10800 seconds)
-                  const eatOffsetSeconds = 10800;
-                  startTime = new Date(stream.starts_at).getTime() / 1000 - eatOffsetSeconds;
-                  if (isNaN(startTime)) {
-                    console.warn(`Invalid start time for stream ${stream.name}, using current time`);
-                    startTime = now;
-                  }
-                  endTime = stream.ends_at 
-                    ? new Date(stream.ends_at).getTime() / 1000 - eatOffsetSeconds 
-                    : startTime + 3 * 3600;
-                  if (isNaN(endTime)) {
-                    console.warn(`Invalid end time for stream ${stream.name}, defaulting to 3 hours`);
-                    endTime = startTime + 3 * 3600;
-                  }
-                } catch (e) {
-                  console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
-                  startTime = now;
-                  endTime = now + 3 * 3600;
-                }
-
-                let isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
-                let isEnded = now > endTime;
-                if (isLive) {
-                    livecards.classList.add('live');
-                    livecards.classList.remove('d-none');
-                }
-                if (isEnded) {
-                    livecards.classList.add('d-none');
-                    livecards.classList.remove('live');
-                }
-
-                let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-                let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
-                let streamHtml = {
-                  html: `
-                    <div class="event-card">
-                      <div class="card-link" href="/live/${stream.uri_name}" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
-                        <div class="card">
-                          ${liveBadge}
-                          <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                          <div class="card-body">
-                            <h2 class="card-title non-clickable">${stream.name}</h2>
-                            <p class="card-text">
-                              <span class="event-tag">${stream.tag}</span>
-                              <span class="event-timer">
-                                ${isLive 
-                                  ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                                  : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                                ${isLive ? '<span class="live-animation"></span>' : ''}
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </div>`,
-                    startTime
-                };
-
-                if (isLive) {
-                  livecards.innerHTML += streamHtml.html;
-                  hasLiveEvents = true;
-                } else {
-                  if (categories[categoryKey]) {
-                    categoryEvents[categoryKey].push(streamHtml);
-                  } else {
-                    categoryEvents.others.push(streamHtml);
-                  }
-                }
-              });
-            });
-
-            // Sort and render non-live categories, limiting to 4 events
-            Object.keys(categoryEvents).forEach(key => {
-              if (categoryEvents[key].length > 0) {
-                // Sort by startTime (earliest first)
-                categoryEvents[key].sort((a, b) => a.startTime - b.startTime);
-                // Show only the first 4 events
-                categories[key].innerHTML = categoryEvents[key].slice(0, 4).map(item => item.html).join('');
-                document.getElementById(key).classList.remove('d-none');
+    function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+      return new Promise((resolve, reject) => {
+        let attempts = 0;
+        function attempt() {
+          attempts++;
+          console.log(`Fetching ${url}, attempt ${attempts}`);
+          fetch(url)
+            .then(res => {
+              console.log(`Fetch status: ${res.status}`);
+              if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+              return res.json();
+            })
+            .then(data => resolve(data))
+            .catch(error => {
+              console.error(`Fetch attempt ${attempts} failed:`, error);
+              if (attempts < maxRetries) {
+                setTimeout(attempt, delay);
+              } else {
+                reject(error);
               }
             });
+        }
+        attempt();
+      });
+    }
 
-            if (!hasLiveEvents) {
-              livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
-              liveAnimation.classList.add('d-none');
-            } else {
-              liveAnimation.classList.remove('d-none');
-            }
+    function loadContent(api) {
+      console.log('Starting loadContent at', new Date().toISOString());
+      const errorContainer = document.getElementById('errorContainer');
+      const liveAnimation = document.getElementById('liveAnimation');
+      const livecards = document.getElementById('livecards');
+      
+      errorContainer.className = 'd-none error-alert';
+      errorContainer.innerHTML = '';
+      livecards.innerHTML = '<p>Loading streams...</p>';
 
-            const cards = document.querySelectorAll('.event-card');
-            const observer = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add('visible');
-                  observer.unobserve(entry.target);
-                }
-              });
-            }, { threshold: 0.1 });
-            cards.forEach(card => observer.observe(card));
-          })
-          .catch(error => {
-            console.error('API Fetch Error:', error);
+      fetchWithRetry(api.baseUrl + '/stream')
+        .then(streamData => {
+          console.log('Stream API Response:', streamData);
+          
+          if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
+            console.warn('Invalid stream data received');
             livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
             liveAnimation.classList.add('d-none');
-          });
-      }
+            return;
+          }
 
-      function initPage() {
-        console.log('Initializing page at', new Date().toISOString());
-        const errorContainer = document.getElementById('errorContainer');
-        const livecards = document.getElementById('livecards');
-        
-        try {
-          // Initialize theme
-          const htmlElement = document.documentElement;
-          const themeToggle = document.getElementById('themeToggle');
-          const currentTheme = localStorage.getItem('theme') || 'dark';
-          htmlElement.setAttribute('data-bs-theme', currentTheme);
-          themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          const categories = {
+            football: { id: 'football', element: document.getElementById('footballcards') },
+            nba: { id: 'nba', element: document.getElementById('nbacards') },
+            fights: { id: 'fights', element: document.getElementById('fightscards') },
+            motorsports: { id: 'motorsports', element: document.getElementById('motorsportscards') },
+            nfl: { id: 'nfl', element: document.getElementById('nflcards') },
+            nhl: { id: 'nhl', element: document.getElementById('nhlcards') },
+            mlb: { id: 'mlb', element: document.getElementById('mlbcards') },
+            icehockey: { id: 'icehockey', element: document.getElementById('icehockeycards') },
+            tennis: { id: 'tennis', element: document.getElementById('tenniscards') },
+            rugby: { id: 'rugby', element: document.getElementById('rugbycards') },
+            golf: { id: 'golf', element: document.getElementById('golfcards') },
+            others: { id: 'others', element: document.getElementById('otherscards') }
+          };
           
-          themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+          Object.values(categories).forEach(cat => cat.element.innerHTML = '');
+          Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
+          livecards.innerHTML = '';
+
+          let hasLiveEvents = false;
+          const now = Math.floor(Date.now() / 1000);
+          const categoryEvents = {};
+          Object.keys(categories).forEach(key => categoryEvents[key] = []);
+
+          streamData.streams.forEach(category => {
+            if (!category.streams || !Array.isArray(category.streams)) return;
+            let categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
+            if (!categories[categoryKey]) {
+              console.warn(`Category ${category.category} not found, mapping to 'others'`);
+              categoryKey = 'others';
+            }
+            category.streams.forEach(stream => {
+              let startTime, endTime;
+              try {
+                const eatOffsetSeconds = 10800;
+                startTime = new Date(stream.starts_at).getTime() / 1000 - eatOffsetSeconds;
+                if (isNaN(startTime)) {
+                  console.warn(`Invalid start time for stream ${stream.name}`);
+                  startTime = now;
+                }
+                endTime = stream.ends_at 
+                  ? new Date(stream.ends_at).getTime() / 1000 - eatOffsetSeconds 
+                  : startTime + 3 * 3600;
+                if (isNaN(endTime)) {
+                  console.warn(`Invalid end time for stream ${stream.name}`);
+                  endTime = startTime + 3 * 3600;
+                }
+              } catch (e) {
+                console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
+                startTime = now;
+                endTime = now + 3 * 3600;
+              }
+
+              const isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
+              const isEnded = now > endTime;
+              const isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
+              if (isEnded) return;
+
+              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+              let streamHtml = {
+                html: `
+                  <div class="event-card">
+                    <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                      <div class="card">
+                        ${liveBadge}
+                        <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                        <div class="card-body">
+                          <h2 class="card-title non-clickable">${stream.name}</h2>
+                          <p class="card-text">
+                            <span class="event-tag">${stream.tag}</span>
+                            <span class="event-timer">
+                              ${isLive 
+                                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                              ${isLive ? '<span class="live-animation"></span>' : ''}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>`,
+                startTime
+              };
+
+              if (isLive) {
+                livecards.innerHTML += streamHtml.html;
+                hasLiveEvents = true;
+              } else {
+                categoryEvents[categoryKey].push(streamHtml);
+              }
+            });
           });
 
-          // Offcanvas outside click
-          const offcanvasElement = document.getElementById('sidebarMenu');
+          Object.keys(categories).forEach(key => {
+            if (categoryEvents[key].length > 0) {
+              categoryEvents[key].sort((a, b) => a.startTime - b.startTime);
+              categories[key].element.innerHTML = categoryEvents[key].slice(0, 4).map(item => item.html).join('');
+              document.getElementById(categories[key].id).classList.remove('d-none');
+            }
+          });
+
+          if (!hasLiveEvents) {
+            livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
+            liveAnimation.classList.add('d-none');
+          } else {
+            liveAnimation.classList.remove('d-none');
+          }
+
+          const cards = document.querySelectorAll('.event-card');
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1 });
+          cards.forEach(card => observer.observe(card));
+        })
+        .catch(error => {
+          console.error('API Fetch Error:', error);
+          livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+          liveAnimation.classList.add('d-none');
+        });
+    }
+
+    function initPage() {
+      console.log('Initializing page at', new Date().toISOString());
+      const errorContainer = document.getElementById('errorContainer');
+      const livecards = document.getElementById('livecards');
+      
+      try {
+        // Initialize theme
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-bs-theme', currentTheme);
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        
+        themeToggle.addEventListener('click', () => {
+          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-bs-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // Offcanvas outside click
+        const offcanvasElement = document.getElementById('sidebarMenu');
+        if (offcanvasElement) {
+          console.log('Offcanvas element found, initializing');
           document.addEventListener('click', (event) => {
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
             const isOffcanvasOpen = offcanvasElement.classList.contains('show');
-            const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+            const clickedInside = offcanvasElement.contains(event.target) || (toggler && toggler.contains(event.target));
             if (isOffcanvasOpen && !clickedInside) {
+              console.log('Closing offcanvas due to outside click');
               bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
             }
           });
-
-          // Load content
-          if (typeof Api === 'undefined') {
-            console.warn('Api class not defined. Using default API path.');
-            apiInstance = { baseUrl: window.location.origin };
-            loadContent(apiInstance);
-          } else {
-            apiInstance = new Api(`${window.location.origin}/api`);
-            loadContent(apiInstance);
+          const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+          if (toggler) {
+            toggler.addEventListener('click', () => {
+              console.log('Navbar toggler clicked');
+            });
           }
+        } else {
+          console.error('Offcanvas element not found');
+        }
 
-          countdown();
-          checkAuthStatus();
-          console.log('Page initialized successfully');
-        } catch (error) {
-          console.error('Init page error:', error);
-          livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
-          errorContainer.className = 'd-none error-alert';
-          errorContainer.innerHTML = '';
+        // Load content
+        if (typeof Api === 'undefined') {
+          console.warn('Api class not defined. Using default API path.');
+          apiInstance = { baseUrl: window.location.origin };
+          loadContent(apiInstance);
+        } else {
+          apiInstance = new Api(`${window.location.origin}/api`);
+          loadContent(apiInstance);
+        }
+
+        countdown();
+        checkAuthStatus();
+        console.log('Page initialized successfully');
+      } catch (error) {
+        console.error('Init page error:', error);
+        livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded at', new Date().toISOString());
+      initPage();
+    });
+
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href]');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods') {
+          return;
+        }
+        if (href.startsWith('/')) {
+          event.preventDefault();
+          console.log('Navigating to:', href);
+          window.location.href = href;
         }
       }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM loaded at', new Date().toISOString());
-        initPage();
-      });
-
-      document.addEventListener('click', (event) => {
-        const link = event.target.closest('a[href]');
-        if (link) {
-          const href = link.getAttribute('href');
-          if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods') {
-            return;
-          }
-          if (href.startsWith('/')) {
-            event.preventDefault();
-            window.location.href = href;
-          }
-        }
-      });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
