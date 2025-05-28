@@ -22,15 +22,6 @@
     .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
     .event-card.visible { opacity: 1; transform: translateY(0); }
     .card-title.non-clickable, .event-tag { pointer-events: none; }
-    /* Fix text color for title and tag in all event states */
-    [data-bs-theme="dark"] .card-link .card-title.non-clickable,
-    [data-bs-theme="dark"] .card-link .event-tag {
-      color: var(--bs-white) !important;
-    }
-    [data-bs-theme="light"] .card-link .card-title.non-clickable,
-    [data-bs-theme="light"] .card-link .event-tag {
-      color: var(--bs-black) !important;
-    }
   </style>
 </head>
 <body>
@@ -44,7 +35,7 @@
     </div>
   </nav>
   <!-- Left Sidebar -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
     <div class="offcanvas-header">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
@@ -397,13 +388,13 @@
         const themeToggle = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('theme') || 'dark';
         htmlElement.setAttribute('data-bs-theme', currentTheme);
-        themeToggle.innerHTML = currentTheme === 'dark' ? 'ark' : '<i class="fas fa-sun"></i>';
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         
         themeToggle.addEventListener('click', () => {
           const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
           htmlElement.setAttribute('data-bs-theme', newTheme);
           localStorage.setItem('theme', newTheme);
-          themeToggle.innerHTML = newTheme === 'dark' ? 'k' : '<i class="fas fa-sun"></i>';
+          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
         // Offcanvas outside click
@@ -416,12 +407,12 @@
             const clickedInside = offcanvasElement.contains(event.target) || (toggler && toggler.contains(event.target));
             if (isOffcanvasOpen && !clickedInside) {
               console.log('Closing offcanvas due to outside click');
-              bootstrap.ofOffcanvas().getOrCreateInstance(offcanvasElement).hide();
+              bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
             }
           });
           const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
           if (toggler) {
-            toggler.addEventListener('click', (event) => {
+            toggler.addEventListener('click', () => {
               console.log('Navbar toggler clicked');
             });
           }
@@ -430,7 +421,7 @@
         }
 
         // Load content
-        if (typeof api === 'undefined') {
+        if (typeof Api === 'undefined') {
           console.warn('Api class not defined. Using default API path.');
           apiInstance = { baseUrl: window.location.origin };
           loadContent(apiInstance);
@@ -444,9 +435,9 @@
         console.log('Page initialized successfully');
       } catch (error) {
         console.error('Init page error:', error);
-        livecards.innerHTML = error'<p>No streams are available right now. Check back later!</p>';
+        livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
         errorContainer.className = 'd-none error-alert';
-        errorContainer.innerHTML = error'';
+        errorContainer.innerHTML = '';
       }
     }
 
@@ -459,14 +450,14 @@
       const link = event.target.closest('a[href]');
       if (link) {
         const href = link.getAttribute('href');
-        if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === ''/request' || href === '/vods') {
+        if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods') {
           return;
         }
         if (href.startsWith('/')) {
           event.preventDefault();
           console.log('Navigating to:', href);
           window.location.href = href;
-        });
+        }
       }
     });
   </script>
