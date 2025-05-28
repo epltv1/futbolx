@@ -1,0 +1,24 @@
+[build]
+  # Directory containing deploy-ready files (where index.html is)
+  publish = "."
+  # Build command (optional for static sites; use if you need preprocessing)
+  command = ""
+  # Base directory for build (root of repo)
+  base = ""
+
+[build.environment]
+  # Ensure Node.js version matches your project (optional, align with Vercel)
+  NODE_VERSION = "20"
+
+[[redirects]]
+  # Rewrite /api/* to serve static JSON or proxy to external API
+  from = "/api/*"
+  to = "/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  # SPA rewrite: serve index.html for client-side routing (e.g., /live)
+  from = "/*"
+  to = "/index.html"
+  status = 200
