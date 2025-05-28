@@ -345,7 +345,7 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between tag, countdown, and watch button */
+  gap: 10px;
 }
 
 .event-timer .countdown {
@@ -363,29 +363,22 @@ body {
   text-decoration: none;
 }
 
-/* Live Badge */
-.live-badge {
+/* Live Lottie Animation */
+.live-lottie {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #ff4d4d;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  animation: pulse-badge 1.5s ease-in-out infinite;
+  width: 40px !important;
+  height: 40px !important;
+  z-index: 10;
 }
 
-[data-bs-theme="light"] .live-badge {
-  background: #e63939;
+[data-bs-theme="dark"] .live-lottie {
+  filter: hue-rotate(0deg) saturate(100%) brightness(100%); /* Matches #ff4d4d */
 }
 
-@keyframes pulse-badge {
-  0% { transform: scale(1); opacity: 1; box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
-  50% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 10px rgba(255, 77, 77, 0.8); }
-  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 5px rgba(255, 77, 77, 0.5); }
+[data-bs-theme="light"] .live-lottie {
+  filter: hue-rotate(-20deg) saturate(120%) brightness(90%); /* Matches #e63939 */
 }
 
 /* Event Grid */
@@ -685,6 +678,11 @@ footer {
   .pricing-plans .price {
     font-size: 1.5rem;
   }
+
+  .live-lottie {
+    width: 30px !important;
+    height: 30px !important;
+  }
 }
 
 @media (max-width: 576px) {
@@ -707,5 +705,10 @@ footer {
   .admin-section .telegram-btn {
     font-size: 1rem;
     padding: 10px 20px;
+  }
+
+  .live-lottie {
+    width: 25px !important;
+    height: 25px !important;
   }
 }
