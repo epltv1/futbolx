@@ -9,10 +9,10 @@
           "name": "Asean All-Stars vs Manchester United",
           "uri_name": "aseanallstars-vs-manunited",
           "poster": "https://plive.live/uploads/683643e6928f6.jpg",
-          "tag": "UEL Final",
+          "tag": "Friendly",
           "starts_at": "2025-05-28 15:30:00",
           "ends_at": "2025-05-28 17:30:00",
-          "always_live": 0,
+          "always_live": 1,
           "streams": [
             {
               "title": "MUtv",
