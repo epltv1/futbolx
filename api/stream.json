@@ -35,13 +35,13 @@
           "uri_name": "lakers-vs-warriors",
           "poster": "https://plive.live/uploads/682b89110cd97.jpg",
           "tag": "NBA Playoffs",
-          "starts_at": "2025-05-29 14:00:00",
+          "starts_at": "2025-05-29 01:10:00",
           "ends_at": "2025-05-29 16:00:00",
           "always_live": 0,
           "streams": [
             {
               "title": "Primary Feed",
-              "url": "https://github.com/epltv1/flixtv.github.io/blob/main/tnt2.m3u8"
+              "url": "https://futbolx-nine.vercel.app/streams/test.m3u8"
             }
           ]
         }
