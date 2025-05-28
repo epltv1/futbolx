@@ -137,12 +137,16 @@
     <script>
       window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
       
+      let lastApiCall = 0;
+      let apiInstance = null;
+
       function zeropad(num) {
         return num > 9 ? num : '0' + num;
       }
 
       function countdown() {
         const now = Math.floor(Date.now() / 1000);
+        let needsRefresh = false;
         const countdownElements = document.querySelectorAll('[data-start]');
         countdownElements.forEach(element => {
           const startTime = parseInt(element.getAttribute('data-start'), 10);
@@ -166,23 +170,38 @@
               let ss = secs - mins * 60;
               displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
             }
-            element.innerHTML = displayText;
+            if (element.innerHTML !== displayText) {
+              element.innerHTML = displayText;
+            }
             // Enable card clickability if within 30 minutes (1800 seconds)
-            if (timer <= 1800 && cardLink) {
+            if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
               cardLink.style.pointerEvents = 'auto';
               cardLink.style.cursor = 'pointer';
-            } else if (cardLink) {
+            } else if (timer > 1800 && cardLink && cardLink.style.pointerEvents !== 'none') {
               cardLink.style.pointerEvents = 'none';
               cardLink.style.cursor = 'default';
             }
-          } else {
+            // Check if event is about to go live (within 1 second)
+            if (timer <= 1 && timer > 0) {
+              needsRefresh = true;
+            }
+          } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
             element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
             if (cardLink) {
               cardLink.style.pointerEvents = 'auto';
               cardLink.style.cursor = 'pointer';
             }
+            needsRefresh = true;
           }
         });
+        // Trigger loadContent if an event goes live
+        if (needsRefresh && apiInstance) {
+          const currentTime = Date.now();
+          if (currentTime - lastApiCall >= 1000) { // Rate limit to 1 call per second
+            lastApiCall = currentTime;
+            loadContent(apiInstance);
+          }
+        }
         setTimeout(countdown, 1000);
       }
 
@@ -265,7 +284,6 @@
 
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
-            // Object to store events by category for non-live sections
             const categoryEvents = {};
             Object.keys(categories).forEach(key => categoryEvents[key] = []);
 
@@ -295,31 +313,34 @@
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
               let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
-              let streamHtml = `
-                <div class="event-card">
-                  <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
-                    <div class="card">
-                      ${liveBadge}
-                      <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                      <div class="card-body">
-                        <h2 class="card-title non-clickable">${stream.name}</h2>
-                        <p class="card-text">
-                          <span class="event-tag">${stream.tag}</span>
-                          <span class="event-timer">
-                            ${isLive 
-                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                            ${isLive ? '<span class="live-animation"></span>' : ''}
-                          </span>
-                        </p>
+              let streamHtml = {
+                html: `
+                  <div class="event-card">
+                    <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                      <div class="card">
+                        ${liveBadge}
+                        <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                        <div class="card-body">
+                          <h2 class="card-title non-clickable">${stream.name}</h2>
+                          <p class="card-text">
+                            <span class="event-tag">${stream.tag}</span>
+                            <span class="event-timer">
+                              ${isLive 
+                                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                              ${isLive ? '<span class="live-animation"></span>' : ''}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </div>`;
+                    </a>
+                  </div>`,
+                startTime
+              };
 
               const categoryKey = stream.category.toLowerCase().replace(/\s+/g, '');
               if (isLive) {
-                livecards.innerHTML += streamHtml;
+                livecards.innerHTML += streamHtml.html;
                 hasLiveEvents = true;
               } else {
                 if (categories[categoryKey]) {
@@ -330,11 +351,13 @@
               }
             });
 
-            // Render non-live categories, limiting to 4 events
+            // Sort and render non-live categories, limiting to 4 events
             Object.keys(categories).forEach(key => {
               if (categoryEvents[key].length > 0) {
+                // Sort by startTime (earliest first)
+                categoryEvents[key].sort((a, b) => a.startTime - b.startTime);
                 // Show only the first 4 events
-                categories[key].innerHTML = categoryEvents[key].slice(0, 4).join('');
+                categories[key].innerHTML = categoryEvents[key].slice(0, 4).map(item => item.html).join('');
                 document.getElementById(key).classList.remove('d-none');
               }
             });
@@ -398,13 +421,11 @@
           // Load content
           if (typeof Api === 'undefined') {
             console.warn('Api class not defined. Using default API path.');
-            const api = { baseUrl: window.location.origin };
-            loadContent(api);
-            setInterval(() => loadContent(api), 60000);
+            apiInstance = { baseUrl: window.location.origin };
+            loadContent(apiInstance);
           } else {
-            const api = new Api(`${window.location.origin}/api`);
-            loadContent(api);
-            setInterval(() => loadContent(api), 60000);
+            apiInstance = new Api(`${window.location.origin}/api`);
+            loadContent(apiInstance);
           }
 
           countdown();
