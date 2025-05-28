@@ -1,47 +1,9 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "/*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "/streams/*.m3u8",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "/api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/streams",
-      "dest": "/api/streams/index.json"
-    },
-    {
-      "src": "/api/stream",
-      "dest": "/api/stream.json"
-    },
-    {
-      "src": "/api/proxy",
-      "dest": "/api/proxy.js"
-    },
-    {
-      "src": "/streams/(.*)",
-      "dest": "/streams/$1"
-    },
-    {
-      "src": "/live/:path*",
-      "dest": "/live.html"
-    },
-    {
-      "src": "/vip",
-      "dest": "/vip.html"
-    },
-    {
-      "src": "/:path*",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/api/streams", "destination": "/api/streams/index.json" },
+    { "source": "/api/stream", "destination": "/api/stream.json" },
+    { "source": "/live/:path*", "destination": "/live.html" },
+    { "source": "/vip", "destination": "/vip.html" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
