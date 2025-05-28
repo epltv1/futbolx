@@ -2,4 +2,4 @@
 #EXT-X-VERSION:3
 #EXT-X-TARGETDURATION:10
 #EXTINF:10.0,
-/api/proxy?url=http://nsbhhsr.smart-tv.xyz:80/live/8529671528/6827000316/153716.ts
+http://nsbhhsr.smart-tv.xyz:80/live/8529671528/6827000316/153716.ts
