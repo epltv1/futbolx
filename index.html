@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FutbolX - Free PPV and More</title>
   <meta name="description" content="FutbolX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
@@ -12,8 +12,8 @@
   <meta name="twitter:title" content="FutbolX - Free PPV and More">
   <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-  <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin="anonymous">
+  <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="/assets/css/main.css?v=24">
@@ -174,7 +174,6 @@
           if (element.innerHTML !== displayText) {
             element.innerHTML = displayText;
           }
-          // Enable card clickability if within 30 minutes (1800 seconds)
           if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
             cardLink.style.pointerEvents = 'auto';
             cardLink.style.cursor = 'pointer';
@@ -182,7 +181,6 @@
             cardLink.style.pointerEvents = 'none';
             cardLink.style.cursor = 'default';
           }
-          // Trigger refresh if event is about to go live
           if (timer <= 1 && timer > 0) {
             needsRefresh = true;
           }
@@ -286,14 +284,14 @@
             category.streams.forEach(stream => {
               let startTime, endTime;
               try {
-                const eatOffsetSeconds = 10800;
-                startTime = new Date(stream.starts_at).getTime() / 1000 - eatOffsetSeconds;
+                // Parse as EAT (UTC+3)
+                startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
                 if (isNaN(startTime)) {
                   console.warn(`Invalid start time for stream ${stream.name}`);
                   startTime = now;
                 }
                 endTime = stream.ends_at 
-                  ? new Date(stream.ends_at).getTime() / 1000 - eatOffsetSeconds 
+                  ? new Date(stream.ends_at + '+03:00').getTime() / 1000 
                   : startTime + 3 * 3600;
                 if (isNaN(endTime)) {
                   console.warn(`Invalid end time for stream ${stream.name}`);
