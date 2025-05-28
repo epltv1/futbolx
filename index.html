@@ -271,88 +271,80 @@
             Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
             livecards.innerHTML = '';
 
-            const allEvents = streamData.streams.map(stream => ({
-              ...stream,
-              always_live: stream.always_live || 0,
-              category: stream.category || 'others'
-            }));
-
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
             const categoryEvents = {};
             Object.keys(categories).forEach(key => categoryEvents[key] = []);
 
-            allEvents.forEach((stream, index) => {
-              let startTime, endTime;
-              try {
-                // Convert EAT (UTC+3) to UTC by subtracting 3 hours (10800 seconds)
-                const eatOffsetSeconds = 10800;
-                startTime = new Date(stream.start_time).getTime() / 1000 - eatOffsetSeconds;
-                if (isNaN(startTime)) {
-                  console.warn(`Invalid start time for stream ${stream.title}, using current time`);
+            streamData.streams.forEach(category => {
+              if (!category.streams || !Array.isArray(category.streams)) return;
+              const categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
+              category.streams.forEach(stream => {
+                let startTime, endTime;
+                try {
+                  // Convert EAT (UTC+3) to UTC by subtracting 3 hours (10800 seconds)
+                  const eatOffsetSeconds = 10800;
+                  startTime = new Date(stream.starts_at).getTime() / 1000 - eatOffsetSeconds;
+                  if (isNaN(startTime)) {
+                    console.warn(`Invalid start time for stream ${stream.name}, using current time`);
+                    startTime = now;
+                  }
+                  endTime = stream.ends_at 
+                    ? new Date(stream.ends_at).getTime() / 1000 - eatOffsetSeconds 
+                    : startTime + 3 * 3600;
+                  if (isNaN(endTime)) {
+                    console.warn(`Invalid end time for stream ${stream.name}, defaulting to 3 hours`);
+                    endTime = startTime + 3 * 3600;
+                  }
+                } catch (e) {
+                  console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
                   startTime = now;
+                  endTime = now + 3 * 3600;
                 }
-                endTime = stream.end_time 
-                  ? new Date(stream.end_time).getTime() / 1000 - eatOffsetSeconds 
-                  : startTime + 3 * 3600;
-                if (isNaN(endTime)) {
-                  console.warn(`Invalid end time for stream ${stream.title}, defaulting to 3 hours`);
-                  endTime = startTime + 3 * 3600;
-                }
-              } catch (e) {
-                console.warn(`Error parsing time for stream ${stream.title}: ${e.message}`);
-                startTime = now;
-                endTime = now + 3 * 3600;
-              }
 
-              let isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
-              let isEnded = now > endTime;
-              if (isEnded) return;
+                let isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
+                let isEnded = now > endTime;
+                if (isEnded) return;
 
-              // Use first stream URL for Watch button, fallback to empty string
-              const streamUrl = Array.isArray(stream.streams) && stream.streams.length > 0 && stream.streams[0].url 
-                ? stream.streams[0].url 
-                : '';
-
-              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-              let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
-              let streamHtml = {
-                html: `
-                  <div class="event-card">
-                    <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
-                      <div class="card">
-                        ${liveBadge}
-                        <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                        <div class="card-body">
-                          <h2 class="card-title non-clickable">${stream.title}</h2>
-                          <p class="card-text">
-                            <span class="event-tag">${stream.tag}</span>
-                            <span class="event-timer">
-                              ${isLive 
-                                ? `<a href="${streamUrl}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                                : `<span class="countdown" data-start="${startTime}" data-uri="${streamUrl}"></span>`}
-                              ${isLive ? '<span class="live-animation"></span>' : ''}
-                            </span>
-                          </p>
+                let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+                let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
+                let streamHtml = {
+                  html: `
+                    <div class="event-card">
+                      <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                        <div class="card">
+                          ${liveBadge}
+                          <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                          <div class="card-body">
+                            <h2 class="card-title non-clickable">${stream.name}</h2>
+                            <p class="card-text">
+                              <span class="event-tag">${stream.tag}</span>
+                              <span class="event-timer">
+                                ${isLive 
+                                  ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                                  : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                                ${isLive ? '<span class="live-animation"></span>' : ''}
+                              </span>
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                  </div>`,
-                startTime
-              };
+                      </a>
+                    </div>`,
+                  startTime
+                };
 
-              const categoryKey = stream.category.toLowerCase().replace(/\s+/g, '');
-              if (isLive) {
-                livecards.innerHTML += streamHtml.html;
-                hasLiveEvents = true;
-              } else {
-                if (categories[categoryKey]) {
-                  categoryEvents[categoryKey].push(streamHtml);
+                if (isLive) {
+                  livecards.innerHTML += streamHtml.html;
+                  hasLiveEvents = true;
                 } else {
-                  categoryEvents.others.push(streamHtml);
+                  if (categories[categoryKey]) {
+                    categoryEvents[categoryKey].push(streamHtml);
+                  } else {
+                    categoryEvents.others.push(streamHtml);
+                  }
                 }
-              }
+              });
             });
 
             // Sort and render non-live categories, limiting to 4 events
