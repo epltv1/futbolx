@@ -41,11 +41,11 @@
           <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
           <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
           <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
-          <li JPG for="a"> href="/theme-toggle">
+          <li class="nav-item">
             <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
               <i class="fas fa-moon"></i>
             </button>
-          </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -55,10 +55,8 @@
         <div class="row">
           <div class="col-12">
             <div class="d-flex align-items-center mb-3">
-              <div class="d-flex align-items-center mb-0">
-              <a href="/" class="btn btn-sm btn-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
-            <button id="startLivestream" class="btn btn-primary btn-sm ms-3" disabled>Loading...</button>
-              <button id="msLivestreamBtn" class="btn btn-primary ms-2" disabled>Start Livestream</button>
+              <a href="/" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
+              <button id="startLivestream" class="btn btn-danger ms-3" disabled>Loading...</button>
             </div>
             <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
@@ -68,90 +66,84 @@
             <div id="playerError" class="alert alert-danger mt-3 d-none"></div>
           </div>
         </div>
-        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top">
-          <div class="container-fluid">
-            <p class="mb-2 mb-lg-0 text-body text-center text-lg-start">FutbolX 2025</p>
-            <ul class="nav-item flex justify-content-center justify-content-lg-end mb-0">
-              <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-              <li><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-secondary">Discord</a></li>
-              <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-              <li><a href="/vip" href="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-              <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact</a></li>
-            </ul>
-          </div>
+        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
+          <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
+          <ul class="nav justify-content-center justify-content-lg-end mb-0">
+            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
+            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+          </ul>
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-HnH3bWZOJZLYn4s8oV0rV7C8sIVInixnGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@0.4.17/clappr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
-      let playerInstance = = null;
-      let streamData = = null;
+      let playerInstance = null;
+      let streamData = null;
 
-      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 4) {
-        console.log('Attempting initPlayer called, attempt:', attempt);
+      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
+        console.log('initPlayer called, attempt:', attempt);
         if (attempt >= maxAttempts) {
-          playerError.className = = 'alert alert-danger';
-          playerError.innerText = = 'Failed to load player. Please try to refresh the page.';
-          console.error('Clappr: Maximum Max retry attempts reached');
+          playerError.className = 'alert alert-danger mt-3';
+          playerError.innerText = 'Failed to load player. Please refresh the page.';
+          console.error('Clappr: Max retry attempts reached');
           return;
         }
         if (typeof Clappr === 'undefined') {
-          console.warn(`Clappr not loaded yet, retrying attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 100);
+          console.warn(`Clappr not loaded, attempt ${attempt + 1}/${maxAttempts}`);
+          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
           return;
         }
         try {
-          console.log('Clappr: Initializing player with stream:', streamData.streams[0].url);
+          console.log('Clappr: Initializing with stream', event.streams[0].url);
           playerInstance = new Clappr.Player({
             source: event.streams[0].url,
             parentId: '#player',
-            autoPlay: false,
+            autoPlay: true,
             width: '100%',
             height: '100%',
             events: {
-              onError: (error) => {
-                console.error('Clappr: Playback error:', error);
-                playerError.className = 'alert alert-danger';
-                playerError.innerText = = 'Failed to play stream: ' + (error.message || 'Unknown error');
+              onError: (err) => {
+                console.error('Clappr Error:', err);
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'Failed to play stream: ' + (err.message || 'Unknown error');
               }
             }
           });
-          console.log('Clappr: Player initialized successfully');
+          console.log('Clappr: Initialized successfully');
           streamLinks.innerHTML = event.streams.map((stream, index) => `
-            <button class="btn btn-sm btn-stream btn-outline-primary ${index === 0 ? 'active' : ''}" data-stream="true" data-stream-url="${stream.url}" data-stream="${index}">
-              ${stream.data[title].title || `Stream ${index + 1}`}
+            <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
+              ${stream.title || `Stream ${index + 1}`}
             </button>
           `).join('');
-          streamLinks.addEventListener('click', (event) => {
-            const button = event.target.closest('.btn.btn-stream');
-            if (button) {
-              const sourceUrl = button.getAttribute('data-stream-url');
-              playerError.classList.add('d-none');
+          streamLinks.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn.btn-stream');
+            if (btn) {
+              const url = btn.getAttribute('data-stream-url');
+              playerError.className = 'alert alert-danger mt-3 d-none';
               try {
-                console.log('Clappr: Attempting to switch to stream:', sourceUrl);
-                playerInstance.load(sourceUrl);
-                streamLinks.querySelectorAll('.btn-stream').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                console.log('Clappr: Switched stream successfully');
-              } catch (error) {
-                console.error('Clappr: Stream switch error:', error);
-                playerError.className = 'alert alert-danger';
-                playerError.innerText = = 'Failed to switch stream: ' + (error.message || 'Unknown error');
+                console.log('Clappr: Switching to stream', url);
+                playerInstance.load(url);
+                streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                console.log('Clappr: Stream switched successfully');
+              } catch (err) {
+                console.error('Stream switch error:', err);
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
               }
             }
           });
-        } catch (error) {
-          console.error('Clappr: Player initialization error:', error);
-          playerError.className = 'alert alert-danger';
-          playerError.innerText = = 'Failed to initialize player: ' + (error.message || 'Unknown error');
+        } catch (err) {
+          console.error('Player init error:', err);
+          playerError.className = 'alert alert-danger mt-3';
+          playerError.innerText = 'Failed to initialize player: ' + (err.message || 'Unknown error');
         }
-      } catch (error) {
-        console.error('initPlayer error:', error);
-        playerError.className = 'alert alert-error';
-        playerError.innerText = 'Failed to initialize player: ' + (error.message || 'Initialization error');
       }
 
       function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
@@ -161,16 +153,16 @@
             attempts++;
             console.log(`Fetching ${url}, attempt ${attempts}`);
             fetch(url)
-              .then(response => {
-                console.log(`Response status: ${response.status}`);
-                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-                return response.json();
+              .then(res => {
+                console.log(`Fetch status: ${res.status}`);
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                return res.json();
               })
               .then(data => resolve(data))
               .catch(error => {
                 console.error(`Fetch attempt ${attempts} failed:`, error);
                 if (attempts < maxRetries) {
-                  setTimeout(() => attempt(), delay);
+                  setTimeout(attempt, delay);
                 } else {
                   reject(error);
                 }
@@ -197,7 +189,7 @@
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
 
-          // Offcanvas close on outside click
+          // Offcanvas outside click
           const offcanvasElement = document.getElementById('sidebarMenu');
           document.addEventListener('click', (event) => {
             const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
@@ -215,11 +207,11 @@
           const streamLinks = document.getElementById('streamLinks');
           const startLivestreamBtn = document.getElementById('startLivestream');
 
-          if (!Api.class) {
+          if (typeof Api === 'undefined') {
             console.error('Api class not defined. Ensure api.js is loaded.');
-            document.getElementById('eventTitle').innerText = 'Error: Failed to load event';
-            playerError.className = 'alert alert-danger';
-            playerError.innerText = 'Failed to initialize API';
+            document.getElementById('eventTitle').innerText = 'Error: Failed to initialize';
+            playerError.className = 'alert alert-danger mt-3';
+            playerError.innerText = 'Failed to initialize API. Please refresh.';
             startLivestreamBtn.disabled = true;
             startLivestreamBtn.innerText = 'Error';
             return;
@@ -228,16 +220,15 @@
           const api = new Api(`${window.location.origin}/api`);
           fetchWithRetry(api.baseUrl + '/stream')
             .then(data => {
-              console.log('Stream API response:', data);
+              console.log('Stream API Response:', data);
               if (!data || !data.success || !Array.isArray(data.streams)) {
-                document.getElementById('eventTitle').innerText = 'Error: Stream Not Found';
-                playerError.className = 'alert alert-danger';
-                playerError.innerText = 'No streams available';
+                document.getElementById('eventTitle').innerText = 'Error: Stream not found';
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'No streams available.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'Stream Unavailable';
                 return;
               }
-
               let event = null;
               for (const category of data.streams) {
                 if (category.streams && Array.isArray(category.streams)) {
@@ -245,16 +236,14 @@
                   if (event) break;
                 }
               }
-
               if (!event || !event.streams || !Array.isArray(event.streams) || event.streams.length === 0) {
-                document.getElementById('eventTitle').innerText = 'Error: Stream Not Found';
-                playerError.className = 'alert alert-danger';
-                playerError.innerText = 'No stream links available for this event';
+                document.getElementById('eventTitle').innerText = 'Error: No streams available';
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'No stream links found for this event.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'No Streams';
                 return;
               }
-
               // Check if event is live
               const now = Math.floor(Date.now() / 1000);
               const eatOffsetSeconds = 10800; // 3 hours
@@ -285,30 +274,29 @@
               const isLive = (startTime <= now && now <= endTime) || event.always_live === 1;
               if (!isLive) {
                 document.getElementById('eventTitle').innerText = event.name + ' (Not Live)';
-                playerError.className = 'alert alert-danger';
-                playerError.innerText = 'This event is not currently live';
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'This event is not currently live.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'Event Not Live';
                 return;
               }
-
               document.getElementById('eventTitle').innerText = event.name;
               streamData = event;
               startLivestreamBtn.disabled = false;
-              startLivestreamBtn.innerText = 'Start Livestream';
+              startLivestreamBtn.innerText = 'Click to Start Livestream';
               console.log('Stream data loaded:', event);
             })
             .catch(error => {
               console.error('Stream fetch error:', error);
-              document.getElementById('eventTitle').innerText = 'Error: Failed to Load Stream';
-              playerError.className = 'alert alert-danger';
-              playerError.innerText = 'Failed to fetch stream data';
+              document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
+              playerError.className = 'alert alert-danger mt-3';
+              playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
               startLivestreamBtn.disabled = true;
               startLivestreamBtn.innerText = 'Fetch Failed';
             });
 
           startLivestreamBtn.addEventListener('click', () => {
-            console.log('Start Livestream clicked, streamData:', streamData);
+            console.log('Start Livestream button clicked, streamData:', streamData);
             if (streamData) {
               playerContainer.classList.add('fade-in');
               streamLinks.classList.add('fade-in');
@@ -317,18 +305,18 @@
               console.log('Player and stream links displayed');
             } else {
               console.warn('No stream data available');
-              playerError.className = 'alert alert-danger';
-              playerError.innerText = 'Stream data not loaded';
+              playerError.className = 'alert alert-danger mt-3';
+              playerError.innerText = 'Stream data not loaded. Please refresh the page.';
             }
           });
 
           checkAuthStatus();
           console.log('Page initialized successfully');
         } catch (error) {
-          console.error('Page initialization error:', error);
-          document.getElementById('eventTitle').innerText = 'Error: Failed to Initialize';
-          document.getElementById('playerError').className = 'alert alert-danger';
-          document.getElementById('playerError').innerText = 'An error occurred';
+          console.error('Init page error:', error);
+          document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
+          document.getElementById('playerError').className = 'alert alert-danger mt-3';
+          document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
           document.getElementById('startLivestream').disabled = true;
           document.getElementById('startLivestream').innerText = 'Error';
         }
