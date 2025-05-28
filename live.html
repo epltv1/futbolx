@@ -3,20 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FutbolX - Watch Live</title>
-    <meta name="description" content="FutbolX - Watch live PPV boxing, UFC, Basketball, Football, and more.">
+    <title>FutbolX - Free PPV and More</title>
+    <meta name="description" content="FutbolX - Free PPV boxing, UFC, Basketball, Football, and more available live and on-demand.">
     <meta name="keywords" content="futbolx, ppv, free ppv, boxing, ufc, basketball, football, stream, online, free">
-    <meta property="og:title" content="FutbolX - Watch Live" />
-    <meta property="og:url" content="https://your-futbolx-site.vercel.app/live" />
+    <meta property="og:title" content="FutbolX - Free PPV and More" />
+    <meta property="og:url" content="https://your-futbolx-site.vercel.app" />
     <meta property="og:image" content="/assets/img/og-image.jpg">
-    <meta name="twitter:title" content="FutbolX - Watch Live">
-    <meta name="twitter:description" content="Watch live PPV boxing and other content on FutbolX.">
+    <meta name="twitter:title" content="FutbolX - Free PPV and More">
+    <meta name="twitter:description" content="Free PPV boxing and other content available live and on-demand.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/main.css?v=24">
+    <style>
+      .error-alert { max-width: 500px; margin: 20px auto; }
+      .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+      .event-card.visible { opacity: 1; transform: translateY(0); }
+    </style>
   </head>
   <body>
     <!-- Top Bar -->
@@ -51,20 +56,67 @@
     </div>
     <!-- Main Content -->
     <div class="container-fluid main-content">
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-12">
-            <div class="d-flex align-items-center mb-3">
-              <a href="/" class="btn btn-back" onclick="window.location.href='/'; return false;"><i class="fas fa-arrow-left"></i> Back to Home</a>
-              <button id="startLivestream" class="btn btn-danger ms-3" disabled>Loading...</button>
-            </div>
-            <h2 id="eventTitle" class="mb-3"></h2>
-            <div class="video-container">
-              <div id="player"></div>
-            </div>
-            <div id="streamLinks" class="stream-links mt-3"></div>
-            <div id="playerError" class="alert alert-danger mt-3 d-none"></div>
+      <div class="text-center py-5 bg-dark hero-background">
+        <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
+        <p class="lead">Stream Free PPV Boxing, UFC, Basketball, and More - Live & On-Demand!</p>
+      </div>
+      <div class="container pt-2">
+        <div id="errorContainer" class="d-none error-alert"></div>
+        <div id="live" class="mt-4">
+          <h2 class="m-0">
+            Live Now <span id="liveAnimation" class="live-animation d-none"></span>
+          </h2>
+          <div id="livecards" class="event-grid py-3">
+            <p>Loading streams...</p>
           </div>
+        </div>
+        <div id="football" class="mt-5 d-none">
+          <h2 class="m-0">Football</h2>
+          <div id="footballcards" class="event-grid py-3"></div>
+        </div>
+        <div id="nba" class="mt-5 d-none">
+          <h2 class="m-0">NBA</h2>
+          <div id="nbacards" class="event-grid py-3"></div>
+        </div>
+        <div id="fights" class="mt-5 d-none">
+          <h2 class="m-0">Fights</h2>
+          <div id="fightscards" class="event-grid py-3"></div>
+        </div>
+        <div id="motorsports" class="mt-5 d-none">
+          <h2 class="m-0">Motorsports</h2>
+          <div id="motorsportscards" class="event-grid py-3"></div>
+        </div>
+        <div id="nfl" class="mt-5 d-none">
+          <h2 class="m-0">NFL</h2>
+          <div id="nflcards" class="event-grid py-3"></div>
+        </div>
+        <div id="nhl" class="mt-5 d-none">
+          <h2 class="m-0">NHL</h2>
+          <div id="nhlcards" class="event-grid py-3"></div>
+        </div>
+        <div id="mlb" class="mt-5 d-none">
+          <h2 class="m-0">MLB</h2>
+          <div id="mlbcards" class="event-grid py-3"></div>
+        </div>
+        <div id="icehockey" class="mt-5 d-none">
+          <h2 class="m-0">Ice Hockey</h2>
+          <div id="icehockeycards" class="event-grid py-3"></div>
+        </div>
+        <div id="tennis" class="mt-5 d-none">
+          <h2 class="m-0">Tennis</h2>
+          <div id="tenniscards" class="event-grid py-3"></div>
+        </div>
+        <div id="rugby" class="mt-5 d-none">
+          <h2 class="m-0">Rugby</h2>
+          <div id="rugbycards" class="event-grid py-3"></div>
+        </div>
+        <div id="golf" class="mt-5 d-none">
+          <h2 class="m-0">Golf</h2>
+          <div id="golfcards" class="event-grid py-3"></div>
+        </div>
+        <div id="others" class="mt-5 d-none">
+          <h2 class="m-0">Others</h2>
+          <div id="otherscards" class="event-grid py-3"></div>
         </div>
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
           <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
@@ -79,71 +131,78 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
+    <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
     <script>
-      let playerInstance = null;
-      let streamData = null;
+      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
+      
+      let lastApiCall = 0;
+      let apiInstance = null;
 
-      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
-        console.log('initPlayer called, attempt:', attempt);
-        if (attempt >= maxAttempts) {
-          playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to load player. Please refresh the page.';
-          console.error('Clappr: Max retry attempts reached');
-          return;
-        }
-        if (typeof Clappr === 'undefined') {
-          console.warn(`Clappr not loaded, attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
-          return;
-        }
-        try {
-          console.log('Clappr: Initializing with stream', event.streams[0].url);
-          playerInstance = new Clappr.Player({
-            source: event.streams[0].url,
-            parentId: '#player',
-            autoPlay: true,
-            width: '100%',
-            height: '100%',
-            events: {
-              onError: (err) => {
-                console.error('Clappr Error:', err);
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'Failed to play stream: ' + (err.message || 'Unknown error');
-              }
+      function zeropad(num) {
+        return num > 9 ? num : '0' + num;
+      }
+
+      function countdown() {
+        const now = Math.floor(Date.now() / 1000);
+        let needsRefresh = false;
+        const countdownElements = document.querySelectorAll('[data-start]');
+        countdownElements.forEach(element => {
+          const startTime = parseInt(element.getAttribute('data-start'), 10);
+          let timer = startTime - now;
+          const uri = element.getAttribute('data-uri');
+          const cardLink = element.closest('.card-link');
+          if (timer > 0) {
+            let days = Math.floor(timer / 86400);
+            let weeks = Math.floor(days / 7);
+            let hours = Math.floor(timer / 3600);
+            let mins = Math.floor(timer / 60);
+            let secs = Math.floor(timer);
+            let displayText = '';
+            if (days >= 7) {
+              displayText = `Starting in ${weeks} week${weeks > 1 ? 's' : ''}`;
+            } else if (days >= 1) {
+              displayText = `Starting in ${days} day${days > 1 ? 's' : ''}`;
+            } else {
+              let hh = hours - days * 24;
+              let mm = mins - hours * 60;
+              let ss = secs - mins * 60;
+              displayText = `${zeropad(hh)}:${zeropad(mm)}:${zeropad(ss)}`;
             }
-          });
-          console.log('Clappr: Initialized successfully');
-          streamLinks.innerHTML = event.streams.map((stream, index) => `
-            <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
-              ${stream.title || `Stream ${index + 1}`}
-            </button>
-          `).join('');
-          streamLinks.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn.btn-stream');
-            if (btn) {
-              const url = btn.getAttribute('data-stream-url');
-              playerError.className = 'alert alert-danger mt-3 d-none';
-              try {
-                console.log('Clappr: Switching to stream', url);
-                playerInstance.load(url);
-                streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                console.log('Clappr: Stream switched successfully');
-              } catch (err) {
-                console.error('Stream switch error:', err);
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
-              }
+            if (element.innerHTML !== displayText) {
+              element.innerHTML = displayText;
             }
-          });
-        } catch (err) {
-          console.error('Player init error:', err);
-          playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to initialize player: ' + (err.message || 'Unknown error');
+            // Enable card clickability if within 30 minutes (1800 seconds)
+            if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
+              cardLink.style.pointerEvents = 'auto';
+              cardLink.style.cursor = 'pointer';
+            } else if (timer > 1800 && cardLink && cardLink.style.pointerEvents !== 'none') {
+              cardLink.style.pointerEvents = 'none';
+              cardLink.style.cursor = 'default';
+            }
+            // Check if event is about to go live (within 1 second)
+            if (timer <= 1 && timer > 0) {
+              needsRefresh = true;
+            }
+          } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
+            element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+            if (cardLink) {
+              cardLink.style.pointerEvents = 'auto';
+              cardLink.style.cursor = 'pointer';
+            }
+            needsRefresh = true;
+          }
+        });
+        // Trigger loadContent if an event goes live
+        if (needsRefresh && apiInstance) {
+          const currentTime = Date.now();
+          if (currentTime - lastApiCall >= 1000) { // Rate limit to 1 call per second
+            lastApiCall = currentTime;
+            loadContent(apiInstance);
+          }
         }
+        setTimeout(countdown, 1000);
       }
 
       function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
@@ -172,9 +231,164 @@
         });
       }
 
+      function loadContent(api) {
+        console.log('Starting loadContent at', new Date().toISOString());
+        const errorContainer = document.getElementById('errorContainer');
+        const liveAnimation = document.getElementById('liveAnimation');
+        const livecards = document.getElementById('livecards');
+        
+        errorContainer.className = 'd-none error-alert';
+        errorContainer.innerHTML = '';
+        livecards.innerHTML = '<p>Loading streams...</p>';
+
+        fetchWithRetry(api.baseUrl + '/stream')
+          .then(streamData => {
+            console.log('API Response:', streamData);
+            
+            if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
+              console.warn('Invalid stream data received');
+              livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+              liveAnimation.classList.add('d-none');
+              return;
+            }
+
+            const categories = {
+              football: document.getElementById('footballcards'),
+              nba: document.getElementById('nbacards'),
+              fights: document.getElementById('fightscards'),
+              motorsports: document.getElementById('motorsportscards'),
+              nfl: document.getElementById('nflcards'),
+              nhl: document.getElementById('nhlcards'),
+              mlb: document.getElementById('mlbcards'),
+              icehockey: document.getElementById('icehockeycards'),
+              tennis: document.getElementById('tenniscards'),
+              rugby: document.getElementById('rugbycards'),
+              golf: document.getElementById('golfcards'),
+              others: document.getElementById('otherscards')
+            };
+            
+            Object.values(categories).forEach(card => card.innerHTML = '');
+            Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
+            livecards.innerHTML = '';
+
+            let hasLiveEvents = false;
+            const now = Math.floor(Date.now() / 1000);
+            const categoryEvents = {};
+            Object.keys(categories).forEach(key => categoryEvents[key] = []);
+
+            streamData.streams.forEach(category => {
+              if (!category.streams || !Array.isArray(category.streams)) return;
+              const categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
+              category.streams.forEach(stream => {
+                let startTime, endTime;
+                try {
+                  // Convert EAT (UTC+3) to UTC by subtracting 3 hours (10800 seconds)
+                  const eatOffsetSeconds = 10800;
+                  startTime = new Date(stream.starts_at).getTime() / 1000 - eatOffsetSeconds;
+                  if (isNaN(startTime)) {
+                    console.warn(`Invalid start time for stream ${stream.name}, using current time`);
+                    startTime = now;
+                  }
+                  endTime = stream.ends_at 
+                    ? new Date(stream.ends_at).getTime() / 1000 - eatOffsetSeconds 
+                    : startTime + 3 * 3600;
+                  if (isNaN(endTime)) {
+                    console.warn(`Invalid end time for stream ${stream.name}, defaulting to 3 hours`);
+                    endTime = startTime + 3 * 3600;
+                  }
+                } catch (e) {
+                  console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
+                  startTime = now;
+                  endTime = now + 3 * 3600;
+                }
+
+                let isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
+                let isEnded = now > endTime;
+                if (isEnded) return;
+
+                let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+                let isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
+                let streamHtml = {
+                  html: `
+                    <div class="event-card">
+                      <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                        <div class="card">
+                          ${liveBadge}
+                          <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                          <div class="card-body">
+                            <h2 class="card-title non-clickable">${stream.name}</h2>
+                            <p class="card-text">
+                              <span class="event-tag">${stream.tag}</span>
+                              <span class="event-timer">
+                                ${isLive 
+                                  ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                                  : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                                ${isLive ? '<span class="live-animation"></span>' : ''}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>`,
+                  startTime
+                };
+
+                if (isLive) {
+                  livecards.innerHTML += streamHtml.html;
+                  hasLiveEvents = true;
+                } else {
+                  if (categories[categoryKey]) {
+                    categoryEvents[categoryKey].push(streamHtml);
+                  } else {
+                    categoryEvents.others.push(streamHtml);
+                  }
+                }
+              });
+            });
+
+            // Sort and render non-live categories, limiting to 4 events
+            Object.keys(categories).forEach(key => {
+              if (categoryEvents[key].length > 0) {
+                // Sort by startTime (earliest first)
+                categoryEvents[key].sort((a, b) => a.startTime - b.startTime);
+                // Show only the first 4 events
+                categories[key].innerHTML = categoryEvents[key].slice(0, 4).map(item => item.html).join('');
+                document.getElementById(key).classList.remove('d-none');
+              }
+            });
+
+            if (!hasLiveEvents) {
+              livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
+              liveAnimation.classList.add('d-none');
+            } else {
+              liveAnimation.classList.remove('d-none');
+            }
+
+            const cards = document.querySelectorAll('.event-card');
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1 });
+            cards.forEach(card => observer.observe(card));
+          })
+          .catch(error => {
+            console.error('API Fetch Error:', error);
+            livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+            liveAnimation.classList.add('d-none');
+          });
+      }
+
       function initPage() {
+        console.log('Initializing page at', new Date().toISOString());
+        const errorContainer = document.getElementById('errorContainer');
+        const livecards = document.getElementById('livecards');
+        
         try {
-          console.log('Initializing page at', new Date().toISOString());
           // Initialize theme
           const htmlElement = document.documentElement;
           const themeToggle = document.getElementById('themeToggle');
@@ -200,87 +414,24 @@
             }
           });
 
-          // Load stream data
-          const uriName = window.location.pathname.split('/').pop();
-          const playerError = document.getElementById('playerError');
-          const playerContainer = document.querySelector('.video-container');
-          const streamLinks = document.getElementById('streamLinks');
-          const startLivestreamBtn = document.getElementById('startLivestream');
-
+          // Load content
           if (typeof Api === 'undefined') {
-            console.error('Api class not defined. Ensure api.js is loaded.');
-            document.getElementById('eventTitle').innerText = 'Error: Failed to initialize';
-            playerError.className = 'alert alert-danger mt-3';
-            playerError.innerText = 'Failed to initialize API. Please refresh.';
-            return;
+            console.warn('Api class not defined. Using default API path.');
+            apiInstance = { baseUrl: window.location.origin };
+            loadContent(apiInstance);
+          } else {
+            apiInstance = new Api(`${window.location.origin}/api`);
+            loadContent(apiInstance);
           }
 
-          const api = new Api(`${window.location.origin}/api`);
-          fetchWithRetry(api.baseUrl + '/stream')
-            .then(data => {
-              console.log('Stream API Response:', data);
-              if (!data || !data.success || !Array.isArray(data.streams)) {
-                document.getElementById('eventTitle').innerText = 'Error: Stream not found';
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'No streams available.';
-                startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = 'Stream Unavailable';
-                return;
-              }
-              let event = null;
-              for (const category of data.streams) {
-                if (category.streams) {
-                  event = category.streams.find(stream => stream.uri_name === uriName);
-                  if (event) break;
-                }
-              }
-              if (!event || !event.streams || event.streams.length === 0) {
-                document.getElementById('eventTitle').innerText = 'Error: No streams available';
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'No stream links found for this event.';
-                startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = 'No Streams';
-                return;
-              }
-              document.getElementById('eventTitle').innerText = event.name;
-              streamData = event;
-              startLivestreamBtn.disabled = false;
-              startLivestreamBtn.innerText = 'Click to Start Livestream';
-              console.log('Stream data loaded:', event);
-            })
-            .catch(error => {
-              console.error('Stream fetch error:', error);
-              document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
-              playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
-              startLivestreamBtn.disabled = true;
-              startLivestreamBtn.innerText = 'Fetch Failed';
-            });
-
-          startLivestreamBtn.addEventListener('click', () => {
-            console.log('Start Livestream button clicked, streamData:', streamData);
-            if (streamData) {
-              playerContainer.classList.add('fade-in');
-              streamLinks.classList.add('fade-in');
-              startLivestreamBtn.style.display = 'none';
-              initPlayer(streamData, playerError, streamLinks);
-              console.log('Player and stream links displayed');
-            } else {
-              console.warn('No stream data available');
-              playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = 'Stream data not loaded. Please refresh the page.';
-            }
-          });
-
+          countdown();
           checkAuthStatus();
           console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
-          document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
-          document.getElementById('playerError').className = 'alert alert-danger mt-3';
-          document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
-          document.getElementById('startLivestream').disabled = true;
-          document.getElementById('startLivestream').innerText = 'Error';
+          livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+          errorContainer.className = 'd-none error-alert';
+          errorContainer.innerHTML = '';
         }
       }
 
@@ -289,7 +440,6 @@
         initPage();
       });
 
-      // Modified navigation handler
       document.addEventListener('click', (event) => {
         const link = event.target.closest('a[href]');
         if (link) {
@@ -299,7 +449,6 @@
           }
           if (href.startsWith('/')) {
             event.preventDefault();
-            console.log('Navigating to:', href);
             window.location.href = href;
           }
         }
