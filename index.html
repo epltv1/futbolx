@@ -16,7 +16,7 @@
     <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=25">
+    <link rel="stylesheet" href="/assets/css/main.css?v=24">
     <style>
       .error-alert { max-width: 500px; margin: 20px auto; }
       .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
@@ -271,16 +271,11 @@
             Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
             livecards.innerHTML = '';
 
-            const allEvents = [];
-            streamData.streams.forEach(categoryData => {
-              if (categoryData.streams && Array.isArray(categoryData.streams)) {
-                allEvents.push(...categoryData.streams.map(stream => ({
-                  ...stream,
-                  always_live: categoryData.always_live || stream.always_live || 0,
-                  category: categoryData.category || 'others'
-                })));
-              }
-            });
+            const allEvents = streamData.streams.map(stream => ({
+              ...stream,
+              always_live: stream.always_live || 0,
+              category: stream.category || 'others'
+            }));
 
             let hasLiveEvents = false;
             const now = Math.floor(Date.now() / 1000);
@@ -290,18 +285,22 @@
             allEvents.forEach((stream, index) => {
               let startTime, endTime;
               try {
-                startTime = new Date(stream.starts_at).getTime() / 1000;
+                // Convert EAT (UTC+3) to UTC by subtracting 3 hours (10800 seconds)
+                const eatOffsetSeconds = 10800;
+                startTime = new Date(stream.start_time).getTime() / 1000 - eatOffsetSeconds;
                 if (isNaN(startTime)) {
-                  console.warn(`Invalid start time for stream ${stream.name}, using current time`);
+                  console.warn(`Invalid start time for stream ${stream.title}, using current time`);
                   startTime = now;
                 }
-                endTime = stream.ends_at ? new Date(stream.ends_at).getTime() / 1000 : startTime + 3 * 3600;
+                endTime = stream.end_time 
+                  ? new Date(stream.end_time).getTime() / 1000 - eatOffsetSeconds 
+                  : startTime + 3 * 3600;
                 if (isNaN(endTime)) {
-                  console.warn(`Invalid end time for stream ${stream.name}, defaulting to 3 hours`);
+                  console.warn(`Invalid end time for stream ${stream.title}, defaulting to 3 hours`);
                   endTime = startTime + 3 * 3600;
                 }
               } catch (e) {
-                console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
+                console.warn(`Error parsing time for stream ${stream.title}: ${e.message}`);
                 startTime = now;
                 endTime = now + 3 * 3600;
               }
@@ -309,6 +308,11 @@
               let isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
               let isEnded = now > endTime;
               if (isEnded) return;
+
+              // Use first stream URL for Watch button, fallback to empty string
+              const streamUrl = Array.isArray(stream.streams) && stream.streams.length > 0 && stream.streams[0].url 
+                ? stream.streams[0].url 
+                : '';
 
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
@@ -319,15 +323,16 @@
                     <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
                       <div class="card">
                         ${liveBadge}
-                        <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                        <img src="${poster}" class="card-img-top cover" width="285" height="160" alt="${stream.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
                         <div class="card-body">
-                          <h2 class="card-title non-clickable">${stream.name}</h2>
+                          <h2 class="card-title non-clickable">${stream.title}</h2>
                           <p class="card-text">
                             <span class="event-tag">${stream.tag}</span>
                             <span class="event-timer">
                               ${isLive 
-                                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                                ? `<a href="${streamUrl}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                                : `<span class="countdown" data-start="${startTime}" data-uri="${streamUrl}"></span>`}
+                              ${isLive ? '<span class="live-animation"></span>' : ''}
                             </span>
                           </p>
                         </div>
