@@ -20,7 +20,7 @@
             },
             {
               "title": "Alternate Stream",
-              "url": "31.58.40.5/live/play/T1ZCS2VXTlBlVFpyTVN0UlVYSjNXRzVyYVdsNlJtdFlWV2sxWkhaMFVVZENlVmt2VkRSQ2RERk5XVDA9/13122"
+              "url": "http://67.219.215.19:80/play/live.php?mac=00:1A:79:dd:41:02&stream=13122&extension=m3u8"
             }
           ]
         }
