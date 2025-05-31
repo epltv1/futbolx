@@ -10,8 +10,8 @@
           "uri_name": "aseanallstars-vs-manunited",
           "poster": "https://plive.live/uploads/683643e6928f6.jpg",
           "tag": "Friendly",
-          "starts_at": "2025-05-29 23:30:00",
-          "ends_at": "2025-05-30 17:30:00",
+          "starts_at": "2025-05-31 22:30:00",
+          "ends_at": "2025-06-01 17:30:00",
           "always_live": 1,
           "streams": [
             {
@@ -20,7 +20,7 @@
             },
             {
               "title": "Alternate Stream",
-              "url": "http://79.127.138.223:443/16/tracks-v1a1/mono.ts.m3u8?token=96c3aea208726fadc7262f52d823a491"
+              "url": "https://h0t10.d6ssgk.su/o51/stream3/o/stream3/chunks.m3u8?nimblesessionid=132026680&wmsAuthSign=c2VydmVyX3RpbWU9NS8zMS8yMDI1IDc6MDA6MDAgUE0maGFzaF92YWx1ZT1oVm15WXpOY2R2TzNKVDJvNXh0SzNBPT0mdmFsaWRtaW51dGVzPTEyMCZpZD01"
             }
           ]
         }
