@@ -11,12 +11,12 @@
           "poster": "https://plive.live/uploads/683643e6928f6.jpg",
           "tag": "Friendly",
           "starts_at": "2025-05-31 22:30:00",
-          "ends_at": "2025-06-01 17:30:00",
+          "ends_at": "2025-06-01 21:30:00",
           "always_live": 1,
           "streams": [
             {
               "title": "MUtv",
-              "url": "http://185.156.74.112/iptv/3HYPASK67VVUSL/19051/index.m3u8"
+              "url": "https://hipaf6u2j3pwygg.nice-flower.store/v4/variant/VE1gTdz0mLzRnLv52bt9SMhFjdtM3ajFmc09yMmJDOzgjZxYTM2IWLyEDZ40iYjBDNtUDMiFWL0czYiNWYmNzL.m3u8?md5=2TonlZV8HdCPunOEtOXlFg&expires=1748837804&t=1748794604"
             },
             {
               "title": "Alternate Stream",
