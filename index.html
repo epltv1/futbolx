@@ -23,6 +23,14 @@
     .card.visible { opacity: 1; transform: translateY(0); }
     .fade-out { animation: fadeOut 0.5s ease-out forwards; }
     @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    .watch-button {
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -42,13 +50,13 @@
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="/" data-bs-dismiss="offcanvas">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/request" data-bs-dismiss="offcanvas">Request</a></li>
-        <li class="nav-item"><a class="nav-link" href="/vods" data-bs-dismiss="offcanvas">VODs</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k" data-bs-dismiss="offcanvas">Discord</a></li>
-        <li class="nav-item"><a class="nav-link" href="/vip" data-bs-dismiss="offcanvas">VIP</a></li>
-        <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-bs-dismiss="offcanvas">Login</a></li>
-        <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-bs-dismiss="offcanvas">Logout</button></li>
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
+        <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
         <li class="nav-item">
           <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
             <i class="fas fa-moon"></i>
@@ -187,9 +195,8 @@
           if (element.innerHTML !== displayText) {
             element.innerHTML = displayText;
           }
-        } else if (timer <= 0 && !element.innerHTML.includes('live-animation')) {
-          element.innerHTML = '';
-          element.classList.add('live-animation');
+        } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
+          element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
           if (cardLink) {
             cardLink.classList.add('clickable');
           }
@@ -350,7 +357,9 @@
                         <p class="card-text">
                           <span class="event-tag">${stream.tag}</span>
                           <span class="event-timer">
-                            ${isLive ? '<span class="live-animation"></span>' : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                            ${isLive 
+                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
                           </p>
                         </div>
                       </div>
@@ -425,6 +434,38 @@
         offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
           console.log('Offcanvas closed');
         });
+
+        // Handle nav link clicks
+        const navLinks = offcanvasElement.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const href = link.getAttribute('href');
+            if (href) {
+              console.log('Nav link clicked:', href);
+              window.location.href = href;
+            }
+          });
+        });
+
+        // Handle logout button
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+          logoutButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            console.log('Logout button clicked');
+            // Assume logout logic is in auth.js
+          });
+        }
+
+        // Handle theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          themeToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            // Theme toggle logic is in initPage
+          });
+        }
       } catch (error) {
         console.error('Offcanvas initialization error:', error);
       }
