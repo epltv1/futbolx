@@ -94,18 +94,18 @@
               </div>
             </div>
             <div class="d-flex align-items-center mb-3">
-              <a href="/" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to Home</a>
-              <button id="startLivestream" type="button" class="btn btn-danger ms-2" disabled>Loading...</button>
+              <a href="/" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
+              <button id="startLivestream" class="btn btn-danger ms-3" disabled>Loading...</button>
             </div>
             <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
-              <iframe id="futbolxPlayer" frameborder="0" allowfullscreen style="width: 100%; height: 100%;" allow="autoplay; fullscreen" sandbox="allow-methods allow-same-origin allow-presentation"></iframe>
+              <iframe id="embedPlayer" frameborder="0" allowfullscreen style="width: 100%; height: 100%;" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
             </div>
-            <div id="streamLinks" class="stream-links py-3"></div>
-            <div id="errorContainer" class="alert alert-danger mt-2 d-none"></div>
+            <div id="streamLinks" class="stream-links mt-3"></div>
+            <div id="errorContainer" class="alert alert-danger mt-3 d-none"></div>
           </div>
         </div>
-        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-4">
+        <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
           <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
           <ul class="nav justify-content-center justify-content-lg-end mb-0">
             <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
@@ -207,11 +207,15 @@
       }
 
       function initPlayer(event, errorContainer, streamLinks) {
-        console.log('initPlayer called');
+        console.log('initPlayer called with event:', event);
         try {
-          embedPlayer = document.getElementById('futbolxPlayer');
-          console.log('Loading embed URL:', event.streams[0].url);
-          embedPlayer.src = event.streams[0].url;
+          embedPlayer = document.getElementById('embedPlayer');
+          const streamUrl = event.streams[0]?.url;
+          if (!streamUrl || !/^https?:\/\//.test(streamUrl)) {
+            throw new Error('Invalid or missing stream URL');
+          }
+          console.log('Loading embed URL:', streamUrl);
+          embedPlayer.src = streamUrl;
           console.log('Embed initialized successfully');
 
           streamLinks.innerHTML = event.streams.map((stream, index) => `
@@ -224,7 +228,13 @@
             const btn = e.target.closest('.btn.btn-stream');
             if (btn) {
               const url = btn.getAttribute('data-stream-url');
-              errorContainer.className = 'alert alert-danger mt-2 d-none';
+              if (!url || !/^https?:\/\//.test(url)) {
+                console.error('Invalid stream URL:', url);
+                errorContainer.className = 'alert alert-danger mt-3';
+                errorContainer.innerText = 'Invalid stream URL. Please try another stream.';
+                return;
+              }
+              errorContainer.className = 'alert alert-danger mt-3 d-none';
               try {
                 console.log('Switching to embed URL:', url);
                 embedPlayer.src = url;
@@ -233,20 +243,25 @@
                 console.log('Embed switched successfully');
               } catch (err) {
                 console.error('Embed switch error:', err);
-                errorContainer.className = 'alert alert-danger mt-2';
+                errorContainer.className = 'alert alert-danger mt-3';
                 errorContainer.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
               }
             }
           });
 
-          embedPlayer.onerror = () => {
-            console.error('Embed load error');
-            errorContainer.className = 'alert alert-danger mt-2';
+          embedPlayer.addEventListener('error', () => {
+            console.error('Embed load error for URL:', embedPlayer.src);
+            errorContainer.className = 'alert alert-danger mt-3';
             errorContainer.innerText = 'Failed to load stream. The embed URL may be invalid or restricted.';
-          };
+          });
+
+          embedPlayer.addEventListener('load', () => {
+            console.log('Embed loaded successfully:', embedPlayer.src);
+            errorContainer.className = 'alert alert-danger mt-3 d-none';
+          });
         } catch (err) {
           console.error('Embed init error:', err);
-          errorContainer.className = 'alert alert-danger mt-2';
+          errorContainer.className = 'alert alert-danger mt-3';
           errorContainer.innerText = 'Failed to initialize stream: ' + (err.message || 'Unknown error');
         }
       }
@@ -345,14 +360,14 @@
                   endTime = startTime + 3 * 3600;
                 }
               } catch (e) {
-                console.warn(`Error parsing time for event ${event.name}: ${e.message}`);
+                console.warn(`Error parsing time for event ${e.name}: ${e.message}`);
                 startTime = now;
                 endTime = now + 3 * 3600;
               }
               const isLive = (startTime <= now && now <= endTime) || event.always_live === 1;
               if (!isLive) {
                 eventTitle.innerText = event.name + ' (Not Live)';
-                errorContainer.className = 'alert alert-danger mt-2';
+                errorContainer.className = 'alert alert-danger mt-3';
                 errorContainer.innerText = 'This event is not currently live.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'Event Not Live';
@@ -374,7 +389,7 @@
                   console.log('Embed player and stream links displayed');
                 } else {
                   console.warn('No stream data available');
-                  errorContainer.className = 'alert alert-danger mt-2';
+                  errorContainer.className = 'alert alert-danger mt-3';
                   errorContainer.innerText = 'Stream data not loaded. Please refresh the page.';
                 }
               });
@@ -382,7 +397,7 @@
             .catch(error => {
               console.error('Stream fetch error:', error);
               eventTitle.innerText = 'Error: Stream Not Found';
-              errorContainer.className = 'alert alert-danger mt-2';
+              errorContainer.className = 'alert alert-danger mt-3';
               errorContainer.innerText = error.message.includes('Stream not found') 
                 ? `The requested stream "${uriName}" was not found. Redirecting to home...`
                 : 'Failed to load stream data. Please check your connection or refresh.';
@@ -398,7 +413,7 @@
         } catch (error) {
           console.error('Init page error:', error);
           eventTitle.innerText = 'Error: Failed to Initialize';
-          errorContainer.className = 'alert alert-danger mt-2';
+          errorContainer.className = 'alert alert-danger mt-3';
           errorContainer.innerText = error.message.includes('API initialization') 
             ? 'Failed to initialize API. Please ensure api.js is loaded correctly.'
             : 'An error occurred. Please refresh the page.';
