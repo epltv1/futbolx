@@ -82,12 +82,12 @@
             <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
             <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
             <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</li>
           </ul>
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8g==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
@@ -99,7 +99,7 @@
       window.open = function(url) {
         console.log('Blocked popup attempt to:', url);
         return null; // Prevent popups
-      });
+      };
 
       function initPlayer(event, playerError, streamLinks) {
         console.log('initPlayer called');
@@ -111,112 +111,118 @@
 
           // Generate stream buttons
           streamLinks.innerHTML = event.streams.map((stream, index) => `
-            <button class="btn btn-primary ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}" button">
-              ${stream.title} || ${stream.title || `Stream ${index + 1}`}
+            <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
+              ${stream.title || `Stream ${index + 1}`}
             </button>
-          ).join('');
+          `).join('');
 
           // Stream switching
           streamLinks.addEventListener('click', (e) => {
-            const btn = e.target.closest('button');
+            const btn = e.target.closest('.btn.btn-stream');
             if (btn) {
-              const button = e.target.closest('.btn.btn-stream');
-              if (button) {
-                const url = btn.getAttribute('data-stream-url');
-                playerError.className = 'alert alert-danger mt-3 d-none';
-                try {
-                  console.log('Switching to embed URL:', url);
-                  embedPlayer.src = url;
-                  streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
-                  btn.classList.add('active');
-                  console.log('Embed switched successfully');
-                } catch (err) {
-                  console.error('Embed switch error:', err);
-                  playerError.className = 'alert alert-danger mt-3');
-                  playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
-                }
-              });
+              const url = btn.getAttribute('data-stream-url');
+              playerError.className = 'alert alert-danger mt-3 d-none';
+              try {
+                console.log('Switching to embed URL:', url);
+                embedPlayer.src = url;
+                streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                console.log('Embed switched successfully');
+              } catch (err) {
+                console.error('Embed switch error:', err);
+                playerError.className = 'alert alert-danger mt-3';
+                playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
+              }
+            }
           });
 
           // Iframe error handling
           embedPlayer.onerror = () => {
             console.error('Embed load error');
-            playerError.className = 'alert-error-danger mt-3';
+            playerError.className = 'alert alert-danger mt-3';
             playerError.innerText = 'Failed to load stream. The embed URL may be invalid or restricted.';
           };
         } catch (err) {
           console.error('Embed init error:', err);
-          console.error('Player error:', err);
           playerError.className = 'alert alert-danger mt-3';
           playerError.innerText = 'Failed to initialize stream: ' + (err.message || 'Unknown error');
         }
-      });
+      }
 
       function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
-        return new Promise((error, reject) => {
+        return new Promise((resolve, reject) => {
           let attempts = 0;
           function attempt() {
             attempts++;
             console.log(`Fetching ${url}, attempt ${attempts}`);
             fetch(url)
-            .then((res) => {
-              console.log(`Fetch status: ${res.status}`);
-              if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-              return res.json();
-            }).then((data =>) => resolve(data))
-            .catch((err => error) {
-              console.error(`Fetch attempt ${attempts} failed: ${error}`);
-              if (attempts <= maxRetries) {
-                error; setTimeout(attempt, delay);
-              } else {
-                reject(error);
-              }
-            });
-          });
+              .then(res => {
+                console.log(`Fetch status: ${res.status}`);
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                return res.json();
+              })
+              .then(data => resolve(data))
+              .catch(error => {
+                console.error(`Fetch attempt ${attempts} failed:`, error);
+                if (attempts < maxRetries) {
+                  setTimeout(attempt, delay);
+                } else {
+                  reject(error);
+                }
+              });
+          }
           attempt();
         });
-      });
+      }
 
       function initPage() {
+        console.log('Initializing page at', new Date().toISOString());
+        const playerError = document.getElementById('playerError');
+        const startLivestreamBtn = document.getElementById('startLivestream');
+        const eventTitle = document.getElementById('eventTitle');
+
         try {
-          console.log('Attempting page at', new Date().toISOString());
           // Initialize theme
           const htmlElement = document.documentElement;
           const themeToggle = document.getElementById('themeToggle');
           const currentTheme = localStorage.getItem('theme') || 'dark';
-          htmlElement.dataset-bs = themeToggle = currentTheme;
+          htmlElement.setAttribute('data-bs-theme', currentTheme);
           themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
 
           themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.datasetTheme === 'dark' ? 'light' : 'dark';
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
             htmlElement.setAttribute('data-bs-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
 
-          // Offcanvas outside click
+          // Initialize offcanvas
           const offcanvasElement = document.getElementById('sidebarMenu');
-          document.addEventListener('click', (event => event) => {
-            const toggler = document.querySelector('[data-toggle="offcanvas"]');
-            const isOffcanvasOpen = offcanvasElement.classList.contains('show');
-            const clickedInside = offcanvasElement.contains(event.target) || || toggler.contains(event.target);
-            if (isOffcanvasOpen && !clickedInside) {
-              bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
-            }
-          });
+          if (offcanvasElement) {
+            console.log('Offcanvas element found, initializing');
+            document.addEventListener('click', (event) => {
+              const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+              const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+              const clickedInside = offcanvasElement.contains(event.target) || (toggler && toggler.contains(event.target));
+              if (isOffcanvasOpen && !clickedInside) {
+                console.log('Closing offcanvas due to outside click');
+                bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
+              }
+            });
+          } else {
+            console.error('Offcanvas element not found');
+          }
 
           // Load stream data
           const uriName = window.location.pathname.split('/').pop();
-          const playerError = document.getElementById('playerError');
           const playerContainer = document.querySelector('.video-container');
           const streamLinks = document.getElementById('streamLinks');
-          const startLivestreamBtn = document.getElementById('startLivestream');
 
           if (typeof Api === 'undefined') {
             console.error('Api class not defined. Ensure api.js is loaded.');
-            document.getElementById('eventTitle').innerText = 'Error: Failed to initialize';
+            eventTitle.innerText = 'Error: Failed to initialize';
             playerError.className = 'alert alert-danger mt-3';
-            playerError.innerText = 'Failed to initialize API. Please refresh.';
+            playerError.innerText = 'API initialization failed. Please refresh.';
             startLivestreamBtn.disabled = true;
             startLivestreamBtn.innerText = 'Error';
             return;
@@ -227,12 +233,7 @@
             .then(data => {
               console.log('Stream API Response:', data);
               if (!data || !data.success || !Array.isArray(data.streams)) {
-                document.getElementById('eventTitle').innerText = 'Error: Stream not found';
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'No streams available.';
-                startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = 'Stream Unavailable';
-                return;
+                throw new Error('Invalid stream data');
               }
               let event = null;
               for (const category of data.streams) {
@@ -242,88 +243,82 @@
                 }
               }
               if (!event || !event.streams || !Array.isArray(event.streams) || event.streams.length === 0) {
-                document.getElementById('eventTitle').innerText = 'Error: No streams available';
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'No stream links found for this event.';
-                startLivestreamBtn.disabled = true;
-                startLivestreamBtn.innerText = 'No Streams';
-                return;
+                throw new Error('No stream links found for this event');
+              }
+              // Validate event data
+              if (!event.name || !event.starts_at) {
+                throw new Error('Missing required event fields');
               }
               // Check if event is live
               const now = Math.floor(Date.now() / 1000);
               const eatOffsetSeconds = 10800; // 3 hours
-              let startTime;
+              let startTime, endTime;
               try {
-                startTime = new Date(event.starts_at).getTime() / 1000 - eatOffsetSeconds;
+                startTime = new Date(event.starts_at + '+03:00').getTime() / 1000;
                 if (isNaN(startTime)) {
                   console.warn(`Invalid start time for event ${event.name}`);
                   startTime = now;
                 }
-              } catch (e) {
-                console.warn(`Error parsing start time for event ${event.name}: ${e.message}`);
-                startTime = now;
-              }
-              let endTime;
-              try {
                 endTime = event.ends_at 
-                  ? new Date(event.ends_at).getTime() / 1000 - eatOffsetSeconds 
+                  ? new Date(event.ends_at + '+03:00').getTime() / 1000 
                   : startTime + 3 * 3600;
                 if (isNaN(endTime)) {
                   console.warn(`Invalid end time for event ${event.name}`);
                   endTime = startTime + 3 * 3600;
                 }
               } catch (e) {
-                console.warn(`Error parsing end time for event ${event.name}: ${e.message}`);
-                endTime = startTime + 3 * 3600;
+                console.warn(`Error parsing time for event ${event.name}: ${e.message}`);
+                startTime = now;
+                endTime = now + 3 * 3600;
               }
               const isLive = (startTime <= now && now <= endTime) || event.always_live === 1;
               if (!isLive) {
-                document.getElementById('eventTitle').innerText = event.name + ' (Not Live)';
+                eventTitle.innerText = event.name + ' (Not Live)';
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'This event is not currently live.';
                 startLivestreamBtn.disabled = true;
                 startLivestreamBtn.innerText = 'Event Not Live';
                 return;
               }
-              document.getElementById('eventTitle').innerText = event.name;
+              eventTitle.innerText = event.name;
               streamData = event;
               startLivestreamBtn.disabled = false;
               startLivestreamBtn.innerText = 'Click to Start Livestream';
               console.log('Stream data loaded:', event);
+
+              startLivestreamBtn.addEventListener('click', () => {
+                console.log('Start Livestream button clicked, streamData:', streamData);
+                if (streamData) {
+                  playerContainer.classList.add('fade-in');
+                  streamLinks.classList.add('fade-in');
+                  startLivestreamBtn.style.display = 'none';
+                  initPlayer(streamData, playerError, streamLinks);
+                  console.log('Embed player and stream links displayed');
+                } else {
+                  console.warn('No stream data available');
+                  playerError.className = 'alert alert-danger mt-3';
+                  playerError.innerText = 'Stream data not loaded. Please refresh the page.';
+                }
+              });
             })
             .catch(error => {
               console.error('Stream fetch error:', error);
-              document.getElementById('eventTitle').innerText = 'Error: Failed to load stream';
+              eventTitle.innerText = 'Error: Failed to load stream';
               playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = 'Failed to fetch stream data. Please check your connection.';
+              playerError.innerText = 'Failed to fetch stream data. Please check your connection or refresh.';
               startLivestreamBtn.disabled = true;
               startLivestreamBtn.innerText = 'Fetch Failed';
             });
-
-          startLivestreamBtn.addEventListener('click', () => {
-            console.log('Start Livestream button clicked, streamData:', streamData);
-            if (streamData) {
-              playerContainer.classList.add('fade-in');
-              streamLinks.classList.add('fade-in');
-              startLivestreamBtn.style.display = 'none';
-              initPlayer(streamData, playerError, streamLinks);
-              console.log('Embed player and stream links displayed');
-            } else {
-              console.warn('No stream data available');
-              playerError.className = 'alert alert-danger mt-3';
-              playerError.innerText = 'Stream data not loaded. Please refresh the page.';
-            }
-          });
 
           checkAuthStatus();
           console.log('Page initialized successfully');
         } catch (error) {
           console.error('Init page error:', error);
-          document.getElementById('eventTitle').innerText = 'Error: Failed to initialize page';
-          document.getElementById('playerError').className = 'alert alert-danger mt-3';
-          document.getElementById('playerError').innerText = 'An error occurred. Please refresh the page.';
-          document.getElementById('startLivestream').disabled = true;
-          document.getElementById('startLivestream').innerText = 'Error';
+          eventTitle.innerText = 'Error: Failed to initialize page';
+          playerError.className = 'alert alert-danger mt-3';
+          playerError.innerText = 'An error occurred. Please refresh the page.';
+          startLivestreamBtn.disabled = true;
+          startLivestreamBtn.innerText = 'Error';
         }
       }
 
