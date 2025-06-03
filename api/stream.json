@@ -6,21 +6,21 @@
       "always_live": 0,
       "streams": [
         {
-          "name": "Asean All-Stars vs Manchester United",
-          "uri_name": "aseanallstars-vs-manunited",
+          "name": "Asean Lions vs FC Bayern",
+          "uri_name": "aseanlions-vs-bayern",
           "poster": "https://plive.live/uploads/683643e6928f6.jpg",
           "tag": "Friendly",
-          "starts_at": "2025-06-03 04:50:00",
-          "ends_at": "2025-06-03 21:30:00",
+          "starts_at": "2025-06-14T04:00:00",
+          "ends_at": "2025-06-14T06:30:00",
           "always_live": 1,
           "streams": [
             {
-              "title": "MUtv",
-              "url": "https://v5.sportsonline.si/channels/pt/sporttv4.php"
+              "title": "Main Feed",
+              "url": "https://www.youtube.com/embed/dQw4w9WgXcQ"
             },
             {
-              "title": "Alternate Stream",
-              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
+              "title": "Alternate Feed",
+              "url": "https://player.twitch.tv/?channel=soccer&parent=your-futbolx-site.vercel.app"
             }
           ]
         }
@@ -31,12 +31,12 @@
       "always_live": 0,
       "streams": [
         {
-          "name": "Lakers vs Warriors",
-          "uri_name": "lakers-vs-warriors",
+          "name": "Celtics vs Knicks",
+          "uri_name": "celtics-vs-knicks",
           "poster": "https://plive.live/uploads/682b89110cd97.jpg",
-          "tag": "NBA Playoffs",
-          "starts_at": "2025-06-03 07:00:00",
-          "ends_at": "2025-06-03 16:00:00",
+          "tag": "Regular Season",
+          "starts_at": "2025-06-14T20:00:00",
+          "ends_at": "2025-06-14T22:30:00",
           "always_live": 0,
           "streams": [
             {
@@ -52,42 +52,17 @@
       "always_live": 0,
       "streams": [
         {
-          "name": "Esports Tournament",
-          "uri_name": "esports-tournament",
-          "poster": "https://plive.live/uploads/682b89110cd97.jpg",
+          "name": "Esports Championship",
+          "uri_name": "esports-championship",
+          "poster": "https://plive.live/uploads/682b89123cd97.jpg",
           "tag": "Gaming",
-          "starts_at": "2025-05-30 15:00:00",
-          "ends_at": "2025-05-30 19:00:00",
+          "starts_at": "2025-06-15T12:00:00",
+          "ends_at": "2025-06-15T18:00:00",
           "always_live": 0,
           "streams": [
             {
-              "title": "Stream 1",
-              "url": "https://player.twitch.tv/?channel=gaming&parent=your-futbolx-site.vercel.app"
-            },
-            {
-              "title": "Stream 2",
-              "url": "https://www.youtube.com/embed/xyz789"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "category": "Tennis",
-      "always_live": 0,
-      "streams": [
-        {
-          "name": "Nadal vs Djokovic",
-          "uri_name": "nadal-djokovic",
-          "poster": "https://example.com/nadal-djokovic.jpg",
-          "tag": "French Open",
-          "starts_at": "2025-05-29 17:00:00",
-          "ends_at": "2025-05-29 20:00:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://www.youtube.com/embed/tennis123"
+              "title": "Main Stream",
+              "url": "https://player.twitch.tv/?channel=gaming123&parent=your-futbolx-site.vercel.app"
             }
           ]
         }
