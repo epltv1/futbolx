@@ -18,7 +18,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/main.css?v=24">
     <style>
-      .alert-info { max-width: 600px; margin: 20px auto; text-align: center; }
+      .alert-info { 
+        max-width: 600px; 
+        margin: 20px auto; 
+        text-align: center; 
+        position: relative; 
+        padding-right: 50px; /* Space for timer */
+      }
+      #countdownTimer { 
+        position: absolute; 
+        top: 8px; 
+        right: 10px; 
+        font-weight: bold; 
+        color: #ff4d4d; 
+      }
+      [data-bs-theme="light"] #countdownTimer { 
+        color: #e63939; 
+      }
+      .fade-out { 
+        animation: fadeOut 0.5s ease-out forwards; 
+      }
+      @keyframes fadeOut { 
+        from { opacity: 1; } 
+        to { opacity: 0; visibility: hidden; } 
+      }
     </style>
   </head>
   <body>
@@ -62,6 +85,7 @@
               <strong>Tip:</strong> For an ad-free experience, consider installing an ad blocker like 
               <a href="https://ublockorigin.com" target="_blank" rel="noopener">uBlock Origin</a> or 
               <a href="https://adguard.com" target="_blank" rel="noopener">AdGuard</a>.
+              <span id="countdownTimer">5s</span>
             </div>
             <div class="d-flex align-items-center mb-3">
               <a href="/" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -82,12 +106,12 @@
             <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
             <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
             <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</li>
+            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
           </ul>
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
@@ -100,6 +124,67 @@
         console.log('Blocked popup attempt to:', url);
         return null; // Prevent popups
       };
+
+      // Auto-hide tip message with fade-out animation
+      function startTipCountdown() {
+        const tipAlert = document.querySelector('.alert-info');
+        const countdownTimer = document.getElementById('countdownTimer');
+        let seconds = 5;
+
+        if (!tipAlert || !countdownTimer) {
+          console.warn('Tip alert or countdown timer not found');
+          return;
+        }
+
+        const interval = setInterval(() => {
+          seconds--;
+          countdownTimer.textContent = `${seconds}s`;
+          if (seconds <= 0) {
+            clearInterval(interval);
+            tipAlert.classList.add('fade-out');
+            console.log('Tip message fading out');
+          }
+        }, 1000);
+
+        // Ensure tip is hidden after fade-out animation
+        setTimeout(() => {
+          tipAlert.style.visibility = 'hidden';
+          clearInterval(interval);
+        }, 5500); // 5s + 0.5s animation
+      }
+
+      // Initialize offcanvas explicitly
+      function initOffcanvas() {
+        const offcanvasElement = document.getElementById('sidebarMenu');
+        const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+        
+        if (!offcanvasElement || !toggler) {
+          console.error('Offcanvas or toggler not found');
+          return;
+        }
+
+        console.log('Initializing offcanvas');
+        if (typeof bootstrap === 'undefined') {
+          console.error('Bootstrap not loaded');
+          return;
+        }
+
+        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        toggler.addEventListener('click', () => {
+          console.log('Toggler clicked');
+          offcanvas.toggle();
+        });
+
+        // Close offcanvas on outside click
+        document.addEventListener('click', (event) => {
+          const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+          const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+          if (isOffcanvasOpen && !clickedInside) {
+            console.log('Closing offcanvas due to outside click');
+            offcanvas.hide();
+          }
+        });
+      }
 
       function initPlayer(event, playerError, streamLinks) {
         console.log('initPlayer called');
@@ -195,23 +280,6 @@
             localStorage.setItem('theme', newTheme);
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
           });
-
-          // Initialize offcanvas
-          const offcanvasElement = document.getElementById('sidebarMenu');
-          if (offcanvasElement) {
-            console.log('Offcanvas element found, initializing');
-            document.addEventListener('click', (event) => {
-              const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
-              const isOffcanvasOpen = offcanvasElement.classList.contains('show');
-              const clickedInside = offcanvasElement.contains(event.target) || (toggler && toggler.contains(event.target));
-              if (isOffcanvasOpen && !clickedInside) {
-                console.log('Closing offcanvas due to outside click');
-                bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement).hide();
-              }
-            });
-          } else {
-            console.error('Offcanvas element not found');
-          }
 
           // Load stream data
           const uriName = window.location.pathname.split('/').pop();
@@ -324,6 +392,8 @@
 
       document.addEventListener('DOMContentLoaded', () => {
         console.log('DOM loaded at', new Date().toISOString());
+        initOffcanvas(); // Initialize offcanvas
+        startTipCountdown(); // Start tip message countdown
         initPage();
       });
 
