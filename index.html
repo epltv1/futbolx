@@ -41,6 +41,7 @@
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
         <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
         <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
@@ -196,7 +197,9 @@
       if (needsRefresh && apiInstance) {
         const currentTime = Date.now();
         if (currentTime - lastApiCall >= 1000) {
-          lastApiCall = currentTime;
+          last
+
+ApiCall = currentTime;
           loadContent(apiInstance);
         }
       }
@@ -306,7 +309,7 @@
               const isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
               const isEnded = now > endTime;
               const isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
-              if (isEnded) return;
+              if isEnded) return;
 
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
