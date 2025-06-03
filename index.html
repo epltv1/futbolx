@@ -28,7 +28,7 @@
   <!-- Top Bar -->
   <nav class="top-bar fixed-top">
     <div class="container-fluid">
-      <button class="btn btn-dark" type="button" id="sidebarToggler">
+      <button class="btn btn-dark" type="button" id="sidebarToggler" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
         <i class="fas fa-bars"></i>
       </button>
       <span class="futbolx-brand">FutbolX</span>
@@ -135,7 +135,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   <script src="/assets/js/api.js"></script>
   <script async src="/assets/js/auth.js"></script>
-  <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+  <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.js"></script>
   <script>
     window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
     
@@ -210,10 +210,14 @@
         function attempt() {
           attempts++;
           console.log(`Fetching ${url}, attempt ${attempts}`);
-          fetch(url)
+          fetch(url, { signal: AbortSignal.timeout(5000) })
             .then(res => {
-              console.log(`Fetch status: ${res.status}`);
-              if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+              console.log(`Fetch status: ${res.status} ${res.statusText}`);
+              if (!res.ok) {
+                return res.text().then(text => {
+                  throw new Error(`HTTP error ${res.status}: ${res.statusText} - ${text}`);
+                });
+              }
               return res.json();
             })
             .then(data => resolve(data))
@@ -242,23 +246,26 @@
 
       const timeout = setTimeout(() => {
         if (livecards.innerHTML.includes('Loading streams...')) {
-          livecards.innerHTML = '<p>Failed to load streams. Please check your connection or try again later.</p>';
+          livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
           errorContainer.className = 'alert alert-danger error-alert';
-          errorContainer.innerHTML = 'Request timed out. Please refresh the page.';
+          errorContainer.innerHTML = 'Request timed out. Please try again.';
+          document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
         }
       }, 10000);
 
-      fetchWithRetry(api.baseUrl + '/stream')
+      const apiUrl = api.baseUrl.endsWith('/') ? `${api.baseUrl}stream` : `${api.baseUrl}/stream`;
+      fetchWithRetry(apiUrl)
         .then(streamData => {
           clearTimeout(timeout);
           console.log('Stream API Response:', streamData);
           
           if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
-            console.warn('Invalid stream data received');
-            livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+            console.warn('Invalid stream data received:', streamData);
+            livecards.innerHTML = '<p>No streams are available right now. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
             liveAnimation.classList.add('d-none');
             errorContainer.className = 'alert alert-danger error-alert';
-            errorContainer.innerHTML = 'Failed to load streams. Please try again later.';
+            errorContainer.innerHTML = 'Invalid stream data received. Please try again.';
+            document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
             return;
           }
 
@@ -357,7 +364,7 @@
                 livecards.innerHTML += streamHtml.html;
                 hasLiveEvents = true;
               } else {
-                categoryEvents[key].push(streamHtml);
+                categoryEvents[categoryKey].push(streamHtml);
               }
             });
           });
@@ -390,114 +397,120 @@
         })
         .catch(error => {
           clearTimeout(timeout);
-          console.error('API Fetch Error:', error);
-          livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
+          console.error('API Fetch Error:', error.message);
+          livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
           liveAnimation.classList.add('d-none');
           errorContainer.className = 'alert alert-danger error-alert';
-          errorContainer.innerHTML = 'Failed to load streams. Please check your connection or try again later.';
+          errorContainer.innerHTML = `Failed to load streams: ${error.message}. Please try again.`;
+          document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
         });
     }
 
-  function initOffcanvas() {
-    const offcanvasElement = document.getElementById('sidebarMenu');
-    const toggler = document.getElementById('sidebarToggler');
-    
-    if (!offcanvasElement || !toggler) {
-      console.error('Offcanvas or toggler not found');
-      return;
+    function initOffcanvas() {
+      const offcanvasElement = document.getElementById('sidebarMenu');
+      const toggler = document.getElementById('sidebarToggler');
+      
+      if (!offcanvasElement || !toggler) {
+        console.error('Offcanvas or toggler not found');
+        return;
+      }
+
+      console.log('Initializing offcanvas');
+      if (typeof bootstrap === 'undefined') {
+        console.error('Bootstrap not loaded. Falling back to data attributes.');
+        return;
+      }
+
+      try {
+        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        let lastClick = 0;
+
+        toggler.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const now = Date.now();
+          if (now - lastClick < 100) return;
+          lastClick = now;
+          console.log('Toggler clicked, offcanvas state:', offcanvasElement.classList.contains('show') ? 'open' : 'closed');
+          offcanvas.toggle();
+        });
+
+        document.addEventListener('click', (event) => {
+          const now = Date.now();
+          if (now - lastClick < 100) return;
+          const isOffcanvasOpen = offcanvasElement.classList.contains('show');
+          const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
+          if (isOffcanvasOpen && !clickedInside) {
+            console.log('Closing offcanvas due to outside click');
+            offcanvas.hide();
+          }
+        });
+      } catch (error) {
+        console.error('Offcanvas initialization error:', error);
+      }
     }
 
-    console.log('Initializing offcanvas');
-    if (typeof bootstrap === 'undefined') {
-      console.error('Bootstrap not loaded');
-      return;
+    function initPage() {
+      console.log('Initializing page at', new Date().toISOString());
+      const errorContainer = document.getElementById('errorContainer');
+      const livecards = document.getElementById('livecards');
+      
+      try {
+        // Initialize theme
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-bs-theme', currentTheme);
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        
+        themeToggle.addEventListener('click', () => {
+          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+          htmlElement.setAttribute('data-bs-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // Initialize offcanvas
+        initOffcanvas();
+
+        // Load content
+        if (typeof Api === 'undefined') {
+          console.warn('Api class not defined. Using default API path.');
+          apiInstance = { baseUrl: window.location.origin + '/api' };
+          loadContent(apiInstance);
+        } else {
+          apiInstance = new Api(`${window.location.origin}/api`);
+          loadContent(apiInstance);
+        }
+
+        countdown();
+        checkAuthStatus();
+        console.log('Page initialized successfully');
+      } catch (error) {
+        console.error('Init page error:', error);
+        livecards.innerHTML = '<p>No streams are available right now. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
+        errorContainer.className = 'alert alert-danger error-alert';
+        errorContainer.innerHTML = 'An error occurred while initializing the page. Please try again.';
+        document.getElementById('retryButton').addEventListener('click', () => loadContent(apiInstance));
+      }
     }
 
-    const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-    let lastClick = 0;
-
-    toggler.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const now = Date.now();
-      if (now - lastClick < 200) return;
-      lastClick = now;
-      console.log('Toggler clicked, offcanvas state:', offcanvasElement.classList.contains('show') ? 'open' : 'closed');
-      offcanvas.toggle();
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded at', new Date().toISOString());
+      initPage();
     });
 
     document.addEventListener('click', (event) => {
-      const now = Date.now();
-      if (now - lastClick < 200) return;
-      const isOffcanvasOpen = offcanvasElement.classList.contains('show');
-      const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
-      if (isOffcanvasOpen && !clickedInside) {
-        console.log('Closing offcanvas due to outside click');
-        offcanvas.hide();
-      }
-    });
-  }
-
-  function initPage() {
-    console.log('Initializing page at', new Date().toISOString());
-    const errorContainer = document.getElementById('errorContainer');
-    const livecards = document.getElementById('livecards');
-    
-    try {
-      // Initialize theme
-      const htmlElement = document.documentElement;
-      const themeToggle = document.getElementById('themeToggle');
-      const currentTheme = localStorage.getItem('theme') || 'dark';
-      htmlElement.setAttribute('data-bs-theme', currentTheme);
-      themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-      
-      themeToggle.addEventListener('click', () => {
-        const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-        htmlElement.setAttribute('data-bs-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-      });
-
-      // Initialize offcanvas
-      initOffcanvas();
-
-      // Load content
-      if (typeof Api === 'undefined') {
-        console.warn('Api class not defined. Using default API path.');
-        apiInstance = { baseUrl: window.location.origin };
-        loadContent(apiInstance);
-      } else {
-        apiInstance = new Api(`${window.location.origin}/api`);
-        loadContent(apiInstance);
-      }
-
-      countdown();
-      checkAuthStatus();
-      console.log('Page initialized successfully');
-    } catch (error) {
-      console.error('Init page error:', error);
-      livecards.innerHTML = '<p>No streams are available right now. Check back later!</p>';
-      errorContainer.className = 'alert alert-danger error-alert';
-      errorContainer.innerHTML = 'An error occurred while initializing the page. Please refresh.';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded at', new Date().toISOString());
-    initPage();
-  });
-
-  document.addEventListener('click', (event) => {
-    const link = event.target.closest('a[href]');
-    if (link) {
-      const href = link.getAttribute('href');
-      if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods
- || href === '/home') {
-        return;
-      }
-      if (href.startsWith('/')) {
-        event.preventDefault();
-        console.log('Navigating to:', href);
-        window.location.href = href;
+      const link = event.target.closest('a[href]');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods' || href === '/') {
+          return;
+        }
+        if (href.startsWith('/')) {
+          event.preventDefault();
+          console.log('Navigating to:', href);
+          window.location.href = href;
+        }
       }
     });
   </script>
