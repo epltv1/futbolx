@@ -3,7 +3,7 @@
   "streams": [
     {
       "category": "Football",
-      "always_live": 0,
+      "always_live": 1,
       "streams": [
         {
           "name": "Chelsea vs Arsenal",
