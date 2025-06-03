@@ -18,9 +18,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/main.css?v=24">
     <style>
-      .alert-info { 
+      .tip-container { 
         max-width: 600px; 
         margin: 20px auto; 
+        transition: height 0.3s ease-out; 
+        overflow: hidden; 
+      }
+      .alert-info { 
         text-align: center; 
         position: relative; 
         padding-right: 50px; /* Space for timer */
@@ -40,7 +44,7 @@
       }
       @keyframes fadeOut { 
         from { opacity: 1; } 
-        to { opacity: 0; visibility: hidden; } 
+        to { opacity: 0; } 
       }
     </style>
   </head>
@@ -48,7 +52,7 @@
     <!-- Top Bar -->
     <nav class="top-bar fixed-top">
       <div class="container-fluid">
-        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+        <button class="btn btn-dark" type="button" id="sidebarToggler">
           <i class="fas fa-bars"></i>
         </button>
         <span class="futbolx-brand">FutbolX</span>
@@ -81,11 +85,13 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-12">
-            <div class="alert alert-info">
-              <strong>Tip:</strong> For an ad-free experience, consider installing an ad blocker like 
-              <a href="https://ublockorigin.com" target="_blank" rel="noopener">uBlock Origin</a> or 
-              <a href="https://adguard.com" target="_blank" rel="noopener">AdGuard</a>.
-              <span id="countdownTimer">5s</span>
+            <div class="tip-container">
+              <div class="alert alert-info">
+                <strong>Tip:</strong> For an ad-free experience, consider installing an ad blocker like 
+                <a href="https://ublockorigin.com" target="_blank" rel="noopener">uBlock Origin</a> or 
+                <a href="https://adguard.com" target="_blank" rel="noopener">AdGuard</a>.
+                <span id="countdownTimer">10s</span>
+              </div>
             </div>
             <div class="d-flex align-items-center mb-3">
               <a href="/" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -102,16 +108,16 @@
         <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
           <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
           <ul class="nav justify-content-center justify-content-lg-end mb-0">
-            <li class="nav-item"><a href="/api" class="nav-link px-2 text-body-secondary">API</a></li>
-            <li class="nav-item"><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
-            <li class="nav-item"><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
-            <li class="nav-item"><a href="/vip" class="nav-link px-2 text-body-secondary">Donate / VIP Access</a></li>
-            <li class="nav-item"><a href="/contact" class="nav-link px-2 text-body-secondary">Contact us</a></li>
+            <li><a href="/api" class="nav-link px-2 text-body-muted">API</a></li>
+            <li><a href="https://discord.gg/CmRcPbBB2k" class="nav-link px-2 text-body-secondary">Discord</a></li>
+            <li><a href="/changelog" class="nav-link px-2 text-body-secondary">Changelog</a></li>
+            <li><a href="/vip" class="nav-link px-2 text-body">Donate / VIP Access</a></li>
+            <li><a href="/contact" class="nav-link px-2"> text-body-secondary</a></li>
           </ul>
         </footer>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script> integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
@@ -125,16 +131,20 @@
         return null; // Prevent popups
       };
 
-      // Auto-hide tip message with fade-out animation
+      // Auto-hide tip message with fade-out and collapse
       function startTipCountdown() {
+        const tipContainer = document.querySelector('.tip-container');
         const tipAlert = document.querySelector('.alert-info');
         const countdownTimer = document.getElementById('countdownTimer');
-        let seconds = 5;
+        let seconds = 10;
 
-        if (!tipAlert || !countdownTimer) {
-          console.warn('Tip alert or countdown timer not found');
+        if (!tipContainer || !tipAlert || !countdownTimer) {
+          console.warn('Tip container, alert, or countdown timer not found');
           return;
         }
+
+        // Set initial container height
+        tipContainer.style.height = `${tipAlert.offsetHeight}px`;
 
         const interval = setInterval(() => {
           seconds--;
@@ -142,21 +152,26 @@
           if (seconds <= 0) {
             clearInterval(interval);
             tipAlert.classList.add('fade-out');
-            console.log('Tip message fading out');
+            setTimeout(() => {
+              tipContainer.style.height = '0';
+              tipAlert.style.display = 'none';
+              console.log('Tip message faded out and collapsed');
+            }, 500); // Wait for fade-out animation
           }
         }, 1000);
 
-        // Ensure tip is hidden after fade-out animation
+        // Fallback to ensure collapse after 10.5s
         setTimeout(() => {
-          tipAlert.style.visibility = 'hidden';
+          tipContainer.style.height = '0';
+          tipAlert.style.display = 'none';
           clearInterval(interval);
-        }, 5500); // 5s + 0.5s animation
+        }, 10500); // 10s + 0.5s animation
       }
 
-      // Initialize offcanvas explicitly
+      // Initialize offcanvas with debounce
       function initOffcanvas() {
         const offcanvasElement = document.getElementById('sidebarMenu');
-        const toggler = document.querySelector('[data-bs-toggle="offcanvas"]');
+        const toggler = document.getElementById('sidebarToggler');
         
         if (!offcanvasElement || !toggler) {
           console.error('Offcanvas or toggler not found');
@@ -170,13 +185,21 @@
         }
 
         const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-        toggler.addEventListener('click', () => {
-          console.log('Toggler clicked');
+        let lastClick = 0;
+
+        toggler.addEventListener('click', (event) => {
+          event.stopPropagation(); // Prevent click from bubbling
+          const now = Date.now();
+          if (now - lastClick < 100) return; // Debounce 100ms
+          lastClick = now;
+          console.log('Toggler clicked, offcanvas state:', offcanvasElement.classList.contains('show') ? 'open' : 'closed');
           offcanvas.toggle();
         });
 
-        // Close offcanvas on outside click
+        // Close offcanvas on outside click with debounce
         document.addEventListener('click', (event) => {
+          const now = Date.now();
+          if (now - lastClick < 100) return; // Debounce
           const isOffcanvasOpen = offcanvasElement.classList.contains('show');
           const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
           if (isOffcanvasOpen && !clickedInside) {
@@ -317,9 +340,8 @@
               if (!event.name || !event.starts_at) {
                 throw new Error('Missing required event fields');
               }
-              // Check if event is live
+              // Check if event is live (using EAT, UTC+3)
               const now = Math.floor(Date.now() / 1000);
-              const eatOffsetSeconds = 10800; // 3 hours
               let startTime, endTime;
               try {
                 startTime = new Date(event.starts_at + '+03:00').getTime() / 1000;
