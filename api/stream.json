@@ -16,11 +16,11 @@
           "streams": [
             {
               "title": "MUtv",
-              "url": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+              "url": "https://v5.sportsonline.si/channels/pt/sporttv4.php"
             },
             {
               "title": "Alternate Stream",
-              "url": "https://player.twitch.tv/?channel=twitch&parent=your-futbolx-site.vercel.app"
+              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
             }
           ]
         }
