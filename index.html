@@ -19,9 +19,10 @@
   <link rel="stylesheet" href="/assets/css/main.css?v=24">
   <style>
     .error-alert { max-width: 500px; margin: 20px auto; }
-    .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-    .event-card.visible { opacity: 1; transform: translateY(0); }
-    .card-title, .event-tag { pointer-events: none; }
+    .card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .fade-out { animation: fadeOut 0.5s ease-out forwards; }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
   </style>
 </head>
 <body>
@@ -41,13 +42,13 @@
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
-        <li class="nav-item"><a class="nav-link" href="/vods">VODs</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k">Discord</a></li>
-        <li class="nav-item"><a class="nav-link" href="/vip">VIP</a></li>
-        <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink">Login</a></li>
-        <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton">Logout</button></li>
+        <li class="nav-item"><a class="nav-link" href="/" data-bs-dismiss="offcanvas">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/request" data-bs-dismiss="offcanvas">Request</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vods" data-bs-dismiss="offcanvas">VODs</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://discord.gg/CmRcPbBB2k" data-bs-dismiss="offcanvas">Discord</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vip" data-bs-dismiss="offcanvas">VIP</a></li>
+        <li class="nav-item"><a class="nav-link" href="/auth/login" id="loginLink" data-bs-dismiss="offcanvas">Login</a></li>
+        <li class="nav-item"><button class="nav-link btn btn-link d-none" id="logoutButton" data-bs-dismiss="offcanvas">Logout</button></li>
         <li class="nav-item">
           <button id="themeToggle" class="nav-link btn btn-link" aria-label="Toggle theme">
             <i class="fas fa-moon"></i>
@@ -160,7 +161,7 @@
     function countdown() {
       const now = Math.floor(Date.now() / 1000);
       let needsRefresh = false;
-      const countdownElements = document.querySelectorAll('[data-start]');
+      const countdownElements = document.querySelectorAll('.countdown');
       countdownElements.forEach(element => {
         const startTime = parseInt(element.getAttribute('data-start'), 10);
         let timer = startTime - now;
@@ -186,21 +187,11 @@
           if (element.innerHTML !== displayText) {
             element.innerHTML = displayText;
           }
-          if (timer <= 1800 && cardLink && cardLink.style.pointerEvents !== 'auto') {
-            cardLink.style.pointerEvents = 'auto';
-            cardLink.style.cursor = 'pointer';
-          } else if (timer > 1800 && cardLink && cardLink.style.pointerEvents !== 'none') {
-            cardLink.style.pointerEvents = 'none';
-            cardLink.style.cursor = 'default';
-          }
-          if (timer <= 1 && timer > 0) {
-            needsRefresh = true;
-          }
-        } else if (timer <= 0 && !element.innerHTML.includes('watch-button')) {
-          element.innerHTML = `<a href="${uri}" class="btn btn-danger btn-sm watch-button">Watch</a>`;
+        } else if (timer <= 0 && !element.innerHTML.includes('live-animation')) {
+          element.innerHTML = '';
+          element.classList.add('live-animation');
           if (cardLink) {
-            cardLink.style.pointerEvents = 'auto';
-            cardLink.style.cursor = 'pointer';
+            cardLink.classList.add('clickable');
           }
           needsRefresh = true;
         }
@@ -231,7 +222,10 @@
               }
               return res.json();
             })
-            .then(data => resolve(data))
+            .then(data => {
+              clearError();
+              resolve(data);
+            })
             .catch(error => {
               console.error(`Fetch attempt ${attempts} failed:`, error);
               if (attempts < maxRetries) {
@@ -341,14 +335,13 @@
 
               const isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
               const isEnded = now > endTime;
-              const isClickable = isLive || (startTime - now <= 1800 && startTime - now > 0);
               if (isEnded) return;
 
               let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
               let streamHtml = {
                 html: `
-                  <a href="/live/${stream.uri_name}" class="event-card" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                  <a href="/live/${stream.uri_name}">
                     <div class="card">
                       ${liveBadge}
                       <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
@@ -357,10 +350,7 @@
                         <p class="card-text">
                           <span class="event-tag">${stream.tag}</span>
                           <span class="event-timer">
-                            ${isLive 
-                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                            ${isLive ? '<span class="live-animation"></span>' : ''}
+                            ${isLive ? '<span class="live-animation"></span>' : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
                           </p>
                         </div>
                       </div>
@@ -393,7 +383,7 @@
           }
 
           clearError();
-          const cards = document.querySelectorAll('.event-card');
+          const cards = document.querySelectorAll('.card');
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
@@ -432,16 +422,8 @@
 
       try {
         const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-        let lastClick = 0;
-
-        toggler.addEventListener('click', (event) => {
-          event.stopPropagation();
-          event.preventDefault();
-          const now = Date.now();
-          if (now - lastClick < 200) return;
-          lastClick = now;
-          console.log('Toggler clicked, offcanvas state:', offcanvasElement.classList.contains('show') ? 'open' : 'closed');
-          offcanvas.toggle();
+        offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
+          console.log('Offcanvas closed');
         });
       } catch (error) {
         console.error('Offcanvas initialization error:', error);
@@ -501,21 +483,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       console.log('DOM loaded at', new Date().toISOString());
       initPage();
-    });
-
-    document.addEventListener('click', (event) => {
-      const link = event.target.closest('a[href]');
-      if (link) {
-        const href = link.getAttribute('href');
-        if (href.startsWith('/vip') || href.startsWith('https://') || href === '/auth/login' || href === '/request' || href === '/vods' || href === '/') {
-          return;
-        }
-        if (href.startsWith('/')) {
-          event.preventDefault();
-          console.log('Navigating to:', href);
-          window.location.href = href;
-        }
-      }
     });
   </script>
 </body>
