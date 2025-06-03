@@ -21,7 +21,7 @@
     .error-alert { max-width: 500px; margin: 20px auto; }
     .event-card { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
     .event-card.visible { opacity: 1; transform: translateY(0); }
-    .card-title.non-clickable, .event-tag { pointer-events: none; }
+    .card-title, .event-tag { pointer-events: none; }
   </style>
 </head>
 <body>
@@ -146,6 +146,17 @@
       return num > 9 ? num : '0' + num;
     }
 
+    function clearError() {
+      const errorContainer = document.getElementById('errorContainer');
+      if (errorContainer && !errorContainer.classList.contains('d-none')) {
+        errorContainer.classList.add('fade-out');
+        setTimeout(() => {
+          errorContainer.className = 'd-none error-alert';
+          errorContainer.innerHTML = '';
+        }, 500);
+      }
+    }
+
     function countdown() {
       const now = Math.floor(Date.now() / 1000);
       let needsRefresh = false;
@@ -154,7 +165,7 @@
         const startTime = parseInt(element.getAttribute('data-start'), 10);
         let timer = startTime - now;
         const uri = element.getAttribute('data-uri');
-        const cardLink = element.closest('.card-link');
+        const cardLink = element.closest('a[href]');
         if (timer > 0) {
           let days = Math.floor(timer / 86400);
           let weeks = Math.floor(days / 7);
@@ -337,26 +348,23 @@
               let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
               let streamHtml = {
                 html: `
-                  <div class="event-card">
-                    <a href="/live/${stream.uri_name}" class="card-link" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
-                      <div class="card">
-                        ${liveBadge}
-                        <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                        <div class="card-body">
-                          <h2 class="card-title non-clickable">${stream.name}</h2>
-                          <p class="card-text">
-                            <span class="event-tag">${stream.tag}</span>
-                            <span class="event-timer">
-                              ${isLive 
-                                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                              ${isLive ? '<span class="live-animation"></span>' : ''}
-                            </span>
+                  <a href="/live/${stream.uri_name}" class="event-card" style="pointer-events: ${isClickable ? 'auto' : 'none'}; cursor: ${isClickable ? 'pointer' : 'default'};">
+                    <div class="card">
+                      ${liveBadge}
+                      <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                      <div class="card-body">
+                        <h5 class="card-title">${stream.name}</h5>
+                        <p class="card-text">
+                          <span class="event-tag">${stream.tag}</span>
+                          <span class="event-timer">
+                            ${isLive 
+                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                            ${isLive ? '<span class="live-animation"></span>' : ''}
                           </p>
                         </div>
                       </div>
-                    </a>
-                  </div>`,
+                    </a>`,
                 startTime
               };
 
@@ -384,6 +392,7 @@
             liveAnimation.classList.remove('d-none');
           }
 
+          clearError();
           const cards = document.querySelectorAll('.event-card');
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -417,7 +426,7 @@
 
       console.log('Initializing offcanvas');
       if (typeof bootstrap === 'undefined') {
-        console.error('Bootstrap not loaded. Falling back to data attributes.');
+        console.warn('Bootstrap not loaded. Relying on data attributes.');
         return;
       }
 
@@ -427,22 +436,12 @@
 
         toggler.addEventListener('click', (event) => {
           event.stopPropagation();
+          event.preventDefault();
           const now = Date.now();
-          if (now - lastClick < 100) return;
+          if (now - lastClick < 200) return;
           lastClick = now;
           console.log('Toggler clicked, offcanvas state:', offcanvasElement.classList.contains('show') ? 'open' : 'closed');
           offcanvas.toggle();
-        });
-
-        document.addEventListener('click', (event) => {
-          const now = Date.now();
-          if (now - lastClick < 100) return;
-          const isOffcanvasOpen = offcanvasElement.classList.contains('show');
-          const clickedInside = offcanvasElement.contains(event.target) || toggler.contains(event.target);
-          if (isOffcanvasOpen && !clickedInside) {
-            console.log('Closing offcanvas due to outside click');
-            offcanvas.hide();
-          }
         });
       } catch (error) {
         console.error('Offcanvas initialization error:', error);
@@ -453,45 +452,50 @@
       console.log('Initializing page at', new Date().toISOString());
       const errorContainer = document.getElementById('errorContainer');
       const livecards = document.getElementById('livecards');
+
+      // Initialize theme
+      const htmlElement = document.documentElement;
+      const themeToggle = document.getElementById('themeToggle');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      htmlElement.setAttribute('data-bs-theme', currentTheme);
+      themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
       
+      themeToggle.addEventListener('click', () => {
+        const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+      });
+
+      // Initialize offcanvas
+      initOffcanvas();
+
+      // Load content
       try {
-        // Initialize theme
-        const htmlElement = document.documentElement;
-        const themeToggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        htmlElement.setAttribute('data-bs-theme', currentTheme);
-        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        
-        themeToggle.addEventListener('click', () => {
-          const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-          htmlElement.setAttribute('data-bs-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
-          themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-        });
-
-        // Initialize offcanvas
-        initOffcanvas();
-
-        // Load content
         if (typeof Api === 'undefined') {
           console.warn('Api class not defined. Using default API path.');
           apiInstance = { baseUrl: window.location.origin + '/api' };
-          loadContent(apiInstance);
         } else {
           apiInstance = new Api(`${window.location.origin}/api`);
-          loadContent(apiInstance);
         }
-
-        countdown();
-        checkAuthStatus();
-        console.log('Page initialized successfully');
+        loadContent(apiInstance);
       } catch (error) {
-        console.error('Init page error:', error);
-        livecards.innerHTML = '<p>No streams are available right now. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
+        console.error('API initialization error:', error);
+        livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
         errorContainer.className = 'alert alert-danger error-alert';
-        errorContainer.innerHTML = 'An error occurred while initializing the page. Please try again.';
+        errorContainer.innerHTML = 'Failed to initialize streams. Please try again.';
         document.getElementById('retryButton').addEventListener('click', () => loadContent(apiInstance));
       }
+
+      // Auth status
+      try {
+        checkAuthStatus();
+      } catch (error) {
+        console.warn('Auth status check failed:', error);
+      }
+
+      countdown();
+      console.log('Page initialized successfully');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
