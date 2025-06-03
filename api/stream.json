@@ -10,17 +10,17 @@
           "uri_name": "aseanallstars-vs-manunited",
           "poster": "https://plive.live/uploads/683643e6928f6.jpg",
           "tag": "Friendly",
-          "starts_at": "2025-06-03 04:00:00",
+          "starts_at": "2025-06-03 04:50:00",
           "ends_at": "2025-06-04 21:30:00",
           "always_live": 1,
           "streams": [
             {
               "title": "MUtv",
-              "url": "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder YouTube embed
+              "url": "https://www.youtube.com/embed/dQw4w9WgXcQ"
             },
             {
               "title": "Alternate Stream",
-              "url": "https://v5.sportsonline.si/channels/pt/sporttv4.php" // Placeholder Twitch embed
+              "url": "https://player.twitch.tv/?channel=twitch&parent=your-futbolx-site.vercel.app"
             }
           ]
         }
@@ -41,7 +41,7 @@
           "streams": [
             {
               "title": "Primary Feed",
-              "url": "https://www.youtube.com/embed/abc123" // Placeholder YouTube embed
+              "url": "https://www.youtube.com/embed/abc123"
             }
           ]
         }
@@ -62,11 +62,11 @@
           "streams": [
             {
               "title": "Stream 1",
-              "url": "https://player.twitch.tv/?channel=gaming&parent=your-futbolx-site.vercel.app" // Placeholder Twitch embed
+              "url": "https://player.twitch.tv/?channel=gaming&parent=your-futbolx-site.vercel.app"
             },
             {
               "title": "Stream 2",
-              "url": "https://www.youtube.com/embed/xyz789" // Placeholder YouTube embed
+              "url": "https://www.youtube.com/embed/xyz789"
             }
           ]
         }
@@ -87,7 +87,7 @@
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://www.youtube.com/embed/tennis123" // Placeholder YouTube embed
+              "url": "https://www.youtube.com/embed/tennis123"
             }
           ]
         }
