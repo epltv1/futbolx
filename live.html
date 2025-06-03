@@ -61,7 +61,7 @@
             </div>
             <h2 id="eventTitle" class="mb-3"></h2>
             <div class="video-container">
-              <div id="player"></div>
+              <iframe id="embedPlayer" frameborder="0" allowfullscreen style="width: 100%; height: 100%;"></iframe>
             </div>
             <div id="streamLinks" class="stream-links mt-3"></div>
             <div id="playerError" class="alert alert-danger mt-3 d-none"></div>
@@ -80,70 +80,57 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <script src="/assets/js/api.js"></script>
     <script async src="/assets/js/auth.js"></script>
     <script>
-      let playerInstance = null;
+      let embedPlayer = null;
       let streamData = null;
 
-      function initPlayer(event, playerError, streamLinks, attempt = 0, maxAttempts = 10) {
-        console.log('initPlayer called, attempt:', attempt);
-        if (attempt >= maxAttempts) {
-          playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to load player. Please refresh the page.';
-          console.error('Clappr: Max retry attempts reached');
-          return;
-        }
-        if (typeof Clappr === 'undefined') {
-          console.warn(`Clappr not loaded, attempt ${attempt + 1}/${maxAttempts}`);
-          setTimeout(() => initPlayer(event, playerError, streamLinks, attempt + 1, maxAttempts), 200);
-          return;
-        }
+      function initPlayer(event, playerError, streamLinks) {
+        console.log('initPlayer called');
         try {
-          console.log('Clappr: Initializing with stream', event.streams[0].url);
-          playerInstance = new Clappr.Player({
-            source: event.streams[0].url,
-            parentId: '#player',
-            autoPlay: true,
-            width: '100%',
-            height: '100%',
-            events: {
-              onError: (err) => {
-                console.error('Clappr Error:', err);
-                playerError.className = 'alert alert-danger mt-3';
-                playerError.innerText = 'Failed to play stream: ' + (err.message || 'Unknown error');
-              }
-            }
-          });
-          console.log('Clappr: Initialized successfully');
+          embedPlayer = document.getElementById('embedPlayer');
+          console.log('Loading embed URL:', event.streams[0].url);
+          embedPlayer.src = event.streams[0].url; // Load initial embed URL
+          console.log('Embed initialized successfully');
+
+          // Generate stream buttons
           streamLinks.innerHTML = event.streams.map((stream, index) => `
             <button class="btn btn-stream ${index === 0 ? 'active' : ''}" data-stream-url="${stream.url}" data-stream-index="${index}">
               ${stream.title || `Stream ${index + 1}`}
             </button>
           `).join('');
+
+          // Stream switching
           streamLinks.addEventListener('click', (e) => {
             const btn = e.target.closest('.btn.btn-stream');
             if (btn) {
               const url = btn.getAttribute('data-stream-url');
               playerError.className = 'alert alert-danger mt-3 d-none';
               try {
-                console.log('Clappr: Switching to stream', url);
-                playerInstance.load(url);
+                console.log('Switching to embed URL:', url);
+                embedPlayer.src = url;
                 streamLinks.querySelectorAll('.btn.btn-stream').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                console.log('Clappr: Stream switched successfully');
+                console.log('Embed switched successfully');
               } catch (err) {
-                console.error('Stream switch error:', err);
+                console.error('Embed switch error:', err);
                 playerError.className = 'alert alert-danger mt-3';
                 playerError.innerText = 'Failed to switch stream: ' + (err.message || 'Unknown error');
               }
             }
           });
+
+          // Iframe error handling
+          embedPlayer.onerror = () => {
+            console.error('Embed load error');
+            playerError.className = 'alert alert-danger mt-3';
+            playerError.innerText = 'Failed to load stream. The embed URL may be invalid or restricted.';
+          };
         } catch (err) {
-          console.error('Player init error:', err);
+          console.error('Embed init error:', err);
           playerError.className = 'alert alert-danger mt-3';
-          playerError.innerText = 'Failed to initialize player: ' + (err.message || 'Unknown error');
+          playerError.innerText = 'Failed to initialize stream: ' + (err.message || 'Unknown error');
         }
       }
 
@@ -303,7 +290,7 @@
               streamLinks.classList.add('fade-in');
               startLivestreamBtn.style.display = 'none';
               initPlayer(streamData, playerError, streamLinks);
-              console.log('Player and stream links displayed');
+              console.log('Embed player and stream links displayed');
             } else {
               console.warn('No stream data available');
               playerError.className = 'alert alert-danger mt-3';
