@@ -6,40 +6,6 @@
       "always_live": 1,
       "streams": [
         {
-          "name": "Australia vs Japan",
-          "uri_name": "australia-vs-japan",
-          "poster": "https://plive.live/uploads/7a8b9c2d3e4f5.jpg",
-          "tag": "World Cup Qualifier",
-          "starts_at": "2025-06-05T13:00:00",
-          "ends_at": "2025-06-05T15:30:00",
-          "always_live": 1,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd2.php"
-            }
-          ]
-        },
-        {
-          "name": "Qatar vs Iran",
-          "uri_name": "qatar-vs-iran",
-          "poster": "https://plive.live/uploads/5b6c7d8e9f0a1.jpg",
-          "tag": "World Cup Qualifier",
-          "starts_at": "2025-06-05T20:00:00",
-          "ends_at": "2025-06-05T22:30:00",
-          "always_live": 1,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd3.php"
-            }
-          ]
-        },
-        {
           "name": "Spain vs France",
           "uri_name": "spain-vs-france",
           "poster": "https://plive.live/uploads/4c5d6e7f8a9b2.jpg",
