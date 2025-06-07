@@ -7,6 +7,7 @@ module.exports = async function (req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
   const { email, password } = req.body;
+  console.log('Received email:', email, 'Password length:', password ? password.length : 'undefined');
   if (!email || !password) {
     return res.status(400).json({ success: false, error: 'Missing email or password' });
   }
@@ -14,7 +15,6 @@ module.exports = async function (req, res) {
     return res.status(401).json({ success: false, error: 'Invalid email' });
   }
   try {
-    // Test database connection
     await sql`SELECT 1`;
     console.log('Database connection successful');
     const { rows } = await sql`SELECT * FROM admins WHERE email = ${email}`;
@@ -23,6 +23,7 @@ module.exports = async function (req, res) {
       return res.status(401).json({ success: false, error: 'No admin found with this email' });
     }
     const admin = rows[0];
+    console.log('Stored hash:', admin.password);
     const isValid = await bcrypt.compare(password, admin.password);
     console.log('Password valid:', isValid);
     if (!isValid) {
