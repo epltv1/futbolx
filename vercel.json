@@ -5,6 +5,7 @@
     { "source": "/live/:path*", "destination": "/live.html" },
     { "source": "/vip", "destination": "/vip.html" },
     { "source": "/login", "destination": "/login.html" },
+    { "source": "/admin", "destination": "/admin.html" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }
