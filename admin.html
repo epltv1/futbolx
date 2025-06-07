@@ -70,7 +70,7 @@
           <form id="adminLoginForm">
             <div class="mb-3">
               <label for="adminEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="adminEmail" placeholder="otuto.collins@gmail.com" required>
+              <input type="email" class="form-control" id="adminEmail" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
               <label for="adminPassword" class="form-label">Password</label>
@@ -155,7 +155,9 @@
         const response = await fetch('/api/admin/codes', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
         });
-        const data = await response.json();
+        const text = await response.text();
+        console.log('Codes raw response:', text);
+        const data = JSON.parse(text);
         if (!data.success) throw new Error(data.error || 'Failed to load codes');
         const tbody = document.getElementById('codeTableBody');
         tbody.innerHTML = data.codes.map(code => `
@@ -236,12 +238,18 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
           });
-          const data = await response.json();
-          if (!data.success) throw new Error(data.error || 'Invalid credentials');
-          localStorage.setItem('adminToken', data.token);
-          adminLoginCard.classList.add('d-none');
-          adminPanel.classList.remove('d-none');
-          loadCodes();
+          const text = await response.text();
+          console.log('Login raw response:', text);
+          try {
+            const data = JSON.parse(text);
+            if (!data.success) throw new Error(data.error || 'Invalid credentials');
+            localStorage.setItem('adminToken', data.token);
+            adminLoginCard.classList.add('d-none');
+            adminPanel.classList.remove('d-none');
+            loadCodes();
+          } catch (parseErr) {
+            throw new Error(`Invalid response: ${text}`);
+          }
         } catch (err) {
           showMessage('adminErrorContainer', err.message);
         }
