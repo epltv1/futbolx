@@ -10,20 +10,23 @@ module.exports = async function (req, res) {
   if (!email || !password) {
     return res.status(400).json({ success: false, error: 'Missing email or password' });
   }
-  if (email !== 'otuto.collins@gmail.com') {
+  if (email.toLowerCase() !== 'otuto.collins@gmail.com') {
     return res.status(401).json({ success: false, error: 'Invalid email' });
   }
   try {
     // Test database connection
     await sql`SELECT 1`;
+    console.log('Database connection successful');
     const { rows } = await sql`SELECT * FROM admins WHERE email = ${email}`;
+    console.log('Query result:', rows);
     if (rows.length === 0) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+      return res.status(401).json({ success: false, error: 'No admin found with this email' });
     }
     const admin = rows[0];
     const isValid = await bcrypt.compare(password, admin.password);
+    console.log('Password valid:', isValid);
     if (!isValid) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+      return res.status(401).json({ success: false, error: 'Password does not match' });
     }
     const token = jwt.sign({ adminId: admin.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return res.status(200).json({ success: true, token });
