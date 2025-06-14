@@ -16,7 +16,7 @@
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://www.xfireflix.fun/sports/player.php?id=skysfor1"
+              "url": "https://v5.sportsonline.si/channels/hd/hd5.php"
             },
             {
               "title": "Alternate Feed",
@@ -35,11 +35,11 @@
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-qualifying/1"
+              "url": "https://v5.sportsonline.si/channels/hd/hd5.php"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-qualifying/2"
+              "url": "https://v5.sportsonline.si/channels/hd/hd8.php"
             }
           ]
         },
