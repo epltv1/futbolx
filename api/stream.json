@@ -97,7 +97,7 @@
           "name": "Inter Miami CF vs Al Ahly",
           "uri_name": "inter-miami-cf-vs-al-ahly",
           "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F86eCNMq.png@jpg",
-          "tag": "Friendly",
+          "tag": "FIFA Club World Cup",
           "starts_at": "2025-06-15T03:00:00",
           "ends_at": "2025-06-15T05:00:00",
           "always_live": 0,
@@ -108,7 +108,45 @@
             },
             {
               "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/inter-miami-cf-vs-al-ahlyx2"
+              "url": "https://embedstreams.top/embed/alpha/inter-miami-cf-vs-al-ahly/2"
+            }
+          ]
+        },
+        {
+          "name": "Bayern Munich vs Auckland City",
+          "uri_name": "bayern-munich-vs-auckland-city",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F2anzWeD.png@jpg",
+          "tag": "FIFA Club World Cup",
+          "starts_at": "2025-06-15T19:00:00",
+          "ends_at": "2025-06-15T20:55:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/bayern-munich-vs-auckland-city/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/bayern-munich-vs-auckland-city/2"
+            }
+          ]
+        },
+        {
+          "name": "PSG vs Atletico Madrid",
+          "uri_name": "psg-vs-atletico-madrid",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FS1JI7qk.png@jpg",
+          "tag": "FIFA Club World Cup",
+          "starts_at": "2025-06-15T22:00:00",
+          "ends_at": "2025-06-15T23:55:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/psg-vs-atletico-madrid/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/psg-vs-atletico-madrid/2"
             }
           ]
         }
