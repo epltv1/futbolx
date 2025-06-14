@@ -2,44 +2,113 @@
   "success": true,
   "streams": [
     {
-      "category": "Football",
+      "category": "Motorsports",
       "always_live": 0,
       "streams": [
         {
-          "name": "Germany vs France",
-          "uri_name": "germany-vs-france",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FUYYRn4S.png@jpg",
-          "tag": "Nations League",
-          "starts_at": "2025-06-08T16:00:00",
-          "ends_at": "2025-06-08T17:59:00",
+          "name": "F1 Canada GP Practice 3",
+          "uri_name": "f1-canada-gp-practice-3",
+          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
+          "tag": "F1 Practice",
+          "starts_at": "2025-06-14T19:30:00",
+          "ends_at": "2025-06-14T22:00:00",
           "always_live": 0,
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://embedstreams.top/embed/alpha/uefa-nations-league-third-place-germany-vs-france/2"
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-practice-3/1"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/uefa-nations-league-third-place-germany-vs-france/4"
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-practice-3/2"
             }
           ]
         },
         {
-          "name": "Portugal vs Spain",
-          "uri_name": "portugal-vs-spain",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FOVlMoi9.png@jpg",
-          "tag": "Nations League Final",
-          "starts_at": "2025-06-08T22:00:00",
-          "ends_at": "2025-06-09T00:50:00",
+          "name": "F1 Canada GP Qualifying",
+          "uri_name": "f1-canada-gp-qualifying",
+          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
+          "tag": "F1 Qualifying",
+          "starts_at": "2025-06-14T23:00:00",
+          "ends_at": "2025-06-15T01:00:00",
           "always_live": 0,
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://embedstreams.top/embed/alpha/uefa-nations-league-final-portugal-vs-spain/1"
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-qualifying/1"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/uefa-nations-league-final-portugal-vs-spain/5"
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-qualifying/2"
+            }
+          ]
+        },
+        {
+          "name": "F1 Canada GP Main Race",
+          "uri_name": "f1-canada-gp-main-race",
+          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
+          "tag": "F1 Race",
+          "starts_at": "2025-06-15T21:00:00",
+          "ends_at": "2025-06-15T23:50:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-main-race/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/f1-canada-gp-main-race/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Fights",
+      "always_live": 0,
+      "streams": [
+        {
+          "name": "UFC Fight Night: Usman vs. Buckley",
+          "uri_name": "ufc-fight-night-usman-vs-buckley",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FDbz3dm9.png@jpg",
+          "tag": "UFC Fight Night",
+          "starts_at": "2025-06-15T01:56:00",
+          "ends_at": "2025-06-15T04:56:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/ufc-fight-night-usman-vs-buckley/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/ufc-fight-night-usman-vs-buckley/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Football",
+      "always_live": 0,
+      "streams": [
+        {
+          "name": "Inter Miami CF vs Al Ahly",
+          "uri_name": "inter-miami-cf-vs-al-ahly",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F86eCNMq.png@jpg",
+          "tag": "Friendly",
+          "starts_at": "2025-06-15T03:00:00",
+          "ends_at": "2025-06-15T05:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/inter-miami-cf-vs-al-ahly/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/inter-miami-cf-vs-al-ahlyx2"
             }
           ]
         }
