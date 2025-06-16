@@ -2,123 +2,16 @@
   "success": true,
   "streams": [
     {
-      "category": "Motorsports",
-      "always_live": 0,
-      "streams": [
-        {
-          "name": "F1 Canada GP Practice 3",
-          "uri_name": "f1-canada-gp-practice-3",
-          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
-          "tag": "F1 Practice",
-          "starts_at": "2025-06-14T19:30:00",
-          "ends_at": "2025-06-14T22:00:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd5.php"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://sportzonline.si/channels/hd/hd8.php"
-            }
-          ]
-        },
-        {
-          "name": "F1 Canada GP Qualifying",
-          "uri_name": "f1-canada-gp-qualifying",
-          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
-          "tag": "F1 Qualifying",
-          "starts_at": "2025-06-14T23:00:00",
-          "ends_at": "2025-06-15T01:00:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd5.php"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd8.php"
-            }
-          ]
-        },
-        {
-          "name": "F1 Canada GP Main Race",
-          "uri_name": "f1-canada-gp-main-race",
-          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hzarRB-XY-ikthV2IJnK1_d_qXc3s6vUw6sYrjt7GvnFGcdVXQBlCaUF&s=10",
-          "tag": "F1 Race",
-          "starts_at": "2025-06-15T21:00:00",
-          "ends_at": "2025-06-15T23:50:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd5.php"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd8.php"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "category": "Fights",
-      "always_live": 0,
-      "streams": [
-        {
-          "name": "UFC Fight Night: Usman vs. Buckley",
-          "uri_name": "ufc-fight-night-usman-vs-buckley",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FDbz3dm9.png@jpg",
-          "tag": "UFC Fight Night",
-          "starts_at": "2025-06-15T01:56:00",
-          "ends_at": "2025-06-15T04:56:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://embedstreams.top/embed/alpha/ufc-events-ufc-mma-ufc-ppv/1"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/ufc-events-ufc-mma-ufc-ppv/4"
-            }
-          ]
-        },
-        {
-          "name": "Glory 100 (Main Card)",
-          "uri_name": "glory-100-main-card",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FSc3l7gV.jpeg@jpg",
-          "tag": "Glory Kickboxing",
-          "starts_at": "2025-06-14T19:00:00",
-          "ends_at": "2025-06-15T00:00:00",
-          "always_live": 0,
-          "streams": [
-            {
-              "title": "Main Feed",
-              "url": "https://embedstreams.top/embed/alpha/glory-100-rico-verhoeven-vs-artem-vakhitov/1"
-            },
-            {
-              "title": "Alternate Feed",
-              "url": "https://embedstreams.top/embed/alpha/glory-100-rico-verhoeven-vs-artem-vakhitov/4"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "category": "Football",
       "always_live": 0,
       "streams": [
         {
-          "name": "Inter Miami CF vs Al Ahly",
-          "uri_name": "inter-miami-cf-vs-al-ahly",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F86eCNMq.png@jpg",
-          "tag": "FIFA Club World Cup",
-          "starts_at": "2025-06-15T03:00:00",
-          "ends_at": "2025-06-15T05:00:00",
+          "name": "Chelsea vs LAFC",
+          "uri_name": "chelsea-vs-lafc",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F19Jmw0P.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-16T22:00:00",
+          "ends_at": "2025-06-17T00:00:00",
           "always_live": 0,
           "streams": [
             {
@@ -132,40 +25,349 @@
           ]
         },
         {
-          "name": "Bayern Munich vs Auckland City",
-          "uri_name": "bayern-munich-vs-auckland-city",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F2anzWeD.png@jpg",
-          "tag": "FIFA Club World Cup",
-          "starts_at": "2025-06-15T19:00:00",
-          "ends_at": "2025-06-15T20:55:00",
+          "name": "Boca Juniors vs Benfica",
+          "uri_name": "boca-juniors-vs-benfica",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fm6MQYUK.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T01:00:00",
+          "ends_at": "2025-06-17T03:00:00",
           "always_live": 0,
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
+              "url": "https://goalstreamz.com/events/stream1/"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd2.php"
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
             }
           ]
         },
         {
-          "name": "PSG vs Atletico Madrid",
-          "uri_name": "psg-vs-atletico-madrid",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FS1JI7qk.png@jpg",
-          "tag": "FIFA Club World Cup",
-          "starts_at": "2025-06-15T22:00:00",
-          "ends_at": "2025-06-15T23:55:00",
+          "name": "Flamengo vs Esperance",
+          "uri_name": "flamengo-vs-esperance",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FpEIVdC6.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T04:00:00",
+          "ends_at": "2025-06-17T06:00:00",
           "always_live": 0,
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
+              "url": "https://goalstreamz.com/events/stream1/"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd4.php"
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Fluminense vs Dortmund",
+          "uri_name": "fluminense-vs-dortmund",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FCypb9qK.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T19:00:00",
+          "ends_at": "2025-06-17T21:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "River Plate vs Urawa Red",
+          "uri_name": "river-plate-vs-urawa-red",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3ARisk Assessment
+
+System: I apologize, but it seems the response was cut off. Let me complete the JSON and provide a full explanation.
+
+### Step 3: Updated JSON (Continued)
+Here is the complete JSON, including the remaining football events and the three WWE events under the "Fights" category, with all times in Kenyan time (UTC+3), the provided logos, and two stream links per event:
+
+```json
+{
+  "success": true,
+  "streams": [
+    {
+      "category": "Football",
+      "always_live": 0,
+      "streams": [
+        {
+          "name": "Chelsea vs LAFC",
+          "uri_name": "chelsea-vs-lafc",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F19Jmw0P.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-16T22:00:00",
+          "ends_at": "2025-06-17T00:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Boca Juniors vs Benfica",
+          "uri_name": "boca-juniors-vs-benfica",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fm6MQYUK.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T01:00:00",
+          "ends_at": "2025-06-17T03:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Flamengo vs Esperance",
+          "uri_name": "flamengo-vs-esperance",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FpEIVdC6.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T04:00:00",
+          "ends_at": "2025-06-17T06:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Fluminense vs Dortmund",
+          "uri_name": "fluminense-vs-dortmund",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FCypb9qK.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T19:00:00",
+          "ends_at": "2025-06-17T21:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "River Plate vs Urawa Red",
+          "uri_name": "river-plate-vs-urawa-red",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FKSdcMDW.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-17T22:00:00",
+          "ends_at": "2025-06-18T00:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Ulsan vs Sundowns",
+          "uri_name": "ulsan-vs-sundowns",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FGPtCHF3.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-18T01:00:00",
+          "ends_at": "2025-06-18T03:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Monterrey vs Inter",
+          "uri_name": "monterrey-vs-inter",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FSxEImBc.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-18T04:00:00",
+          "ends_at": "2025-06-18T06:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Man City vs Wydad AC",
+          "uri_name": "man-city-vs-wydad-ac",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FYx4uKE5.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-18T19:00:00",
+          "ends_at": "2025-06-18T21:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Real Madrid vs Al Hilal",
+          "uri_name": "real-madrid-vs-al-hilal",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FPE3Sgop.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-18T22:00:00",
+          "ends_at": "2025-06-19T00:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Pachuca vs Salzburg",
+          "uri_name": "pachuca-vs-salzburg",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FnLHNZyJ.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-19T01:00:00",
+          "ends_at": "2025-06-19T03:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        },
+        {
+          "name": "Al-Ain vs Juventus",
+          "uri_name": "al-ain-vs-juventus",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2F4CXensa.png@jpg",
+          "tag": "Club World Cup",
+          "starts_at": "2025-06-19T04:00:00",
+          "ends_at": "2025-06-19T06:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://goalstreamz.com/events/stream1/"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Fights",
+      "always_live": 0,
+      "streams": [
+        {
+          "name": "Monday Night Raw",
+          "uri_name": "monday-night-raw",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2FzmuUYCm.png@jpg",
+          "tag": "WWE",
+          "starts_at": "2025-06-17T02:30:00",
+          "ends_at": "2025-06-17T05:30:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/wwe-monday-night-raw/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/wwe-monday-night-raw/4"
+            }
+          ]
+        },
+        {
+          "name": "NXT",
+          "uri_name": "nxt",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fn7tkxQQ.png@jpg",
+          "tag": "WWE",
+          "starts_at": "2025-06-18T03:00:00",
+          "ends_at": "2025-06-18T05:00:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/wwe-nxt/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/wwe-nxt/4"
+            }
+          ]
+        },
+        {
+          "name": "Friday Night SmackDown",
+          "uri_name": "friday-night-smackdown",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fn7tkxQQ.png@jpg",
+          "tag": "WWE",
+          "starts_at": "2025-06-21T02:30:00",
+          "ends_at": "2025-06-21T05:30:00",
+          "always_live": 0,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": “https://embedstreams.top/embed/alpha/wwe-friday-night-smackdown/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/wwe-friday-night-smackdown/4"
             }
           ]
         }
