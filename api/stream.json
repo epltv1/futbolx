@@ -149,11 +149,11 @@
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://goalstreamz.com/events/stream1/"
+              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
             },
             {
               "title": "Alternate Feed",
-              "url": "https://v5.sportsonline.si/channels/hd/hd10.php"
+              "url": "https://v5.sportsonline.si/channels/hd/hd3.php"
             }
           ]
         },
