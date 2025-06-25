@@ -19,36 +19,21 @@
   <link rel="stylesheet" href="/assets/css/main.css?v=24">
   <style>
     .error-alert { max-width: 500px; margin: 20px auto; }
-    .event-grid .card {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      border: 2px solid transparent;
-      background: linear-gradient(135deg, #333 0%, #222 100%);
+    .card { 
+      opacity: 0; 
+      transform: translateY(50px); 
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out; 
     }
-    [data-bs-theme="light"] .event-grid .card {
-      background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    .card.visible { 
+      opacity: 1; 
+      transform: translateY(0); 
     }
-    .event-grid .card.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .fade-out { 
+      animation: fadeOut 0.5s ease-out forwards; 
     }
-    .event-grid .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-      border-color: #ff4d4d;
-    }
-    [data-bs-theme="light"] .event-grid .card:hover {
-      border-color: #e63939;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-    .fade-out {
-      animation: fadeOut 0.5s ease-out forwards;
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
+    @keyframes fadeOut { 
+      from { opacity: 1; } 
+      to { opacity: 0; } 
     }
     .watch-button {
       animation: pulse 1s infinite;
@@ -58,6 +43,7 @@
       50% { transform: scale(1.1); opacity: 0.7; }
       100% { transform: scale(1); opacity: 1; }
     }
+    /* Enhanced layout for large screens */
     @media (min-width: 992px) {
       .event-grid {
         display: grid;
@@ -68,28 +54,39 @@
       .event-grid a {
         text-decoration: none;
       }
-      .event-grid .card {
+      .card {
         width: 100%;
         max-width: 400px;
         margin: 0 auto;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         border-radius: 10px;
         overflow: hidden;
+        border: 2px solid transparent;
       }
-      .event-grid .card-img-top {
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        border-color: #ff4d4d;
+      }
+      [data-bs-theme="light"] .card:hover {
+        border-color: #e63939;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+      .card-img-top {
         height: 220px;
         object-fit: cover;
       }
-      .event-grid .card-body {
+      .card-body {
         padding: 1rem;
       }
-      .event-grid .card-title {
+      .card-title {
         font-size: 1.3rem;
         margin-bottom: 0.5rem;
       }
-      .event-grid .event-tag {
+      .event-tag {
         font-size: 0.95rem;
       }
-      .event-grid .watch-button {
+      .watch-button {
         font-size: 0.95rem;
         padding: 0.5rem 1.2rem;
       }
@@ -192,25 +189,6 @@
         <h2 class="m-0">Others</h2>
         <div id="otherscards" class="event-grid py-3"></div>
       </div>
-      <!-- 24/7 Live Section with Dropdown -->
-      <div id="live247" class="mt-5 live247-section d-none">
-        <h2 class="m-0">24/7 Live <span id="live247Animation" class="live-animation"></span></h2>
-        <div class="live247-dropdown">
-          <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" id="live247Dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              Select Category
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="live247Dropdown">
-              <li><a class="dropdown-item" href="#" data-category="Sports">Sports</a></li>
-              <li><a class="dropdown-item" href="#" data-category="Kids">Kids</a></li>
-              <li><a class="dropdown-item" href="#" data-category="Entertainment">Entertainment</a></li>
-              <li><a class="dropdown-item" href="#" data-category="News">News</a></li>
-              <li><a class="dropdown-item" href="#" data-category="Movies">Movies</a></li>
-            </ul>
-          </div>
-        </div>
-        <div id="live247cards" class="event-grid py-3 d-none"></div>
-      </div>
       <footer class="container-fluid d-flex flex-column flex-lg-row justify-content-lg-between align-items-center py-2 border-top mt-5">
         <p class="mb-2 mb-lg-0 text-body-secondary text-center text-lg-start">FutbolX 2025</p>
         <ul class="nav justify-content-center justify-content-lg-end mb-0">
@@ -231,7 +209,7 @@
   <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.js"></script>
   <script>
     window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
-
+    
     let lastApiCall = 0;
     let apiInstance = null;
 
@@ -330,50 +308,15 @@
       });
     }
 
-    function generateStreamCard(stream, isLive) {
-      let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-      let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : stream.always_live === 1 ? '<span class="live-badge">LIVE 24/7</span>' : '';
-      let startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
-      if (isNaN(startTime)) {
-        console.warn(`Invalid start time for stream ${stream.name}`);
-        startTime = Math.floor(Date.now() / 1000);
-      }
-      return {
-        html: `
-          <a href="/live/${stream.uri_name}" class="event-card">
-            <div class="card">
-              ${liveBadge}
-              <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-              <div class="card-body">
-                <h5 class="card-title">${stream.name}</h5>
-                <p class="card-text">
-                  <span class="event-tag">${stream.tag}</span>
-                  <span class="event-timer">
-                    ${isLive || stream.always_live === 1
-                      ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>`
-                      : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </a>`,
-        startTime
-      };
-    }
-
     function loadContent(api) {
       console.log('Starting loadContent at', new Date().toISOString());
       const errorContainer = document.getElementById('errorContainer');
       const liveAnimation = document.getElementById('liveAnimation');
       const livecards = document.getElementById('livecards');
-      const live247Section = document.getElementById('live247');
-      const live247cards = document.getElementById('live247cards');
-      const live247Dropdown = document.getElementById('live247Dropdown');
-
+      
       errorContainer.className = 'd-none error-alert';
       errorContainer.innerHTML = '';
       livecards.innerHTML = '<p>Loading streams...</p>';
-      live247cards.innerHTML = '<p>Select a category to view 24/7 streams...</p>';
 
       const timeout = setTimeout(() => {
         if (livecards.innerHTML.includes('Loading streams...')) {
@@ -382,50 +325,23 @@
           errorContainer.innerHTML = 'Request timed out. Please try again.';
           document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
         }
-        if (live247cards.innerHTML.includes('Select a category')) {
-          live247cards.innerHTML = '<p>Failed to load 24/7 streams. <button id="retry247Button" class="btn btn-primary btn-sm">Retry</button></p>';
-          errorContainer.className = 'alert alert-danger error-alert';
-          errorContainer.innerHTML = 'Request timed out for 24/7 streams. Please try again.';
-          document.getElementById('retry247Button').addEventListener('click', () => loadContent(api));
-        }
       }, 10000);
 
       const apiUrl = api.baseUrl.endsWith('/') ? `${api.baseUrl}stream` : `${api.baseUrl}/stream`;
-      const api247Url = api.baseUrl.endsWith('/') ? `${api.baseUrl}stream247` : `${api.baseUrl}/stream247`;
-
-      // Fetch regular streams
-      const regularStreamsPromise = fetchWithRetry(apiUrl)
+      fetchWithRetry(apiUrl)
         .then(streamData => {
-          if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
-            console.warn('Invalid stream data received:', streamData);
-            return { success: false, streams: [] };
-          }
-          return streamData;
-        })
-        .catch(error => {
-          console.error('Regular streams fetch error:', error.message);
-          return { success: false, streams: [] };
-        });
-
-      // Fetch 24/7 streams
-      const live247StreamsPromise = fetchWithRetry(api247Url)
-        .then(stream247Data => {
-          if (!stream247Data || !stream247Data.success || !Array.isArray(stream247Data.streams)) {
-            console.warn('Invalid 24/7 stream data received:', stream247Data);
-            return { success: false, streams: [] };
-          }
-          return stream247Data;
-        })
-        .catch(error => {
-          console.error('24/7 streams fetch error:', error.message);
-          return { success: false, streams: [] };
-        });
-
-      Promise.all([regularStreamsPromise, live247StreamsPromise])
-        .then(([streamData, stream247Data]) => {
           clearTimeout(timeout);
           console.log('Stream API Response:', streamData);
-          console.log('24/7 Stream API Response:', stream247Data);
+          
+          if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
+            console.warn('Invalid stream data received:', streamData);
+            livecards.innerHTML = '<p>No streams are available right now. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
+            liveAnimation.classList.add('d-none');
+            errorContainer.className = 'alert alert-danger error-alert';
+            errorContainer.innerHTML = 'Invalid stream data received. Please try again.';
+            document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
+            return;
+          }
 
           const categories = {
             football: { id: 'football', element: document.getElementById('footballcards') },
@@ -441,92 +357,87 @@
             golf: { id: 'golf', element: document.getElementById('golfcards') },
             others: { id: 'others', element: document.getElementById('otherscards') }
           };
-
+          
           Object.values(categories).forEach(cat => cat.element.innerHTML = '');
           Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
           livecards.innerHTML = '';
-          live247cards.innerHTML = '<p>Select a category to view 24/7 streams...</p>';
 
           let hasLiveEvents = false;
           const now = Math.floor(Date.now() / 1000);
           const categoryEvents = {};
           Object.keys(categories).forEach(key => categoryEvents[key] = []);
 
-          // Process regular streams
-          if (streamData.success && Array.isArray(streamData.streams)) {
-            streamData.streams.forEach(category => {
-              if (!category.streams || !Array.isArray(category.streams)) {
-                console.warn(`Skipping invalid category: ${category.category}`);
+          streamData.streams.forEach(category => {
+            if (!category.streams || !Array.isArray(category.streams)) {
+              console.warn(`Skipping invalid category: ${category.category}`);
+              return;
+            }
+            let categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
+            if (!categories[categoryKey]) {
+              console.warn(`Category ${category.category} not found, mapping to 'others'`);
+              categoryKey = 'others';
+            }
+            category.streams.forEach(stream => {
+              if (!stream.name || !stream.uri_name || !stream.tag || !stream.starts_at || !stream.streams || !Array.isArray(stream.streams)) {
+                console.warn(`Invalid stream data for ${stream.name || 'unknown stream'}, skipping`);
                 return;
               }
-              let categoryKey = category.category.toLowerCase().replace(/\s+/g, '');
-              if (!categories[categoryKey]) {
-                console.warn(`Category ${category.category} not found, mapping to 'others'`);
-                categoryKey = 'others';
-              }
-              category.streams.forEach(stream => {
-                if (!stream.name || !stream.uri_name || !stream.tag || !stream.starts_at || !stream.streams || !Array.isArray(stream.streams)) {
-                  console.warn(`Invalid stream data for ${stream.name || 'unknown stream'}, skipping`);
-                  return;
-                }
-                let startTime, endTime;
-                try {
-                  startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
-                  if (isNaN(startTime)) {
-                    console.warn(`Invalid start time for stream ${stream.name}`);
-                    startTime = now;
-                  }
-                  endTime = stream.ends_at
-                    ? new Date(stream.ends_at + '+03:00').getTime() / 1000
-                    : startTime + 3 * 3600;
-                  if (isNaN(endTime)) {
-                    console.warn(`Invalid end time for stream ${stream.name}`);
-                    endTime = startTime + 3 * 3600;
-                  }
-                } catch (e) {
-                  console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
+              let startTime, endTime;
+              try {
+                startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
+                if (isNaN(startTime)) {
+                  console.warn(`Invalid start time for stream ${stream.name}`);
                   startTime = now;
-                  endTime = now + 3 * 3600;
                 }
-
-                const isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
-                const isEnded = now > endTime && stream.always_live !== 1;
-                if (isEnded) return;
-
-                const streamHtml = generateStreamCard(stream, isLive);
-                if (isLive) {
-                  livecards.innerHTML += streamHtml.html;
-                  hasLiveEvents = true;
-                } else {
-                  categoryEvents[categoryKey].push(streamHtml);
+                endTime = stream.ends_at 
+                  ? new Date(stream.ends_at + '+03:00').getTime() / 1000 
+                  : startTime + 3 * 3600;
+                if (isNaN(endTime)) {
+                  console.warn(`Invalid end time for stream ${stream.name}`);
+                  endTime = startTime + 3 * 3600;
                 }
-              });
-            });
-          }
-
-          // Process 24/7 streams
-          let has247Streams = false;
-          const categoryStreams = {};
-          if (stream247Data.success && Array.isArray(stream247Data.streams)) {
-            stream247Data.streams.forEach(category => {
-              if (!category.streams || !Array.isArray(category.streams)) {
-                console.warn(`Skipping invalid 24/7 category: ${category.category}`);
-                return;
+              } catch (e) {
+                console.warn(`Error parsing time for stream ${stream.name}: ${e.message}`);
+                startTime = now;
+                endTime = now + 3 * 3600;
               }
-              categoryStreams[category.category] = [];
-              category.streams.forEach(stream => {
-                if (!stream.name || !stream.uri_name || !stream.tag || !stream.streams || !Array.isArray(stream.streams)) {
-                  console.warn(`Invalid 24/7 stream data for ${stream.name || 'unknown stream'}, skipping`);
-                  return;
-                }
-                const streamHtml = generateStreamCard(stream, true); // 24/7 streams are always live
-                categoryStreams[category.category].push(streamHtml.html);
-                has247Streams = true;
-              });
-            });
-          }
 
-          // Populate category sections
+              const isLive = (startTime <= now && now <= endTime) || stream.always_live === 1;
+              const isEnded = now > endTime;
+              if (isEnded) return;
+
+              let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
+              let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+              let streamHtml = {
+                html: `
+                  <a href="/live/${stream.uri_name}">
+                    <div class="card">
+                      ${liveBadge}
+                      <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+                      <div class="card-body">
+                        <h5 class="card-title">${stream.name}</h5>
+                        <p class="card-text">
+                          <span class="event-tag">${stream.tag}</span>
+                          <span class="event-timer">
+                            ${isLive 
+                              ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
+                              : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                          </p>
+                        </div>
+                      </div>
+                    </a>`,
+                startTime
+              };
+
+              if (isLive) {
+                livecards.innerHTML += streamHtml.html;
+                hasLiveEvents = true;
+              } else {
+                categoryEvents[categoryKey].push(streamHtml);
+              }
+            });
+          });
+
           Object.keys(categories).forEach(key => {
             if (categoryEvents[key].length > 0) {
               categoryEvents[key].sort((a, b) => a.startTime - b.startTime);
@@ -535,34 +446,11 @@
             }
           });
 
-          // Update live section
           if (!hasLiveEvents) {
             livecards.innerHTML = '<p>No streams are live right now. Check back later!</p>';
             liveAnimation.classList.add('d-none');
           } else {
             liveAnimation.classList.remove('d-none');
-          }
-
-          // Initialize 24/7 dropdown
-          if (has247Streams) {
-            live247Section.classList.remove('d-none');
-            live247Animation.classList.remove('d-none');
-            live247cards.classList.add('d-none'); // Hide cards initially
-            const dropdownItems = document.querySelectorAll('.live247-dropdown .dropdown-item');
-            dropdownItems.forEach(item => {
-              item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const category = item.getAttribute('data-category');
-                live247Dropdown.textContent = category;
-                live247cards.innerHTML = categoryStreams[category]?.join('') || '<p>No streams available for this category.</p>';
-                live247cards.classList.remove('d-none');
-                const cards = live247cards.querySelectorAll('.card');
-                cards.forEach(card => observer.observe(card));
-              });
-            });
-          } else {
-            live247cards.innerHTML = '<p>No 24/7 streams are available right now. Check back later!</p>';
-            live247Animation.classList.add('d-none');
           }
 
           clearError();
@@ -581,13 +469,10 @@
           clearTimeout(timeout);
           console.error('API Fetch Error:', error.message);
           livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
-          live247cards.innerHTML = '<p>Failed to load 24/7 streams. <button id="retry247Button" class="btn btn-primary btn-sm">Retry</button></p>';
           liveAnimation.classList.add('d-none');
-          live247Animation.classList.add('d-none');
           errorContainer.className = 'alert alert-danger error-alert';
           errorContainer.innerHTML = `Failed to load streams: ${error.message}. Please try again.`;
           document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
-          document.getElementById('retry247Button').addEventListener('click', () => loadContent(api));
         });
     }
 
@@ -612,6 +497,7 @@
           console.log('Offcanvas closed');
         });
 
+        // Handle nav link clicks
         const navLinks = offcanvasElement.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
           link.addEventListener('click', (event) => {
@@ -624,18 +510,22 @@
           });
         });
 
+        // Handle logout button
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
           logoutButton.addEventListener('click', (event) => {
             event.stopPropagation();
             console.log('Logout button clicked');
+            // Assume logout logic is in auth.js
           });
         }
 
+        // Handle theme toggle
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
           themeToggle.addEventListener('click', (event) => {
             event.stopPropagation();
+            // Theme toggle logic is in initPage
           });
         }
       } catch (error) {
@@ -647,8 +537,8 @@
       console.log('Initializing page at', new Date().toISOString());
       const errorContainer = document.getElementById('errorContainer');
       const livecards = document.getElementById('livecards');
-      const live247cards = document.getElementById('live247cards');
 
+      // Initialize theme
       const htmlElement = document.documentElement;
       const themeToggle = document.getElementById('themeToggle');
       const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -662,8 +552,10 @@
         themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
       });
 
+      // Initialize offcanvas
       initOffcanvas();
 
+      // Load content
       try {
         if (typeof Api === 'undefined') {
           console.warn('Api class not defined. Using default API path.');
@@ -675,13 +567,12 @@
       } catch (error) {
         console.error('API initialization error:', error);
         livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
-        live247cards.innerHTML = '<p>Failed to load 24/7 streams. <button id="retry247Button" class="btn btn-primary btn-sm">Retry</button></p>';
         errorContainer.className = 'd-none error-alert';
         errorContainer.innerHTML = 'Failed to initialize streams. Please try again.';
         document.getElementById('retryButton').addEventListener('click', () => loadContent(apiInstance));
-        document.getElementById('retry247Button').addEventListener('click', () => loadContent(apiInstance));
       }
 
+      // Auth status
       try {
         checkAuthStatus();
       } catch (error) {
