@@ -1,0 +1,133 @@
+{
+  "success": true,
+  "streams": [
+    {
+      "category": "Sports",
+      "always_live": 1,
+      "streams": [
+        {
+          "name": "24/7 Football Highlights",
+          "uri_name": "football-highlights-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample1.png@jpg",
+          "tag": "Football",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd1.php"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://v5.sportsonline.si/channels/hd/hd2.php"
+            }
+          ]
+        },
+        {
+          "name": "24/7 Boxing Classics",
+          "uri_name": "boxing-classics-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample2.png@jpg",
+          "tag": "Boxing",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://embedstreams.top/embed/alpha/boxing-classics/1"
+            },
+            {
+              "title": "Alternate Feed",
+              "url": "https://embedstreams.top/embed/alpha/boxing-classics/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Kids",
+      "always_live": 1,
+      "streams": [
+        {
+          "name": "24/7 Cartoon Classics",
+          "uri_name": "cartoon-classics-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample3.png@jpg",
+          "tag": "Cartoons",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://example.com/kids/cartoons/main.php"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Entertainment",
+      "always_live": 1,
+      "streams": [
+        {
+          "name": "24/7 Reality TV",
+          "uri_name": "reality-tv-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample4.png@jpg",
+          "tag": "Reality Shows",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://example.com/entertainment/reality/main.php"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "News",
+      "always_live": 1,
+      "streams": [
+        {
+          "name": "24/7 World News",
+          "uri_name": "world-news-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample5.png@jpg",
+          "tag": "News",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://example.com/news/world/main.php"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Movies",
+      "always_live": 1,
+      "streams": [
+        {
+          "name": "24/7 Classic Movies",
+          "uri_name": "classic-movies-247",
+          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fexample6.png@jpg",
+          "tag": "Movies",
+          "starts_at": "2025-01-01T00:00:00",
+          "ends_at": null,
+          "always_live": 1,
+          "streams": [
+            {
+              "title": "Main Feed",
+              "url": "https://example.com/movies/classics/main.php"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
