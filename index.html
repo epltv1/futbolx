@@ -19,21 +19,36 @@
   <link rel="stylesheet" href="/assets/css/main.css?v=24">
   <style>
     .error-alert { max-width: 500px; margin: 20px auto; }
-    .card { 
-      opacity: 0; 
-      transform: translateY(50px); 
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out; 
+    .event-grid .card {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      border: 2px solid transparent;
+      background: linear-gradient(135deg, #333 0%, #222 100%);
     }
-    .card.visible { 
-      opacity: 1; 
-      transform: translateY(0); 
+    [data-bs-theme="light"] .event-grid .card {
+      background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
-    .fade-out { 
-      animation: fadeOut 0.5s ease-out forwards; 
+    .event-grid .card.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    @keyframes fadeOut { 
-      from { opacity: 1; } 
-      to { opacity: 0; } 
+    .event-grid .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      border-color: #ff4d4d;
+    }
+    [data-bs-theme="light"] .event-grid .card:hover {
+      border-color: #e63939;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .fade-out {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
     .watch-button {
       animation: pulse 1s infinite;
@@ -53,39 +68,28 @@
       .event-grid a {
         text-decoration: none;
       }
-      .card {
+      .event-grid .card {
         width: 100%;
         max-width: 400px;
         margin: 0 auto;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         border-radius: 10px;
         overflow: hidden;
-        border: 2px solid transparent;
       }
-      .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        border-color: #ff4d4d;
-      }
-      [data-bs-theme="light"] .card:hover {
-        border-color: #e63939;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      }
-      .card-img-top {
+      .event-grid .card-img-top {
         height: 220px;
         object-fit: cover;
       }
-      .card-body {
+      .event-grid .card-body {
         padding: 1rem;
       }
-      .card-title {
+      .event-grid .card-title {
         font-size: 1.3rem;
         margin-bottom: 0.5rem;
       }
-      .event-tag {
+      .event-grid .event-tag {
         font-size: 0.95rem;
       }
-      .watch-button {
+      .event-grid .watch-button {
         font-size: 0.95rem;
         padding: 0.5rem 1.2rem;
       }
@@ -227,7 +231,7 @@
   <script defer data-domain="your-futbolx-site.vercel.app" src="https://p.vidembed.re/js/script.js"></script>
   <script>
     window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
-    
+
     let lastApiCall = 0;
     let apiInstance = null;
 
@@ -324,6 +328,37 @@
         }
         attempt();
       });
+    }
+
+    function generateStreamCard(stream, isLive) {
+      let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
+      let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : stream.always_live === 1 ? '<span class="live-badge">LIVE 24/7</span>' : '';
+      let startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
+      if (isNaN(startTime)) {
+        console.warn(`Invalid start time for stream ${stream.name}`);
+        startTime = Math.floor(Date.now() / 1000);
+      }
+      return {
+        html: `
+          <a href="/live/${stream.uri_name}" class="event-card">
+            <div class="card">
+              ${liveBadge}
+              <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
+              <div class="card-body">
+                <h5 class="card-title">${stream.name}</h5>
+                <p class="card-text">
+                  <span class="event-tag">${stream.tag}</span>
+                  <span class="event-timer">
+                    ${isLive || stream.always_live === 1
+                      ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>`
+                      : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </a>`,
+        startTime
+      };
     }
 
     function loadContent(api) {
@@ -441,8 +476,8 @@
                     console.warn(`Invalid start time for stream ${stream.name}`);
                     startTime = now;
                   }
-                  endTime = stream.ends_at 
-                    ? new Date(stream.ends_at + '+03:00').getTime() / 1000 
+                  endTime = stream.ends_at
+                    ? new Date(stream.ends_at + '+03:00').getTime() / 1000
                     : startTime + 3 * 3600;
                   if (isNaN(endTime)) {
                     console.warn(`Invalid end time for stream ${stream.name}`);
@@ -458,30 +493,7 @@
                 const isEnded = now > endTime && stream.always_live !== 1;
                 if (isEnded) return;
 
-                let liveBadge = isLive ? '<span class="live-badge">LIVE</span>' : '';
-                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-                let streamHtml = {
-                  html: `
-                    <a href="/live/${stream.uri_name}">
-                      <div class="card">
-                        ${liveBadge}
-                        <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                        <div class="card-body">
-                          <h5 class="card-title">${stream.name}</h5>
-                          <p class="card-text">
-                            <span class="event-tag">${stream.tag}</span>
-                            <span class="event-timer">
-                              ${isLive 
-                                ? `<a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>` 
-                                : `<span class="countdown" data-start="${startTime}" data-uri="/live/${stream.uri_name}"></span>`}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </a>`,
-                  startTime
-                };
-
+                const streamHtml = generateStreamCard(stream, isLive);
                 if (isLive) {
                   livecards.innerHTML += streamHtml.html;
                   hasLiveEvents = true;
@@ -507,24 +519,8 @@
                   console.warn(`Invalid 24/7 stream data for ${stream.name || 'unknown stream'}, skipping`);
                   return;
                 }
-                let poster = stream.poster && stream.poster !== '' ? stream.poster : 'https://via.placeholder.com/285x160?text=FutbolX';
-                let streamHtml = `
-                  <a href="/live/${stream.uri_name}">
-                    <div class="card">
-                      <span class="live-badge">LIVE 24/7</span>
-                      <img src="${poster}" class="card-img-top" alt="${stream.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/285x160?text=Image+Failed';">
-                      <div class="card-body">
-                        <h5 class="card-title">${stream.name}</h5>
-                        <p class="card-text">
-                          <span class="event-tag">${stream.tag}</span>
-                          <span class="event-timer">
-                            <a href="/live/${stream.uri_name}" class="btn btn-danger btn-sm watch-button">Watch</a>
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>`;
-                categoryStreams[category.category].push(streamHtml);
+                const streamHtml = generateStreamCard(stream, true); // 24/7 streams are always live
+                categoryStreams[category.category].push(streamHtml.html);
                 has247Streams = true;
               });
             });
