@@ -6,12 +6,12 @@
       "always_live": 0,
       "streams": [
         {
-          "name": "Palmeiras vs Al Ahly",
-          "uri_name": "palmeiras-vs-al-ahly",
-          "poster": "https://mc-2mhdiicnc6.b-cdn.net/thumbnail/plain/https%3A%2F%2Fi.imgur.com%2Fw8WGLNW.png@jpg",
+          "name": "Man City vs Al Hilal",
+          "uri_name": "man-city-vs-al-hilal",
+          "poster": "https://image.discovery.indazn.com/ca/v2/ca/image?id=38sdd0q6aty6n5smwtr4l0q3e_image-header_pUs_1751165052000&quality=100",
           "tag": "Club World Cup",
-          "starts_at": "2025-06-30T23:00:00",
-          "ends_at": "2025-07-01T20:59:00",
+          "starts_at": "2025-07-01T04:00:00",
+          "ends_at": "2025-07-01T06:59:00",
           "always_live": 0,
           "streams": [
             {
@@ -20,7 +20,7 @@
             },
             {
               "title": "Alternate Feed",
-              "url": "https://anym3u8player.com/p2p-player-generator-jwplayer/mplay.php?data=nCLCQmLtFml/wHRSNI+EmeWTWmLBuh1TwAAM215Te3GKYFhPrqP0ntmR0G98zjJcPwp6D6E2aqvExGDYlYpv3cYABQGOl5fX9xGg1AQT6PKqq9CryuWIMDqeVCT1rAYqWF61bCUGYyNRfC8PAObF1DEo3bg6IBDM6WmT499cd+YcRj9tcX6AKvANyW7FFyNklTP2Y7ariOPz6p9pWs17g9IrFQ=="
+              "url": "https://v5.sportsonline.si/channels/hd/hd4.php"
             }
           ]
         },
