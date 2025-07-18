@@ -16,7 +16,7 @@
   <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=24">
+  <link rel="stylesheet" href="/assets/css/main.css?v=25">
   <style>
     .error-alert { max-width: 500px; margin: 20px auto; }
     .card { 
@@ -43,59 +43,51 @@
       50% { transform: scale(1.1); opacity: 0.7; }
       100% { transform: scale(1); opacity: 1; }
     }
-    /* Enhanced layout for large screens */
-    @media (min-width: 992px) {
-      .event-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        padding: 1rem;
-      }
-      #livecards.event-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        padding: 1rem;
-      }
-      .event-grid a {
-        text-decoration: none;
-      }
-      .card {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 2px solid transparent;
-      }
-      .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        border-color: #ff4d4d;
-      }
-      [data-bs-theme="light"] .card:hover {
-        border-color: #e63939;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      }
-      .card-img-top {
-        height: 220px;
-        object-fit: cover;
-      }
-      .card-body {
-        padding: 1rem;
-      }
-      .card-title {
-        font-size: 1.3rem;
-        margin-bottom: 0.5rem;
-      }
-      .event-tag {
-        font-size: 0.95rem;
-      }
-      .watch-button {
-        font-size: 0.95rem;
-        padding: 0.5rem 1.2rem;
-      }
+    /* Flexible grid layout for all screen sizes */
+    .event-grid, #livecards.event-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+    .event-grid a {
+      text-decoration: none;
+    }
+    .card {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      border-color: #ff4d4d;
+    }
+    [data-bs-theme="light"] .card:hover {
+      border-color: #e63939;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .card-img-top {
+      height: 220px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 1rem;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    .event-tag {
+      font-size: 0.95rem;
+    }
+    .watch-button {
+      font-size: 0.95rem;
+      padding: 0.5rem 1.2rem;
     }
   </style>
 </head>
@@ -329,9 +321,12 @@
           livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
           errorContainer.className = 'alert alert-danger error-alert';
           errorContainer.innerHTML = 'Request timed out. Please try again.';
-          document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
+          const retryButton = document.getElementById('retryButton');
+          if (retryButton) {
+            retryButton.addEventListener('click', () => loadContent(api));
+          }
         }
-      }, 10000);
+      }, 15000); // Increased timeout to 15 seconds
 
       const apiUrl = api.baseUrl.endsWith('/') ? `${api.baseUrl}stream` : `${api.baseUrl}/stream`;
       fetchWithRetry(apiUrl)
@@ -345,7 +340,10 @@
             liveAnimation.classList.add('d-none');
             errorContainer.className = 'alert alert-danger error-alert';
             errorContainer.innerHTML = 'Invalid stream data received. Please try again.';
-            document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
+            const retryButton = document.getElementById('retryButton');
+            if (retryButton) {
+              retryButton.addEventListener('click', () => loadContent(api));
+            }
             return;
           }
 
@@ -364,8 +362,13 @@
             others: { id: 'others', element: document.getElementById('otherscards') }
           };
           
-          Object.values(categories).forEach(cat => cat.element.innerHTML = '');
-          Object.keys(categories).forEach(key => document.getElementById(key).classList.add('d-none'));
+          Object.values(categories).forEach(cat => {
+            if (cat.element) cat.element.innerHTML = '';
+          });
+          Object.keys(categories).forEach(key => {
+            const section = document.getElementById(key);
+            if (section) section.classList.add('d-none');
+          });
           livecards.innerHTML = '';
 
           let hasLiveEvents = false;
@@ -390,13 +393,13 @@
               }
               let startTime, endTime;
               try {
-                startTime = new Date(stream.starts_at + '+03:00').getTime() / 1000;
+                startTime = new Date(stream.starts_at).getTime() / 1000;
                 if (isNaN(startTime)) {
                   console.warn(`Invalid start time for stream ${stream.name}`);
                   startTime = now;
                 }
                 endTime = stream.ends_at 
-                  ? new Date(stream.ends_at + '+03:00').getTime() / 1000 
+                  ? new Date(stream.ends_at).getTime() / 1000 
                   : startTime + 3 * 3600;
                 if (isNaN(endTime)) {
                   console.warn(`Invalid end time for stream ${stream.name}`);
@@ -479,7 +482,10 @@
           liveAnimation.classList.add('d-none');
           errorContainer.className = 'alert alert-danger error-alert';
           errorContainer.innerHTML = `Failed to load streams: ${error.message}. Please try again.`;
-          document.getElementById('retryButton').addEventListener('click', () => loadContent(api));
+          const retryButton = document.getElementById('retryButton');
+          if (retryButton) {
+            retryButton.addEventListener('click', () => loadContent(api));
+          }
         });
     }
 
@@ -569,7 +575,10 @@
         livecards.innerHTML = '<p>Failed to load streams. <button id="retryButton" class="btn btn-primary btn-sm">Retry</button></p>';
         errorContainer.className = 'alert alert-danger error-alert';
         errorContainer.innerHTML = 'Failed to initialize streams. Please try again.';
-        document.getElementById('retryButton').addEventListener('click', () => loadContent(apiInstance));
+        const retryButton = document.getElementById('retryButton');
+        if (retryButton) {
+          retryButton.addEventListener('click', () => loadContent(apiInstance));
+        }
       }
 
       // Auth status
