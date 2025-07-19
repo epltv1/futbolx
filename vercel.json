@@ -1,31 +1,7 @@
 {
-  "framework": null,
-  "rewrites": [
-    { "source": "/api/stream", "destination": "/api/stream.json" },
-    { "source": "/live/:path*", "destination": "/live.html" },
-    { "source": "/vip", "destination": "/vip.html" },
-    { "source": "/:path*", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/api/stream.json",
-      "headers": [
-        { "key": "Content-Type", "value": "application/json" }
-      ]
-    }
-  ],
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/stream.json",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "assets/**/*",
-      "use": "@vercel/static"
-    }
-  ]
+  "name": "futbolx",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^1.7.2"
+  }
 }
