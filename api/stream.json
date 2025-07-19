@@ -16,7 +16,7 @@
           "streams": [
             {
               "title": "Main Feed",
-              "url": "https://tvsen6.aynascope.net/talkSPORT/index.m3u8"
+              "url": "http://212.102.60.231/TSN_1/index.m3u8"
             },
             {
               "title": "Alternate Feed",
