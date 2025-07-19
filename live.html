@@ -16,7 +16,7 @@
   <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=26">
+  <link rel="stylesheet" href="/assets/css/main.css?v=27">
   <script src="https://cdn.jsdelivr.net/npm/jwplayer@8.20.0/jwplayer.js"></script>
   <script src="https://unpkg.com/@stream-io/stream-chat-react@10.8.9/dist/js/stream-chat-react.js"></script>
   <style>
@@ -111,7 +111,7 @@
           console.log(`Fetching ${url}, attempt ${attempts}`);
           try {
             const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-            console.log(`Fetch status: ${res.status} ${res.statusText}`);
+            console.log(`Fetch status for ${url}: ${res.status} ${res.statusText}`);
             if (!res.ok) {
               const text = await res.text();
               console.error(`HTTP error response for ${url}: ${text.substring(0, 200)}...`);
@@ -135,6 +135,7 @@
 
     async function initChat(userId, token, streamName) {
       try {
+        console.log('Initializing Stream Chat with userId:', userId);
         streamClient = StreamChat.getInstance('YOUR_STREAM_API_KEY'); // Replace with your Stream API key
         await streamClient.connectUser({ id: userId }, token);
         channel = streamClient.channel('livestream', streamName.replace(/\s+/g, '-').toLowerCase());
@@ -153,7 +154,7 @@
       } catch (error) {
         console.error('Chat initialization error:', error);
         document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
-        document.getElementById('errorContainer').innerHTML = 'Failed to load chat. Please try again.';
+        document.getElementById('errorContainer').innerHTML = `Failed to load chat: ${error.message}. Please try again.`;
       }
     }
 
@@ -162,7 +163,8 @@
       const streamTitle = document.getElementById('streamTitle');
       const streamButtons = document.querySelector('.stream-buttons');
       const path = window.location.pathname.split('/').pop();
-      
+      console.log('Initializing stream for path:', path);
+
       try {
         const apiInstance = typeof Api !== 'undefined' ? new Api(`${window.location.origin}/api`) : { baseUrl: window.location.origin + '/api' };
         const apiUrl = apiInstance.baseUrl.endsWith('/') ? `${apiInstance.baseUrl}stream` : `${apiInstance.baseUrl}/stream`;
@@ -170,7 +172,7 @@
         const streamData = await fetchWithRetry(apiUrl);
 
         if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
-          throw new Error('Invalid stream data');
+          throw new Error('Invalid stream data received');
         }
 
         let selectedStream = null;
@@ -185,7 +187,7 @@
         });
 
         if (!selectedStream) {
-          throw new Error('Stream not found for path: ' + path);
+          throw new Error(`Stream not found for path: ${path}`);
         }
 
         streamTitle.innerHTML = selectedStream.name;
@@ -193,6 +195,9 @@
           <button class="btn btn-danger btn-sm stream-button" data-url="${stream.url}" data-type="${stream.url.endsWith('.m3u8') ? 'hls' : 'mp4'}">${stream.title}</button>
         `).join('');
 
+        if (typeof jwplayer === 'undefined') {
+          throw new Error('JW Player library not loaded');
+        }
         const player = jwplayer('player').setup({
           file: selectedStream.streams[0].url,
           type: selectedStream.streams[0].url.endsWith('.m3u8') ? 'hls' : 'mp4',
@@ -209,7 +214,11 @@
           });
         });
 
+        console.log('Fetching Stream Chat token from /api/stream-token');
         const tokenResponse = await fetchWithRetry('/api/stream-token');
+        if (!tokenResponse.userId || !tokenResponse.token) {
+          throw new Error('Invalid token response');
+        }
         await initChat(tokenResponse.userId, tokenResponse.token, selectedStream.name);
         console.log('Stream and chat initialized successfully');
 
@@ -231,6 +240,9 @@
       }
 
       try {
+        if (typeof bootstrap === 'undefined') {
+          throw new Error('Bootstrap JavaScript not loaded');
+        }
         const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
         offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
           console.log('Offcanvas closed');
@@ -257,11 +269,12 @@
         }
       } catch (error) {
         console.error('Offcanvas initialization error:', error);
+        document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
+        document.getElementById('errorContainer').innerHTML = `Failed to initialize sidebar: ${error.message}`;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM loaded at', new Date().toISOString());
+    function initThemeToggle() {
       const themeToggle = document.getElementById('themeToggle');
       const htmlElement = document.documentElement;
       const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -269,7 +282,7 @@
       if (themeToggle) {
         themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         themeToggle.addEventListener('click', () => {
-          console.log('Theme toggle clicked');
+          console.log('Theme toggle clicked at', new Date().toISOString());
           const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
           htmlElement.setAttribute('data-bs-theme', newTheme);
           localStorage.setItem('theme', newTheme);
@@ -278,10 +291,15 @@
       } else {
         console.error('Theme toggle element not found');
       }
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded at', new Date().toISOString());
+      initThemeToggle();
       initOffcanvas();
       initStream();
       try {
+        console.log('Checking auth status');
         checkAuthStatus();
       } catch (error) {
         console.warn('Auth status check failed:', error);
