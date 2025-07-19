@@ -16,14 +16,15 @@
   <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=25">
+  <link rel="stylesheet" href="/assets/css/main.css?v=26">
   <script src="https://cdn.jsdelivr.net/npm/jwplayer@8.20.0/jwplayer.js"></script>
   <script src="https://unpkg.com/@stream-io/stream-chat-react@10.8.9/dist/js/stream-chat-react.js"></script>
   <style>
     .stream-container { position: relative; padding-top: 56.25%; margin-bottom: 20px; }
     #player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    .stream-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+    .stream-buttons { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
     .chat-container { max-width: 500px; margin: 0 auto; }
+    .error-alert { max-width: 500px; margin: 20px auto; }
   </style>
 </head>
 <body>
@@ -63,9 +64,7 @@
       <div class="stream-container">
         <div id="player"></div>
       </div>
-      <div class="stream-buttons text-center">
-        <!-- Stream buttons will be added dynamically -->
-      </div>
+      <div class="stream-buttons text-center"></div>
       <div class="chat-container">
         <div id="chat"></div>
       </div>
@@ -115,14 +114,14 @@
             console.log(`Fetch status: ${res.status} ${res.statusText}`);
             if (!res.ok) {
               const text = await res.text();
-              console.error(`HTTP error response: ${text.substring(0, 200)}...`);
+              console.error(`HTTP error response for ${url}: ${text.substring(0, 200)}...`);
               throw new Error(`HTTP error ${res.status}: ${res.statusText} - ${text.substring(0, 200)}...`);
             }
             const data = await res.json();
             clearError();
             resolve(data);
           } catch (error) {
-            console.error(`Fetch attempt ${attempts} failed:`, error);
+            console.error(`Fetch attempt ${attempts} failed for ${url}:`, error);
             if (attempts < maxRetries) {
               setTimeout(attempt, delay);
             } else {
@@ -141,17 +140,16 @@
         channel = streamClient.channel('livestream', streamName.replace(/\s+/g, '-').toLowerCase());
         await channel.watch();
         const chatContainer = document.getElementById('chat');
+        chatContainer.innerHTML = ''; // Clear any loading state
         const chat = new StreamChatReact.Chat({ client: streamClient });
-        const channelList = new StreamChatReact.ChannelList({ filters: { id: channel.id } });
         const channelComponent = new StreamChatReact.Channel({ channel });
         const messageList = new StreamChatReact.MessageList();
         const messageInput = new StreamChatReact.MessageInput();
-        chatContainer.innerHTML = '';
         chat.render(chatContainer);
         channelComponent.render(chatContainer);
-        channelList.render(chatContainer);
         messageList.render(chatContainer);
         messageInput.render(chatContainer);
+        console.log(`Chat initialized for channel: ${channel.id}`);
       } catch (error) {
         console.error('Chat initialization error:', error);
         document.getElementById('errorContainer').className = 'alert alert-danger error-alert';
@@ -168,6 +166,7 @@
       try {
         const apiInstance = typeof Api !== 'undefined' ? new Api(`${window.location.origin}/api`) : { baseUrl: window.location.origin + '/api' };
         const apiUrl = apiInstance.baseUrl.endsWith('/') ? `${apiInstance.baseUrl}stream` : `${apiInstance.baseUrl}/stream`;
+        console.log(`Fetching stream data from: ${apiUrl}`);
         const streamData = await fetchWithRetry(apiUrl);
 
         if (!streamData || !streamData.success || !Array.isArray(streamData.streams)) {
@@ -186,7 +185,7 @@
         });
 
         if (!selectedStream) {
-          throw new Error('Stream not found');
+          throw new Error('Stream not found for path: ' + path);
         }
 
         streamTitle.innerHTML = selectedStream.name;
@@ -206,11 +205,13 @@
             const url = button.getAttribute('data-url');
             const type = button.getAttribute('data-type');
             player.setup({ file: url, type });
+            console.log(`Switched to stream: ${url} (${type})`);
           });
         });
 
         const tokenResponse = await fetchWithRetry('/api/stream-token');
         await initChat(tokenResponse.userId, tokenResponse.token, selectedStream.name);
+        console.log('Stream and chat initialized successfully');
 
       } catch (error) {
         console.error('Stream initialization error:', error);
@@ -260,6 +261,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded at', new Date().toISOString());
       const themeToggle = document.getElementById('themeToggle');
       const htmlElement = document.documentElement;
       const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -267,11 +269,14 @@
       if (themeToggle) {
         themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         themeToggle.addEventListener('click', () => {
+          console.log('Theme toggle clicked');
           const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
           htmlElement.setAttribute('data-bs-theme', newTheme);
           localStorage.setItem('theme', newTheme);
           themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
+      } else {
+        console.error('Theme toggle element not found');
       }
 
       initOffcanvas();
