@@ -1,9 +1,5 @@
 {
   "name": "futbolx-site",
   "version": "1.0.0",
-  "dependencies": {
-    "stream-chat": "^8.26.0",
-    "stream-chat-react": "^10.8.9",
-    "unique-username-generator": "^1.3.0"
-  }
+  "dependencies": {}
 }
