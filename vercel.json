@@ -13,5 +13,23 @@
         { "key": "Content-Type", "value": "application/json" }
       ]
     }
+  ],
+  "builds": [
+    {
+      "src": "api/stream-token.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/stream.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@vercel/static"
+    }
   ]
 }
