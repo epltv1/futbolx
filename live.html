@@ -16,9 +16,8 @@
   <link href="https://fonts.bunny.net/css?family=kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/stream-chat-react@10.8.9/dist/css/index.css" />
   <link rel="stylesheet" href="/assets/css/main.css?v=24">
-  <!-- Removed Video.js CSS -->
-  <!-- JW Player CSS (optional, depending on your setup) -->
   <style>
     .tip-container {
       max-width: 600px;
@@ -130,9 +129,13 @@
           <h2 id="eventTitle" class="mb-3"></h2>
           <div class="video-container">
             <iframe id="embedPlayer" src="about:blank" frameborder="0" allowfullscreen style="width: 100%; height: 100%;" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
-            <div id="videoPlayerContainer" style="width: 100%; height: 100%;"></div> <!-- Dynamically managed JW Player container -->
+            <div id="videoPlayerContainer" style="width: 100%; height: 100%;"></div>
           </div>
           <div id="streamLinks" class="stream-links mt-3"></div>
+          <div id="chatContainer" class="chat-container d-none">
+            <div id="onlineUsers" class="online-users">0 users online</div>
+            <div id="chat"></div>
+          </div>
           <div id="errorContainer" class="alert alert-danger error-alert mt-3 d-none"></div>
         </div>
       </div>
@@ -149,17 +152,22 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  <!-- Removed Video.js and videojs-contrib-hls scripts -->
-  <!-- Add JW Player script with provided key -->
   <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script>
   <script src="/assets/js/api.js"></script>
   <script async src="/assets/js/auth.js"></script>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/stream-chat@8.26.0/dist/browser.min.js"></script>
+  <script src="https://unpkg.com/stream-chat-react@10.8.9/dist/index.umd.js"></script>
+  <script src="https://unpkg.com/unique-username-generator@1.3.0/dist/index.umd.js"></script>
   <script>
     window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };
 
     let embedPlayer = null;
     let videoPlayerInstance = null;
     let streamData = null;
+    let streamClient = null;
+    let chatChannel = null;
 
     const originalOpen = window.open;
     window.open = function(url) {
@@ -265,14 +273,51 @@
 
     function recreateVideoElement() {
       const videoContainer = document.getElementById('videoPlayerContainer');
-      // Remove existing video element if present
       videoContainer.innerHTML = '';
-      // Create new div for JW Player
       const videoElement = document.createElement('div');
       videoElement.id = 'videoPlayer';
       videoElement.className = 'jwplayer d-none';
       videoContainer.appendChild(videoElement);
       return videoElement;
+    }
+
+    async function initChat(uriName) {
+      try {
+        const response = await fetch('/api/stream-token');
+        const { userId, token } = await response.json();
+        streamClient = StreamChat.getInstance('YOUR_STREAM_API_KEY'); // Replace with your Stream API key
+        await streamClient.connectUser({ id: userId, name: userId }, token);
+
+        chatChannel = streamClient.channel('messaging', uriName, {
+          name: `Chat for ${uriName}`
+        });
+        await chatChannel.watch();
+
+        const onlineUsers = document.getElementById('onlineUsers');
+        chatChannel.on('member.added', () => {
+          onlineUsers.textContent = `${chatChannel.state.watcher_count} users online`;
+        });
+        chatChannel.on('member.removed', () => {
+          onlineUsers.textContent = `${chatChannel.state.watcher_count} users online`;
+        });
+
+        const ChatComponent = () => (
+          <StreamChatReact.Chat client={streamClient} theme="messaging dark">
+            <StreamChatReact.Channel channel={chatChannel}>
+              <StreamChatReact.ChatWindow>
+                <StreamChatReact.MessageList />
+                <StreamChatReact.MessageInput />
+              </StreamChatReact.Channel>
+          </StreamChatReact.Chat>
+        );
+
+        ReactDOM.render(ChatComponent(), document.getElementById('chat'));
+        document.getElementById('chatContainer').classList.remove('d-none');
+      } catch (error) {
+        console.error('Chat initialization error:', error);
+        document.getElementById('errorContainer').className = 'alert alert-danger error-alert mt-3';
+        document.getElementById('errorContainer').innerText = 'Failed to initialize chat: ' + (error.message || 'Unknown error');
+      }
     }
 
     function initPlayer(event, errorContainer, streamLinks) {
@@ -324,7 +369,7 @@
           if (videoPlayerInstance) {
             videoPlayerInstance.remove();
             videoPlayerInstance = null;
-            recreateVideoElement(); // Prepare for next M3U8 stream
+            recreateVideoElement();
           }
           embedPlayer.contentWindow.location.replace(streamUrl);
           console.log('Embed initialized successfully');
@@ -525,6 +570,8 @@
         const uriName = window.location.pathname.split('/').pop();
         const playerContainer = document.querySelector('.video-container');
         const streamLinks = document.getElementById('streamLinks');
+
+        initChat(uriName);
 
         let api;
         if (typeof Api === 'undefined') {
