@@ -43,7 +43,6 @@
       50% { transform: scale(1.1); opacity: 0.7; }
       100% { transform: scale(1); opacity: 1; }
     }
-    /* Flexible grid layout for all screen sizes */
     .event-grid, #livecards.event-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -92,7 +91,6 @@
   </style>
 </head>
 <body>
-  <!-- Top Bar -->
   <nav class="top-bar fixed-top">
     <div class="container-fluid">
       <button class="btn btn-dark" type="button" id="sidebarToggler" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
@@ -101,7 +99,6 @@
       <span class="futbolx-brand">FutbolX</span>
     </div>
   </nav>
-  <!-- Left Sidebar -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
     <div class="offcanvas-header">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -123,7 +120,6 @@
       </ul>
     </div>
   </div>
-  <!-- Main Content -->
   <div class="container-fluid main-content">
     <div class="text-center py-5 bg-dark hero-background">
       <h1 class="display-4 fw-bold">Welcome to FutbolX</h1>
@@ -326,7 +322,7 @@
             retryButton.addEventListener('click', () => loadContent(api));
           }
         }
-      }, 15000); // Increased timeout to 15 seconds
+      }, 15000);
 
       const apiUrl = api.baseUrl.endsWith('/') ? `${api.baseUrl}stream` : `${api.baseUrl}/stream`;
       fetchWithRetry(apiUrl)
@@ -393,13 +389,14 @@
               }
               let startTime, endTime;
               try {
-                startTime = new Date(stream.starts_at).getTime() / 1000;
+                // Explicitly parse as UTC
+                startTime = new Date(stream.starts_at + 'Z').getTime() / 1000;
                 if (isNaN(startTime)) {
                   console.warn(`Invalid start time for stream ${stream.name}`);
                   startTime = now;
                 }
                 endTime = stream.ends_at 
-                  ? new Date(stream.ends_at).getTime() / 1000 
+                  ? new Date(stream.ends_at + 'Z').getTime() / 1000 
                   : startTime + 3 * 3600;
                 if (isNaN(endTime)) {
                   console.warn(`Invalid end time for stream ${stream.name}`);
@@ -527,7 +524,6 @@
           logoutButton.addEventListener('click', (event) => {
             event.stopPropagation();
             console.log('Logout button clicked');
-            // Assume logout logic is in auth.js
           });
         }
       } catch (error) {
@@ -542,7 +538,6 @@
       const themeToggle = document.getElementById('themeToggle');
       const htmlElement = document.documentElement;
 
-      // Initialize theme
       const currentTheme = localStorage.getItem('theme') || 'dark';
       htmlElement.setAttribute('data-bs-theme', currentTheme);
       if (themeToggle) {
@@ -558,10 +553,8 @@
         console.error('Theme toggle element not found');
       }
 
-      // Initialize offcanvas
       initOffcanvas();
 
-      // Load content
       try {
         if (typeof Api === 'undefined') {
           console.warn('Api class not defined. Using default API path.');
@@ -581,7 +574,6 @@
         }
       }
 
-      // Auth status
       try {
         checkAuthStatus();
       } catch (error) {
