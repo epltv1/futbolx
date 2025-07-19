@@ -345,7 +345,7 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px; /* Space between tag, countdown, and watch button */
 }
 
 .event-timer .countdown {
@@ -657,106 +657,6 @@ footer {
 /* Removed Live Animation for Events */
 .event-card .live-animation {
   display: none;
-}
-
-/* Chat Container */
-.chat-container {
-  max-width: 600px;
-  margin: 20px auto;
-  height: 400px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  overflow: hidden;
-  font-family: 'Kanit', sans-serif;
-  background: #222;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-[data-bs-theme="light"] .chat-container {
-  border: 1px solid #ccc;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.online-users {
-  text-align: center;
-  margin: 10px 0;
-  font-weight: 500;
-  color: #ff4d4d;
-  font-family: 'Kanit', sans-serif;
-}
-
-[data-bs-theme="light"] .online-users {
-  color: #e63939;
-}
-
-/* Stream Chat Overrides */
-.str-chat__channel {
-  background: inherit;
-  color: #fff;
-  font-family: 'Kanit', sans-serif;
-}
-
-[data-bs-theme="light"] .str-chat__channel {
-  background: #fff;
-  color: #333;
-}
-
-.str-chat__message-text {
-  font-family: 'Kanit', sans-serif;
-  color: #fff;
-}
-
-[data-bs-theme="light"] .str-chat__message-text {
-  color: #333;
-}
-
-.str-chat__input-flat {
-  background: #333;
-  border: 1px solid #444;
-  border-radius: 10px;
-  color: #fff;
-}
-
-[data-bs-theme="light"] .str-chat__input-flat {
-  background: #f5f5f5;
-  border: 1px solid #ccc;
-  color: #333;
-}
-
-.str-chat__input-flat .str-chat__textarea {
-  font-family: 'Kanit', sans-serif;
-  color: inherit;
-}
-
-.str-chat__message--me .str-chat__message-text-inner {
-  background: #ff4d4d;
-  color: #fff;
-  border-radius: 10px;
-}
-
-[data-bs-theme="light"] .str-chat__message--me .str-chat__message-text-inner {
-  background: #e63939;
-  color: #333;
-}
-
-.str-chat__message--other .str-chat__message-text-inner {
-  background: #444;
-  color: #fff;
-  border-radius: 10px;
-}
-
-[data-bs-theme="light"] .str-chat__message--other .str-chat__message-text-inner {
-  background: #ccc;
-  color: #333;
-}
-
-.str-chat__date-separator {
-  color: #999;
-}
-
-[data-bs-theme="light"] .str-chat__date-separator {
-  color: #666;
 }
 
 /* Responsive Adjustments */
