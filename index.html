@@ -50,6 +50,12 @@
       gap: 1.5rem;
       padding: 1rem;
     }
+    @media (min-width: 768px) {
+      #livecards.event-grid {
+        justify-content: start; /* Align grid items to the left */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 400px)); /* Consistent column sizing */
+      }
+    }
     .event-grid a {
       text-decoration: none;
     }
